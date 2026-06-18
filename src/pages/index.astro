@@ -1,0 +1,225 @@
+---
+import '../styles/global.css';
+import Marquee from '../components/Marquee';
+
+const marqueeItems = ['BRANDING','MARKETING DIGITAL','DISEÑO WEB','SEO / SEM','UX / UI','CAMPAÑAS','IDENTIDAD','ESTRATEGIA'];
+
+const services = [
+  { num: '01', title: 'Marketing digital y campañas', desc: 'Estrategia, paid media y embudos que convierten. Medimos cada peso invertido.' },
+  { num: '02', title: 'Diseño web / UX-UI', desc: 'Sitios y productos rápidos, claros y pensados para convertir visitas en clientes.' },
+  { num: '03', title: 'Branding e identidad', desc: 'Marcas con criterio: naming, logotipo, sistema visual y guías de uso.' },
+  { num: '04', title: 'SEO / SEM', desc: 'Posicionamiento orgánico y de pago para que te encuentren cuando importa.' },
+];
+
+const steps = [
+  { num: 'P.01', title: 'Descubrimiento', desc: 'Entendemos tu negocio, audiencia y objetivos antes de tocar un pixel.' },
+  { num: 'P.02', title: 'Estrategia', desc: 'Definimos el plan, los mensajes y los canales con métricas claras.' },
+  { num: 'P.03', title: 'Diseño y build', desc: 'Creamos marca, web y piezas de campaña listas para lanzar.' },
+  { num: 'P.04', title: 'Lanzar y optimizar', desc: 'Medimos, iteramos y escalamos lo que funciona.' },
+];
+
+const work = [
+  { name: 'Proyecto Norte', tag: 'Branding + Web', year: '2026' },
+  { name: 'Lumen Retail', tag: 'Campaña 360°', year: '2025' },
+  { name: 'Cobalt Fintech', tag: 'UX/UI + SEO', year: '2025' },
+  { name: 'Vela Estudio', tag: 'Identidad', year: '2024' },
+];
+
+const year = new Date().getFullYear();
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shape and Code — Estudio de Marketing Digital</title>
+  <meta name="description" content="Diseño y estrategia digital para marcas que quieren crecer." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-[#fafafa] text-[#0a0a0a] font-archivo antialiased overflow-x-hidden">
+
+  <!-- NAV -->
+  <header class="sticky top-0 z-50 bg-[rgba(250,250,250,0.82)] backdrop-blur-[12px] border-b border-[#ececec]">
+    <div class="max-w-[1320px] mx-auto px-8 py-[18px] flex items-center justify-between gap-6">
+      <a href="#top" class="flex items-center gap-3">
+        <img src="/assets/mark-black.png" alt="Shape and Code" class="h-[26px] w-auto block" />
+        <span class="font-extrabold text-[15px] tracking-[0.04em]">SHAPE AND CODE</span>
+      </a>
+      <nav class="flex items-center gap-[34px] text-sm font-medium">
+        <a href="#servicios" class="opacity-75 hover:opacity-100 transition-opacity">Servicios</a>
+        <a href="#proceso" class="opacity-75 hover:opacity-100 transition-opacity">Proceso</a>
+        <a href="#trabajo" class="opacity-75 hover:opacity-100 transition-opacity">Trabajo</a>
+        <a href="#estudio" class="opacity-75 hover:opacity-100 transition-opacity">Estudio</a>
+        <a href="/dark" class="opacity-75 hover:opacity-100 transition-opacity">Dark →</a>
+      </nav>
+      <a href="#contacto" class="inline-flex items-center gap-[10px] bg-[#0a0a0a] text-[#fafafa] text-[13.5px] font-semibold px-5 py-[11px] rounded-full hover:bg-[#2a2a2a] transition-colors">
+        Hablemos <span class="font-space-mono">→</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="max-w-[1320px] mx-auto px-8 pt-[88px] pb-16">
+      <div class="flex items-center gap-[14px] font-space-mono text-[12.5px] tracking-[0.06em] text-[#737373] mb-10">
+        <span class="w-[7px] h-[7px] bg-[#0a0a0a] rounded-full inline-block shrink-0"></span>
+        ESTUDIO CREATIVO — MARKETING DIGITAL
+      </div>
+      <h1 class="font-extrabold leading-[0.94] tracking-[-0.035em] max-w-[14ch]" style="font-size: clamp(44px, 8.2vw, 128px)">
+        Marcas que venden. Campañas que se recuerdan.
+      </h1>
+      <div class="mt-12 flex flex-wrap gap-12 items-end justify-between">
+        <p class="text-[#404040] leading-[1.5] max-w-[46ch]" style="font-size: clamp(17px, 1.5vw, 21px)">
+          Somos un estudio de diseño y marketing digital. Construimos identidad, sitios y campañas que convierten atención en clientes.
+        </p>
+        <div class="flex gap-[14px] flex-wrap">
+          <a href="#contacto" class="inline-flex items-center gap-[10px] bg-[#0a0a0a] text-[#fafafa] text-[15px] font-semibold px-[26px] py-[15px] rounded-full hover:bg-[#2a2a2a] transition-colors">
+            Empezar un proyecto <span class="font-space-mono">→</span>
+          </a>
+          <a href="#servicios" class="inline-flex items-center gap-[10px] text-[15px] font-semibold px-[26px] py-[15px] rounded-full border border-[#d4d4d4] hover:border-[#0a0a0a] transition-colors">
+            Ver servicios
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE BAND -->
+    <section class="border-t border-[#ececec] border-b overflow-hidden bg-[#fafafa]">
+      <Marquee variant="minimal" client:load items={marqueeItems} />
+    </section>
+
+    <!-- SERVICIOS -->
+    <section id="servicios" class="max-w-[1320px] mx-auto px-8 pt-[104px] pb-10">
+      <div class="flex justify-between items-end flex-wrap gap-6 mb-[14px]">
+        <h2 class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(30px, 4vw, 56px)">Servicios</h2>
+        <p class="font-space-mono text-[12.5px] text-[#737373] tracking-[0.04em]">[ 04 ÁREAS DE TRABAJO ]</p>
+      </div>
+      <div class="border-t border-[#0a0a0a]">
+        {services.map((s) => (
+          <a
+            href="#contacto"
+            class="grid items-center px-2 py-[34px] border-b border-[#e5e5e5] hover:bg-[#0a0a0a] hover:text-[#fafafa] transition-colors duration-200"
+            style="grid-template-columns: 88px 1.1fr 1.4fr auto; gap: 32px;"
+          >
+            <span class="font-space-mono text-[13px] opacity-[0.55]">{s.num}</span>
+            <h3 class="font-bold tracking-[-0.02em] leading-[1.05]" style="font-size: clamp(22px, 2.4vw, 32px)">{s.title}</h3>
+            <p class="text-[15.5px] leading-[1.5] opacity-70 max-w-[44ch]">{s.desc}</p>
+            <span class="font-space-mono text-[22px] justify-self-end">↗</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- PROCESO -->
+    <section id="proceso" class="max-w-[1320px] mx-auto px-8 py-[84px]">
+      <div class="flex justify-between items-end flex-wrap gap-6 mb-12">
+        <h2 class="font-extrabold tracking-[-0.03em] leading-none max-w-[16ch]" style="font-size: clamp(30px, 4vw, 56px)">Un método claro, sin sorpresas</h2>
+        <p class="font-space-mono text-[12.5px] text-[#737373] tracking-[0.04em]">[ CÓMO TRABAJAMOS ]</p>
+      </div>
+      <div class="grid grid-cols-4 gap-px bg-[#e5e5e5] border border-[#e5e5e5]">
+        {steps.map((step) => (
+          <div class="bg-[#fafafa] hover:bg-[#f0f0f0] transition-colors pt-8 px-[26px] pb-10 min-h-[220px] flex flex-col justify-between">
+            <span class="font-space-mono text-[13px] text-[#737373]">{step.num}</span>
+            <div>
+              <h3 class="text-[20px] font-bold tracking-[-0.01em] mb-[10px]">{step.title}</h3>
+              <p class="text-[14.5px] leading-[1.5] text-[#525252]">{step.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- TRABAJO -->
+    <section id="trabajo" class="max-w-[1320px] mx-auto px-8 pt-10 pb-[84px]">
+      <div class="flex justify-between items-end flex-wrap gap-6 mb-10">
+        <h2 class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(30px, 4vw, 56px)">Trabajo seleccionado</h2>
+        <p class="font-space-mono text-[12.5px] text-[#737373] tracking-[0.04em]">[ 2024 — 2026 ]</p>
+      </div>
+      <div class="grid grid-cols-2 gap-7">
+        {work.map((project) => (
+          <a href="#contacto" class="block group">
+            <div
+              class="relative aspect-[4/3] border border-[#e5e5e5] group-hover:border-[#0a0a0a] transition-colors rounded-[4px] overflow-hidden"
+              style="background-color: #f0f0f0; background-image: repeating-linear-gradient(135deg, #e8e8e8 0 2px, transparent 2px 11px);"
+            >
+              <span class="absolute left-4 bottom-[14px] font-space-mono text-[11px] text-[#9a9a9a] bg-[#fafafa] px-2 py-1 rounded">
+                imagen del proyecto
+              </span>
+            </div>
+            <div class="flex justify-between items-baseline mt-4 pb-[14px] border-b border-[#e5e5e5]">
+              <div>
+                <h3 class="text-[21px] font-bold tracking-[-0.01em]">{project.name}</h3>
+                <p class="text-[14px] text-[#737373] mt-[3px]">{project.tag}</p>
+              </div>
+              <span class="font-space-mono text-[13px] text-[#737373]">{project.year}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- ESTUDIO -->
+    <section id="estudio" class="border-t border-[#ececec] bg-[#fafafa]">
+      <div class="max-w-[1320px] mx-auto px-8 py-24" style="display: grid; grid-template-columns: 0.8fr 1.4fr; gap: 48px;">
+        <p class="font-space-mono text-[12.5px] text-[#737373] tracking-[0.04em]">[ EL ESTUDIO ]</p>
+        <div>
+          <p class="leading-[1.28] tracking-[-0.02em] font-medium mb-14" style="font-size: clamp(24px, 3vw, 40px)">
+            Creemos en el diseño con propósito. Cada proyecto une <strong class="font-extrabold">estética</strong> y <strong class="font-extrabold">estrategia</strong> para que tu marca no solo se vea bien — funcione y crezca.
+          </p>
+          <div class="flex gap-14 flex-wrap border-t border-[#e5e5e5] pt-8">
+            <div>
+              <div class="text-[44px] font-extrabold tracking-[-0.03em]">+40</div>
+              <div class="text-[14px] text-[#737373] mt-1">proyectos entregados</div>
+            </div>
+            <div>
+              <div class="text-[44px] font-extrabold tracking-[-0.03em]">8 años</div>
+              <div class="text-[14px] text-[#737373] mt-1">de experiencia combinada</div>
+            </div>
+            <div>
+              <div class="text-[44px] font-extrabold tracking-[-0.03em]">100%</div>
+              <div class="text-[14px] text-[#737373] mt-1">enfoque a resultados</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="contacto" class="bg-[#0a0a0a] text-[#fafafa]">
+      <div class="max-w-[1320px] mx-auto px-8 py-[112px]">
+        <p class="font-space-mono text-[12.5px] text-[#8a8a8a] tracking-[0.06em] mb-7">[ EMPECEMOS ]</p>
+        <h2 class="font-extrabold leading-[0.95] tracking-[-0.035em] max-w-[13ch]" style="font-size: clamp(40px, 8vw, 116px)">¿Hacemos crecer tu marca?</h2>
+        <div class="flex flex-wrap gap-10 justify-between items-end mt-14">
+          <a href="mailto:hola@shapeandcode.studio" class="font-semibold tracking-[-0.02em] border-b-2 border-[#8a8a8a] pb-[6px] hover:border-[#fafafa] transition-colors" style="font-size: clamp(20px, 3vw, 38px)">
+            hola@shapeandcode.studio
+          </a>
+          <a href="mailto:hola@shapeandcode.studio" class="inline-flex items-center gap-3 bg-[#fafafa] text-[#0a0a0a] text-[16px] font-bold px-8 py-[18px] rounded-full hover:bg-[#d4d4d4] transition-colors">
+            Escribir un mensaje <span class="font-space-mono">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#0a0a0a] text-[#fafafa] border-t border-[#1f1f1f]">
+      <div class="max-w-[1320px] mx-auto px-8 py-11 flex flex-wrap gap-6 justify-between items-center">
+        <div class="flex items-center gap-3">
+          <img src="/assets/mark-black.png" alt="" class="h-6 w-auto" style="filter: invert(1)" />
+          <span class="font-extrabold text-[14px] tracking-[0.04em]">SHAPE AND CODE</span>
+        </div>
+        <div class="flex gap-[26px] text-[13.5px] text-[#a3a3a3]">
+          <a href="#" class="hover:text-[#fafafa] transition-colors">Instagram</a>
+          <a href="#" class="hover:text-[#fafafa] transition-colors">Behance</a>
+          <a href="#" class="hover:text-[#fafafa] transition-colors">LinkedIn</a>
+          <a href="/dark" class="hover:text-[#fafafa] transition-colors">Versión dark →</a>
+        </div>
+        <p class="font-space-mono text-[12px] text-[#737373]">© {year} — ESTUDIO CREATIVO</p>
+      </div>
+    </footer>
+
+  </main>
+</body>
+</html>

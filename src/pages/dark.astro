@@ -1,0 +1,247 @@
+---
+import '../styles/global.css';
+import Marquee from '../components/Marquee';
+
+const marqueeItems = ['BRANDING','MARKETING DIGITAL','DISEÑO WEB','SEO / SEM','UX / UI','CAMPAÑAS','IDENTIDAD','ESTRATEGIA'];
+
+const heroStats = [
+  { num: '+40', label: 'proyectos lanzados' },
+  { num: '3.4×', label: 'retorno medio en campañas' },
+  { num: '<24h', label: 'tiempo de respuesta' },
+];
+
+const services = [
+  { num: '01', icon: '◆', span: 4, title: 'Marketing digital y campañas', desc: 'Estrategia, paid media y embudos que convierten. Optimizamos cada peso invertido para maximizar el retorno.' },
+  { num: '02', icon: '◇', span: 2, title: 'SEO / SEM', desc: 'Que te encuentren cuando importa: orgánico y de pago.' },
+  { num: '03', icon: '○', span: 2, title: 'Branding e identidad', desc: 'Marca con criterio: naming, logo y sistema visual.' },
+  { num: '04', icon: '◑', span: 4, title: 'Diseño web / UX-UI', desc: 'Sitios y productos rápidos, claros y pensados para convertir visitas en clientes reales.' },
+];
+
+const steps = [
+  { num: '01', title: 'Descubrimiento', desc: 'Entendemos tu negocio, audiencia y objetivos.' },
+  { num: '02', title: 'Estrategia', desc: 'Plan, mensajes y canales con métricas claras.' },
+  { num: '03', title: 'Diseño y build', desc: 'Marca, web y piezas listas para lanzar.' },
+  { num: '04', title: 'Optimizar', desc: 'Medimos, iteramos y escalamos lo que funciona.' },
+];
+
+const work = [
+  { name: 'Proyecto Norte', tag: 'Branding + Web', year: '2026' },
+  { name: 'Lumen Retail', tag: 'Campaña 360°', year: '2025' },
+  { name: 'Cobalt Fintech', tag: 'UX/UI + SEO', year: '2025' },
+  { name: 'Vela Estudio', tag: 'Identidad', year: '2024' },
+];
+
+const year = new Date().getFullYear();
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shape and Code — Dark | Estudio de Marketing Digital</title>
+  <meta name="description" content="Diseño y estrategia digital para marcas que quieren crecer." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body class="dark-page bg-[#07070b] text-[#f4f4f7] font-space-grotesk antialiased overflow-x-hidden">
+
+  <!-- AMBIENT GLOWS (fixed) -->
+  <div class="fixed inset-0 pointer-events-none z-0">
+    <div style="position:absolute;top:-12%;left:8%;width:52vw;height:52vw;background:radial-gradient(circle,rgba(139,92,255,0.40),transparent 62%);filter:blur(40px);animation:floatGlow 16s ease-in-out infinite;"></div>
+    <div style="position:absolute;top:30%;right:-10%;width:46vw;height:46vw;background:radial-gradient(circle,rgba(56,189,248,0.26),transparent 62%);filter:blur(50px);animation:floatGlow2 19s ease-in-out infinite;"></div>
+  </div>
+
+  <div class="relative z-[1]">
+
+    <!-- NAV -->
+    <header class="sticky top-0 z-50 border-b border-[rgba(255,255,255,0.07)]" style="background:rgba(7,7,11,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);">
+      <div class="max-w-[1280px] mx-auto px-7 py-4 flex items-center justify-between gap-6">
+        <a href="#top" class="flex items-center gap-[11px]">
+          <img src="/assets/mark-black.png" alt="Shape and Code" class="h-[26px] w-auto block" style="filter:invert(1) brightness(2);" />
+          <span class="font-semibold text-[15px] tracking-[0.02em]">Shape and Code</span>
+        </a>
+        <nav class="flex items-center gap-[30px] text-[14px] text-[#b6b6c2]">
+          <a href="#servicios" class="hover:text-white transition-colors">Servicios</a>
+          <a href="#proceso" class="hover:text-white transition-colors">Proceso</a>
+          <a href="#trabajo" class="hover:text-white transition-colors">Trabajo</a>
+          <a href="#estudio" class="hover:text-white transition-colors">Estudio</a>
+          <a href="/" class="hover:text-white transition-colors">Minimal →</a>
+        </nav>
+        <a href="#contacto" class="inline-flex items-center gap-[9px] text-white text-[13.5px] font-semibold px-5 py-[11px] rounded-full" style="background:linear-gradient(135deg,#8b5cff,#6d28d9);box-shadow:0 8px 24px -8px rgba(139,92,255,0.8);">
+          Hablemos
+        </a>
+      </div>
+    </header>
+
+    <main id="top">
+
+      <!-- HERO -->
+      <section class="max-w-[1280px] mx-auto px-7 pt-24 pb-[72px] text-center">
+        <div class="inline-flex items-center gap-[9px] px-4 py-2 border border-[rgba(255,255,255,0.14)] rounded-full bg-[rgba(255,255,255,0.04)] font-jetbrains text-[12.5px] text-[#cfcfda] mb-9">
+          <span class="w-[7px] h-[7px] rounded-full bg-[#8b5cff] shrink-0" style="box-shadow:0 0 12px #8b5cff;animation:pulseDot 2s ease-in-out infinite;"></span>
+          ESTUDIO CREATIVO · MARKETING DIGITAL
+        </div>
+        <h1 class="font-semibold leading-[0.95] tracking-[-0.04em] max-w-[15ch] mx-auto" style="font-size:clamp(46px,9vw,124px)">
+          Diseño y datos que hacen <span class="gradient-text-hero">crecer tu marca</span>
+        </h1>
+        <p class="text-[#b6b6c2] leading-[1.55] max-w-[54ch] mx-auto mt-[34px]" style="font-size:clamp(17px,1.8vw,21px)">
+          Unimos branding, web y campañas digitales en un solo equipo. Estrategia con estética para convertir atención en clientes.
+        </p>
+        <div class="flex gap-[14px] justify-center flex-wrap mt-[42px]">
+          <a href="#contacto" class="inline-flex items-center gap-[10px] text-white text-[16px] font-semibold px-[30px] py-4 rounded-full" style="background:linear-gradient(135deg,#8b5cff,#6d28d9);box-shadow:0 12px 36px -10px rgba(139,92,255,0.9);">
+            Empezar un proyecto <span class="font-jetbrains">→</span>
+          </a>
+          <a href="#servicios" class="inline-flex items-center gap-[10px] text-[#f4f4f7] text-[16px] font-medium px-[30px] py-4 rounded-full border border-[rgba(255,255,255,0.14)] bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition-colors">
+            Ver servicios
+          </a>
+        </div>
+        <!-- HERO STATS -->
+        <div class="flex justify-center gap-[14px] flex-wrap mt-16">
+          {heroStats.map((stat) => (
+            <div class="flex-1 min-w-[180px] max-w-[260px] py-[22px] px-[24px] border border-[rgba(255,255,255,0.09)] rounded-[18px] bg-[rgba(255,255,255,0.035)] text-left" style="backdrop-filter:blur(8px);">
+              <div class="font-semibold tracking-[-0.02em] gradient-text-stat" style="font-size:34px;">{stat.num}</div>
+              <div class="text-[13.5px] text-[#9a9aa6] mt-1">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- MARQUEE BAND -->
+      <section class="border-t border-[rgba(255,255,255,0.07)] border-b overflow-hidden bg-[rgba(255,255,255,0.015)]">
+        <Marquee variant="dark" client:load items={marqueeItems} />
+      </section>
+
+      <!-- SERVICIOS (BENTO) -->
+      <section id="servicios" class="max-w-[1280px] mx-auto px-7 pt-[104px] pb-14">
+        <div class="flex justify-between items-end flex-wrap gap-5 mb-10">
+          <div>
+            <p class="font-jetbrains text-[12.5px] text-[#8b5cff] tracking-[0.06em] mb-[14px]">/ SERVICIOS</p>
+            <h2 class="font-semibold tracking-[-0.03em] leading-none max-w-[16ch]" style="font-size:clamp(30px,4.4vw,56px)">Todo lo que tu marca necesita, bajo un mismo techo</h2>
+          </div>
+        </div>
+        <div class="grid grid-cols-6 gap-[18px]">
+          {services.map((s) => (
+            <div
+              class={`service-card col-span-${s.span} relative p-[30px] border border-[rgba(255,255,255,0.09)] rounded-[24px] bg-[rgba(255,255,255,0.035)] overflow-hidden min-h-[230px] flex flex-col justify-between transition-colors duration-200`}
+            >
+              <!-- inner glow -->
+              <div class="absolute top-[-40px] right-[-40px] w-[140px] h-[140px] pointer-events-none" style="background:radial-gradient(circle,rgba(139,92,255,0.5),transparent 70%);filter:blur(14px);"></div>
+              <div class="flex justify-between items-start relative">
+                <span class="font-jetbrains text-[13px] text-[#8b5cff]">{s.num}</span>
+                <span class="text-[20px]">{s.icon}</span>
+              </div>
+              <div class="relative">
+                <h3 class="font-semibold tracking-[-0.02em] mb-[10px]" style="font-size:clamp(20px,2vw,26px)">{s.title}</h3>
+                <p class="text-[15px] leading-[1.5] text-[#a8a8b4]">{s.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- PROCESO -->
+      <section id="proceso" class="max-w-[1280px] mx-auto px-7 py-[72px]">
+        <p class="font-jetbrains text-[12.5px] text-[#8b5cff] tracking-[0.06em] mb-[14px]">/ PROCESO</p>
+        <h2 class="font-semibold tracking-[-0.03em] leading-none mb-12 max-w-[16ch]" style="font-size:clamp(30px,4.4vw,56px)">De la idea al resultado en 4 pasos</h2>
+        <div class="grid grid-cols-4 gap-[18px]">
+          {steps.map((step) => (
+            <div class="pt-7 px-6 pb-8 border-t border-[rgba(139,92,255,0.5)] rounded-b-[16px]" style="background:linear-gradient(180deg,rgba(139,92,255,0.08),transparent 60%);">
+              <span class="font-jetbrains text-[13px] text-[#8b5cff]">{step.num}</span>
+              <h3 class="text-[20px] font-semibold tracking-[-0.01em] mt-[18px] mb-[10px]">{step.title}</h3>
+              <p class="text-[14.5px] leading-[1.5] text-[#a8a8b4]">{step.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- TRABAJO -->
+      <section id="trabajo" class="max-w-[1280px] mx-auto px-7 py-[72px]">
+        <div class="flex justify-between items-end flex-wrap gap-5 mb-10">
+          <div>
+            <p class="font-jetbrains text-[12.5px] text-[#8b5cff] tracking-[0.06em] mb-[14px]">/ TRABAJO</p>
+            <h2 class="font-semibold tracking-[-0.03em] leading-none" style="font-size:clamp(30px,4.4vw,56px)">Proyectos recientes</h2>
+          </div>
+          <a href="#contacto" class="text-[14px] text-[#b6b6c2] border-b border-[rgba(255,255,255,0.2)] pb-1 hover:text-white transition-colors">Ver todo →</a>
+        </div>
+        <div class="grid grid-cols-2 gap-6">
+          {work.map((project) => (
+            <a href="#contacto" class="work-card block border border-[rgba(255,255,255,0.09)] rounded-[22px] overflow-hidden bg-[rgba(255,255,255,0.03)] transition-colors duration-200">
+              <div class="relative aspect-[16/10] bg-[#0e0e16]" style="background-image:repeating-linear-gradient(135deg,rgba(255,255,255,0.05) 0 2px,transparent 2px 12px);">
+                <div class="absolute inset-0" style="background:radial-gradient(circle at 70% 20%,rgba(139,92,255,0.22),transparent 60%);"></div>
+                <span class="absolute left-[18px] bottom-4 font-jetbrains text-[11px] text-[#8a8a96] px-[9px] py-[5px] rounded-[6px]" style="background:rgba(7,7,11,0.7);">imagen del proyecto</span>
+              </div>
+              <div class="flex justify-between items-center py-5 px-[22px]">
+                <div>
+                  <h3 class="text-[20px] font-semibold tracking-[-0.01em]">{project.name}</h3>
+                  <p class="text-[13.5px] text-[#9a9aa6] mt-[3px]">{project.tag}</p>
+                </div>
+                <span class="font-jetbrains text-[13px] text-[#8b5cff]">{project.year}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <!-- ESTUDIO -->
+      <section id="estudio" class="max-w-[1280px] mx-auto px-7 py-[84px]">
+        <div class="border border-[rgba(255,255,255,0.09)] rounded-[28px] bg-[rgba(255,255,255,0.03)] relative overflow-hidden" style="padding:clamp(32px,5vw,72px);">
+          <div class="absolute bottom-[-30%] left-[30%] w-[40vw] h-[40vw] pointer-events-none" style="background:radial-gradient(circle,rgba(56,189,248,0.18),transparent 62%);filter:blur(40px);"></div>
+          <p class="font-jetbrains text-[12.5px] text-[#8b5cff] tracking-[0.06em] mb-[22px] relative">/ EL ESTUDIO</p>
+          <p class="font-medium leading-[1.3] tracking-[-0.02em] max-w-[24ch] relative" style="font-size:clamp(24px,3.2vw,42px);">
+            Somos un equipo pequeño y obsesionado con el detalle. Diseñamos para que tu marca se vea increíble — y venda.
+          </p>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section id="contacto" class="max-w-[1280px] mx-auto px-7 pt-[72px] pb-[100px] text-center relative">
+        <div class="absolute left-1/2 top-[30%] -translate-x-1/2 pointer-events-none" style="width:60vw;height:40vw;background:radial-gradient(circle,rgba(139,92,255,0.3),transparent 60%);filter:blur(50px);"></div>
+        <div class="relative">
+          <h2 class="font-semibold leading-[0.95] tracking-[-0.04em] max-w-[14ch] mx-auto" style="font-size:clamp(40px,8vw,104px);">¿Listos para destacar?</h2>
+          <p class="text-[18px] text-[#b6b6c2] max-w-[46ch] mx-auto mt-[26px] mb-10">Cuéntanos tu idea. Te respondemos en menos de 24 horas con una propuesta clara.</p>
+          <div class="flex gap-[14px] justify-center flex-wrap">
+            <a href="mailto:hola@shapeandcode.studio" class="inline-flex items-center gap-[10px] text-white text-[16px] font-semibold px-[34px] py-[17px] rounded-full" style="background:linear-gradient(135deg,#8b5cff,#6d28d9);box-shadow:0 14px 40px -10px rgba(139,92,255,0.9);">
+              Empezar un proyecto <span class="font-jetbrains">→</span>
+            </a>
+            <a href="mailto:hola@shapeandcode.studio" class="inline-flex items-center gap-[10px] text-[#f4f4f7] text-[16px] font-medium px-[34px] py-[17px] rounded-full border border-[rgba(255,255,255,0.14)] bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)] transition-colors">
+              hola@shapeandcode.studio
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="border-t border-[rgba(255,255,255,0.07)]">
+        <div class="max-w-[1280px] mx-auto px-7 py-10 flex flex-wrap gap-6 justify-between items-center">
+          <div class="flex items-center gap-[11px]">
+            <img src="/assets/mark-black.png" alt="" class="h-6 w-auto" style="filter:invert(1) brightness(2);" />
+            <span class="font-semibold text-[14px]">Shape and Code</span>
+          </div>
+          <div class="flex gap-6 text-[13.5px] text-[#9a9aa6]">
+            <a href="#" class="hover:text-white transition-colors">Instagram</a>
+            <a href="#" class="hover:text-white transition-colors">Behance</a>
+            <a href="#" class="hover:text-white transition-colors">LinkedIn</a>
+            <a href="/" class="hover:text-white transition-colors">Versión minimal →</a>
+          </div>
+          <p class="font-jetbrains text-[12px] text-[#6f6f7a]">© {year} · ESTUDIO CREATIVO</p>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <style>
+    /* Service card hover — rgba values can't be expressed cleanly in Tailwind arbitrary */
+    .service-card:hover {
+      border-color: rgba(139, 92, 255, 0.6);
+      background-color: rgba(139, 92, 255, 0.07);
+    }
+    /* Work card hover */
+    .work-card:hover {
+      border-color: rgba(139, 92, 255, 0.55);
+    }
+  </style>
+
+</body>
+</html>
