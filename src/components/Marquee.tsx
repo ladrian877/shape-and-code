@@ -26,7 +26,7 @@ export default function Marquee({ items, variant }: MarqueeProps) {
                 style={{
                   fontSize: '22px',
                   fontWeight: 800,
-                  color: '#0a0a0a',
+                  color: 'var(--mq-text)',
                   fontFamily: '"Space Mono", monospace',
                   padding: '0 28px',
                 }}
@@ -37,7 +37,7 @@ export default function Marquee({ items, variant }: MarqueeProps) {
                 style={{
                   fontSize: '22px',
                   fontWeight: 800,
-                  color: '#d4d4d4',
+                  color: 'var(--mq-sep)',
                   fontFamily: '"Space Mono", monospace',
                   userSelect: 'none',
                 }}

@@ -38,14 +38,24 @@ const year = new Date().getFullYear();
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <!-- Apply theme before paint to avoid flash -->
+  <script is:inline>
+    (function () {
+      var saved = localStorage.getItem('minimal-theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
 </head>
-<body class="bg-[#fafafa] text-[#0a0a0a] font-archivo antialiased overflow-x-hidden">
+<body class="bg-[#fafafa] dark:bg-[#111111] text-[#0a0a0a] dark:text-[#f5f5f5] font-archivo antialiased transition-colors duration-200">
 
   <!-- NAV -->
-  <header class="sticky top-0 z-50 bg-[rgba(250,250,250,0.82)] backdrop-blur-[12px] border-b border-[#ececec]">
-    <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-[18px] flex items-center justify-between gap-4">
+  <header class="sticky top-0 z-50 bg-[rgba(250,250,250,0.82)] dark:bg-[rgba(17,17,17,0.82)] backdrop-blur-[12px] border-b border-[#ececec] dark:border-[#2a2a2a] lg:fixed lg:left-0 lg:right-0 lg:bg-transparent lg:dark:bg-transparent lg:backdrop-blur-none lg:border-0 lg:px-8 lg:pt-5">
+    <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-[18px] flex items-center justify-between gap-4 lg:max-w-[900px] lg:px-5 lg:py-[11px] lg:rounded-full lg:bg-[rgba(250,250,250,0.90)] lg:dark:bg-[rgba(17,17,17,0.90)] lg:backdrop-blur-[16px] lg:border lg:border-[#e5e5e5] lg:dark:border-[#2a2a2a] lg:shadow-[0_2px_24px_rgba(0,0,0,0.07)]">
       <a href="#top" class="flex items-center gap-2 sm:gap-3 shrink-0">
-        <img src="/assets/mark-black.png" alt="Shape and Code" class="h-[30px] sm:h-[36px] w-auto block" />
+        <img src="/assets/mark-black.png" alt="Shape and Code" class="h-[30px] sm:h-[36px] w-auto block dark:invert" />
         <span class="font-extrabold text-[13px] sm:text-[15px] tracking-[0.04em]">SHAPE AND CODE</span>
       </a>
       <nav class="hidden lg:flex items-center gap-[34px] text-sm font-medium">
@@ -53,78 +63,98 @@ const year = new Date().getFullYear();
         <a href="#proceso" class="opacity-75 hover:opacity-100 transition-opacity">Proceso</a>
         <a href="#trabajo" class="opacity-75 hover:opacity-100 transition-opacity">Trabajo</a>
         <a href="#estudio" class="opacity-75 hover:opacity-100 transition-opacity">Estudio</a>
-        <a href="/dark" class="opacity-75 hover:opacity-100 transition-opacity">Dark →</a>
       </nav>
       <div class="flex items-center gap-3">
-        <a href="#contacto" class="hidden lg:inline-flex items-center gap-[10px] bg-[#0a0a0a] text-[#fafafa] text-[13.5px] font-semibold px-5 py-[11px] rounded-full hover:bg-[#2a2a2a] transition-colors">
+        <!-- Theme toggle desktop -->
+        <button id="theme-toggle" aria-label="Cambiar tema"
+          class="hidden lg:flex w-9 h-9 items-center justify-center rounded-full border border-[#d4d4d4] dark:border-[#3a3a3a] hover:border-[#0a0a0a] dark:hover:border-[#f5f5f5] transition-colors text-[15px]">
+          <span class="dark:hidden" title="Modo oscuro">☽</span>
+          <span class="hidden dark:inline" title="Modo claro">☀</span>
+        </button>
+        <a href="#contacto" class="hidden lg:inline-flex items-center gap-[10px] bg-[#0a0a0a] dark:bg-[#f5f5f5] text-[#fafafa] dark:text-[#111111] text-[13.5px] font-semibold px-5 py-[11px] rounded-full hover:bg-[#2a2a2a] dark:hover:bg-[#d4d4d4] transition-colors">
           Hablemos <span class="font-space-mono">→</span>
         </a>
-        <!-- Hamburger -->
         <button id="mobile-menu-btn" class="lg:hidden flex flex-col justify-center items-center gap-[5px] w-10 h-10 shrink-0" aria-label="Abrir menú">
-          <span class="w-[22px] h-[2px] bg-[#0a0a0a] block transition-all duration-300 origin-center" id="hb-1"></span>
-          <span class="w-[22px] h-[2px] bg-[#0a0a0a] block transition-all duration-300" id="hb-2"></span>
-          <span class="w-[16px] h-[2px] bg-[#0a0a0a] block transition-all duration-300 origin-center self-start ml-[3px]" id="hb-3"></span>
+          <span class="w-[22px] h-[2px] bg-[#0a0a0a] dark:bg-[#f5f5f5] block transition-all duration-300 origin-center" id="hb-1"></span>
+          <span class="w-[22px] h-[2px] bg-[#0a0a0a] dark:bg-[#f5f5f5] block transition-all duration-300" id="hb-2"></span>
+          <span class="w-[16px] h-[2px] bg-[#0a0a0a] dark:bg-[#f5f5f5] block transition-all duration-300 origin-center self-start ml-[3px]" id="hb-3"></span>
         </button>
       </div>
     </div>
   </header>
 
   <!-- Mobile menu overlay -->
-  <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-[#fafafa] flex-col items-center justify-center gap-8">
+  <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-[#fafafa] dark:bg-[#111111] flex-col items-center justify-center gap-8">
     <nav class="flex flex-col items-center gap-7 text-[24px] font-bold tracking-[-0.02em]">
       <a href="#servicios" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Servicios</a>
       <a href="#proceso" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Proceso</a>
       <a href="#trabajo" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Trabajo</a>
       <a href="#estudio" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Estudio</a>
-      <a href="/dark" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Dark →</a>
+      <button id="theme-toggle-mobile" class="mob-theme-btn opacity-80 hover:opacity-100 transition-opacity text-[24px]">
+        <span class="dark:hidden">☽</span>
+        <span class="hidden dark:inline">☀</span>
+      </button>
     </nav>
-    <a href="#contacto" class="mob-link mt-4 inline-flex items-center gap-[10px] bg-[#0a0a0a] text-[#fafafa] text-[16px] font-semibold px-7 py-[14px] rounded-full hover:bg-[#2a2a2a] transition-colors">
+    <a href="#contacto" class="mob-link mt-4 inline-flex items-center gap-[10px] bg-[#0a0a0a] dark:bg-[#f5f5f5] text-[#fafafa] dark:text-[#111111] text-[16px] font-semibold px-7 py-[14px] rounded-full hover:bg-[#2a2a2a] dark:hover:bg-[#d4d4d4] transition-colors">
       Hablemos <span class="font-space-mono">→</span>
     </a>
   </div>
 
-  <main id="top">
+  <main id="top" class="overflow-x-hidden">
 
     <!-- HERO -->
-    <section class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-12 sm:pt-[88px] pb-12 sm:pb-16">
-      <div class="flex items-center gap-[12px] font-space-mono text-[11px] sm:text-[12.5px] tracking-[0.06em] text-[#737373] mb-7 sm:mb-10">
-        <span class="w-[7px] h-[7px] bg-[#0a0a0a] rounded-full inline-block shrink-0"></span>
-        ESTUDIO CREATIVO — MARKETING DIGITAL
-      </div>
-      <h1 class="font-extrabold leading-[0.94] tracking-[-0.035em] max-w-[14ch]" style="font-size: clamp(36px, 8.2vw, 128px)">
-        Marcas que venden. Campañas que se recuerdan.
-      </h1>
-      <div class="mt-8 sm:mt-12 flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-12 items-start sm:items-end justify-between">
-        <p class="text-[#404040] leading-[1.5] max-w-[46ch]" style="font-size: clamp(16px, 1.5vw, 21px)">
-          Somos un estudio de diseño y marketing digital. Construimos identidad, sitios y campañas que convierten atención en clientes.
-        </p>
-        <div class="flex gap-[10px] sm:gap-[14px] flex-wrap shrink-0">
-          <a href="#contacto" class="inline-flex items-center gap-[10px] bg-[#0a0a0a] text-[#fafafa] text-[14px] sm:text-[15px] font-semibold px-5 sm:px-[26px] py-[13px] sm:py-[15px] rounded-full hover:bg-[#2a2a2a] transition-colors">
-            Empezar un proyecto <span class="font-space-mono">→</span>
-          </a>
-          <a href="#servicios" class="inline-flex items-center gap-[10px] text-[14px] sm:text-[15px] font-semibold px-5 sm:px-[26px] py-[13px] sm:py-[15px] rounded-full border border-[#d4d4d4] hover:border-[#0a0a0a] transition-colors">
-            Ver servicios
-          </a>
+    <section class="relative max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-12 sm:pt-[88px] lg:pt-[170px] pb-12 sm:pb-16">
+      <!-- Model image — decorative, behind all content -->
+      <img
+        src="/assets/bunnymodel.png"
+        alt=""
+        aria-hidden="true"
+        data-reveal="fade" data-delay="4"
+        class="hero-model absolute bottom-[-15px] h-[100%] w-auto object-contain object-bottom pointer-events-none select-none"
+        style="z-index: 0; right: -15%;"
+      />
+      <!-- Hero content -->
+      <div class="relative" style="z-index: 1;">
+        <div data-reveal="up" data-delay="1" class="hero-eyebrow flex items-center gap-[12px] font-space-mono text-[11px] sm:text-[12.5px] tracking-[0.06em] text-[#737373] dark:text-[#8a8a8a] mb-7 sm:mb-10">
+          <span class="w-[7px] h-[7px] bg-[#0a0a0a] dark:bg-[#f5f5f5] rounded-full inline-block shrink-0"></span>
+          ESTUDIO CREATIVO — MARKETING DIGITAL
+        </div>
+        <h1 data-reveal="up" data-delay="2" class="hero-title font-extrabold leading-[0.94] tracking-[-0.035em] max-w-[14ch]" style="font-size: clamp(36px, 8.2vw, 128px)">
+          Marcas que venden. Campañas que se recuerdan.
+        </h1>
+        <div data-reveal="up" data-delay="3" class="hero-bottom mt-8 sm:mt-12 flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-12 items-start sm:items-end justify-between">
+          <p class="text-[#404040] dark:text-[#a3a3a3] leading-[1.5] max-w-[46ch]" style="font-size: clamp(16px, 1.5vw, 21px)">
+            Somos un estudio de diseño y marketing digital. Construimos identidad, sitios y campañas que convierten atención en clientes.
+          </p>
+          <div class="flex gap-[10px] sm:gap-[14px] flex-wrap shrink-0">
+            <a href="#contacto" class="inline-flex items-center gap-[10px] bg-[#0a0a0a] dark:bg-[#f5f5f5] text-[#fafafa] dark:text-[#111111] text-[14px] sm:text-[15px] font-semibold px-5 sm:px-[26px] py-[13px] sm:py-[15px] rounded-full hover:bg-[#2a2a2a] dark:hover:bg-[#d4d4d4] transition-colors">
+              Empezar un proyecto <span class="font-space-mono">→</span>
+            </a>
+            <a href="#servicios" class="inline-flex items-center gap-[10px] text-[14px] sm:text-[15px] font-semibold px-5 sm:px-[26px] py-[13px] sm:py-[15px] rounded-full border border-[#d4d4d4] dark:border-[#3a3a3a] hover:border-[#0a0a0a] dark:hover:border-[#f5f5f5] transition-colors">
+              Ver servicios
+            </a>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- MARQUEE BAND -->
-    <section class="border-t border-[#ececec] border-b overflow-hidden bg-[#fafafa]">
+    <section data-reveal="fade" class="border-t border-[#ececec] dark:border-[#2a2a2a] border-b overflow-hidden bg-[#fafafa] dark:bg-[#111111]">
       <Marquee variant="minimal" client:load items={marqueeItems} />
     </section>
 
     <!-- SERVICIOS -->
     <section id="servicios" class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-14 sm:pt-[104px] pb-10">
-      <div class="flex justify-between items-end flex-wrap gap-4 mb-[14px]">
+      <div data-reveal="up" class="flex justify-between items-end flex-wrap gap-4 mb-[14px]">
         <h2 class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, 4vw, 56px)">Servicios</h2>
-        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] tracking-[0.04em]">[ 04 ÁREAS DE TRABAJO ]</p>
+        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.04em]">[ 04 ÁREAS DE TRABAJO ]</p>
       </div>
-      <div class="border-t border-[#0a0a0a]">
-        {services.map((s) => (
+      <div class="border-t border-[#0a0a0a] dark:border-[#f5f5f5]">
+        {services.map((s, i) => (
           <a
+            data-reveal="up" data-delay={i}
             href="#contacto"
-            class="svc-row py-5 sm:py-[34px] border-b border-[#e5e5e5] hover:bg-[#0a0a0a] hover:text-[#fafafa] transition-colors duration-200 px-1 sm:px-2"
+            class="svc-row py-5 sm:py-[34px] border-b border-[#e5e5e5] dark:border-[#2a2a2a] hover:bg-[#0a0a0a] dark:hover:bg-[#f5f5f5] hover:text-[#fafafa] dark:hover:text-[#111111] transition-colors duration-200 px-1 sm:px-2"
           >
             <span class="svc-num font-space-mono text-[11px] sm:text-[13px] opacity-[0.55]">{s.num}</span>
             <h3 class="svc-title font-bold tracking-[-0.02em] leading-[1.05]" style="font-size: clamp(17px, 2.4vw, 32px)">{s.title}</h3>
@@ -137,17 +167,17 @@ const year = new Date().getFullYear();
 
     <!-- PROCESO -->
     <section id="proceso" class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-14 sm:py-[84px]">
-      <div class="flex justify-between items-end flex-wrap gap-4 mb-8 sm:mb-12">
+      <div data-reveal="up" class="flex justify-between items-end flex-wrap gap-4 mb-8 sm:mb-12">
         <h2 class="font-extrabold tracking-[-0.03em] leading-none max-w-[16ch]" style="font-size: clamp(26px, 4vw, 56px)">Un método claro, sin sorpresas</h2>
-        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] tracking-[0.04em]">[ CÓMO TRABAJAMOS ]</p>
+        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.04em]">[ CÓMO TRABAJAMOS ]</p>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#e5e5e5] border border-[#e5e5e5]">
-        {steps.map((step) => (
-          <div class="bg-[#fafafa] hover:bg-[#f0f0f0] transition-colors pt-7 sm:pt-8 px-5 sm:px-[26px] pb-8 sm:pb-10 min-h-[180px] sm:min-h-[220px] flex flex-col justify-between">
-            <span class="font-space-mono text-[13px] text-[#737373]">{step.num}</span>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#e5e5e5] dark:bg-[#2a2a2a] border border-[#e5e5e5] dark:border-[#2a2a2a]">
+        {steps.map((step, i) => (
+          <div data-reveal="up" data-delay={i} class="bg-[#fafafa] dark:bg-[#1a1a1a] hover:bg-[#f0f0f0] dark:hover:bg-[#252525] transition-colors pt-7 sm:pt-8 px-5 sm:px-[26px] pb-8 sm:pb-10 min-h-[180px] sm:min-h-[220px] flex flex-col justify-between">
+            <span class="font-space-mono text-[13px] text-[#737373] dark:text-[#8a8a8a]">{step.num}</span>
             <div>
               <h3 class="text-[18px] sm:text-[20px] font-bold tracking-[-0.01em] mb-[10px]">{step.title}</h3>
-              <p class="text-[13.5px] sm:text-[14.5px] leading-[1.5] text-[#525252]">{step.desc}</p>
+              <p class="text-[13.5px] sm:text-[14.5px] leading-[1.5] text-[#525252] dark:text-[#a3a3a3]">{step.desc}</p>
             </div>
           </div>
         ))}
@@ -156,27 +186,24 @@ const year = new Date().getFullYear();
 
     <!-- TRABAJO -->
     <section id="trabajo" class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-6 sm:pt-10 pb-14 sm:pb-[84px]">
-      <div class="flex justify-between items-end flex-wrap gap-4 mb-8 sm:mb-10">
+      <div data-reveal="up" class="flex justify-between items-end flex-wrap gap-4 mb-8 sm:mb-10">
         <h2 class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, 4vw, 56px)">Trabajo seleccionado</h2>
-        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] tracking-[0.04em]">[ 2024 — 2026 ]</p>
+        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.04em]">[ 2024 — 2026 ]</p>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7">
-        {work.map((project) => (
-          <a href="#contacto" class="block group">
-            <div
-              class="relative aspect-[4/3] border border-[#e5e5e5] group-hover:border-[#0a0a0a] transition-colors rounded-[4px] overflow-hidden"
-              style="background-color: #f0f0f0; background-image: repeating-linear-gradient(135deg, #e8e8e8 0 2px, transparent 2px 11px);"
-            >
-              <span class="absolute left-4 bottom-[14px] font-space-mono text-[11px] text-[#9a9a9a] bg-[#fafafa] px-2 py-1 rounded">
+        {work.map((project, i) => (
+          <a data-reveal="up" data-delay={i % 2} href="#contacto" class="block group">
+            <div class="work-placeholder relative aspect-[4/3] border border-[#e5e5e5] dark:border-[#2a2a2a] group-hover:border-[#0a0a0a] dark:group-hover:border-[#f5f5f5] transition-colors rounded-[4px] overflow-hidden">
+              <span class="absolute left-4 bottom-[14px] font-space-mono text-[11px] text-[#9a9a9a] dark:text-[#6a6a6a] bg-[#fafafa] dark:bg-[#1a1a1a] px-2 py-1 rounded">
                 imagen del proyecto
               </span>
             </div>
-            <div class="flex justify-between items-baseline mt-4 pb-[14px] border-b border-[#e5e5e5]">
+            <div class="flex justify-between items-baseline mt-4 pb-[14px] border-b border-[#e5e5e5] dark:border-[#2a2a2a]">
               <div>
                 <h3 class="text-[18px] sm:text-[21px] font-bold tracking-[-0.01em]">{project.name}</h3>
-                <p class="text-[13px] sm:text-[14px] text-[#737373] mt-[3px]">{project.tag}</p>
+                <p class="text-[13px] sm:text-[14px] text-[#737373] dark:text-[#8a8a8a] mt-[3px]">{project.tag}</p>
               </div>
-              <span class="font-space-mono text-[12px] sm:text-[13px] text-[#737373]">{project.year}</span>
+              <span class="font-space-mono text-[12px] sm:text-[13px] text-[#737373] dark:text-[#8a8a8a]">{project.year}</span>
             </div>
           </a>
         ))}
@@ -184,25 +211,25 @@ const year = new Date().getFullYear();
     </section>
 
     <!-- ESTUDIO -->
-    <section id="estudio" class="border-t border-[#ececec] bg-[#fafafa]">
+    <section id="estudio" class="border-t border-[#ececec] dark:border-[#2a2a2a] bg-[#fafafa] dark:bg-[#111111]">
       <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-14 sm:py-24 grid grid-cols-1 md:grid-cols-[0.8fr_1.4fr] gap-8 md:gap-12">
-        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] tracking-[0.04em]">[ EL ESTUDIO ]</p>
+        <p data-reveal="up" class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.04em]">[ EL ESTUDIO ]</p>
         <div>
-          <p class="leading-[1.28] tracking-[-0.02em] font-medium mb-10 sm:mb-14" style="font-size: clamp(20px, 3vw, 40px)">
+          <p data-reveal="up" data-delay="1" class="leading-[1.28] tracking-[-0.02em] font-medium mb-10 sm:mb-14" style="font-size: clamp(20px, 3vw, 40px)">
             Creemos en el diseño con propósito. Cada proyecto une <strong class="font-extrabold">estética</strong> y <strong class="font-extrabold">estrategia</strong> para que tu marca no solo se vea bien — funcione y crezca.
           </p>
-          <div class="flex gap-8 sm:gap-14 flex-wrap border-t border-[#e5e5e5] pt-8">
+          <div data-reveal="up" data-delay="2" class="flex gap-8 sm:gap-14 flex-wrap border-t border-[#e5e5e5] dark:border-[#2a2a2a] pt-8">
             <div>
               <div class="text-[36px] sm:text-[44px] font-extrabold tracking-[-0.03em]">+40</div>
-              <div class="text-[13px] sm:text-[14px] text-[#737373] mt-1">proyectos entregados</div>
+              <div class="text-[13px] sm:text-[14px] text-[#737373] dark:text-[#8a8a8a] mt-1">proyectos entregados</div>
             </div>
             <div>
               <div class="text-[36px] sm:text-[44px] font-extrabold tracking-[-0.03em]">8 años</div>
-              <div class="text-[13px] sm:text-[14px] text-[#737373] mt-1">de experiencia combinada</div>
+              <div class="text-[13px] sm:text-[14px] text-[#737373] dark:text-[#8a8a8a] mt-1">de experiencia combinada</div>
             </div>
             <div>
               <div class="text-[36px] sm:text-[44px] font-extrabold tracking-[-0.03em]">100%</div>
-              <div class="text-[13px] sm:text-[14px] text-[#737373] mt-1">enfoque a resultados</div>
+              <div class="text-[13px] sm:text-[14px] text-[#737373] dark:text-[#8a8a8a] mt-1">enfoque a resultados</div>
             </div>
           </div>
         </div>
@@ -212,9 +239,9 @@ const year = new Date().getFullYear();
     <!-- CTA -->
     <section id="contacto" class="bg-[#0a0a0a] text-[#fafafa]">
       <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-16 sm:py-[112px]">
-        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.06em] mb-5 sm:mb-7">[ EMPECEMOS ]</p>
-        <h2 class="font-extrabold leading-[0.95] tracking-[-0.035em] max-w-[13ch]" style="font-size: clamp(34px, 8vw, 116px)">¿Hacemos crecer tu marca?</h2>
-        <div class="flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-10 justify-between items-start sm:items-end mt-10 sm:mt-14">
+        <p data-reveal="up" class="font-space-mono text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.06em] mb-5 sm:mb-7">[ EMPECEMOS ]</p>
+        <h2 data-reveal="up" data-delay="1" class="font-extrabold leading-[0.95] tracking-[-0.035em] max-w-[13ch]" style="font-size: clamp(34px, 8vw, 116px)">¿Hacemos crecer tu marca?</h2>
+        <div data-reveal="up" data-delay="2" class="flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-10 justify-between items-start sm:items-end mt-10 sm:mt-14">
           <a href="mailto:hola@shapeandcode.agency" class="font-semibold tracking-[-0.02em] border-b-2 border-[#8a8a8a] pb-[6px] hover:border-[#fafafa] transition-colors break-all" style="font-size: clamp(15px, 3vw, 38px)">
             hola@shapeandcode.agency
           </a>
@@ -227,7 +254,7 @@ const year = new Date().getFullYear();
 
     <!-- FOOTER -->
     <footer class="bg-[#0a0a0a] text-[#fafafa] border-t border-[#1f1f1f]">
-      <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-11 flex flex-col sm:flex-row flex-wrap gap-5 sm:gap-6 justify-between items-start sm:items-center">
+      <div data-reveal="up" class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-11 flex flex-col sm:flex-row flex-wrap gap-5 sm:gap-6 justify-between items-start sm:items-center">
         <div class="flex items-center gap-3">
           <img src="/assets/mark-black.png" alt="" class="h-6 w-auto" style="filter: invert(1)" />
           <span class="font-extrabold text-[14px] tracking-[0.04em]">SHAPE AND CODE</span>
@@ -236,7 +263,6 @@ const year = new Date().getFullYear();
           <a href="#" class="hover:text-[#fafafa] transition-colors">Instagram</a>
           <a href="#" class="hover:text-[#fafafa] transition-colors">Behance</a>
           <a href="#" class="hover:text-[#fafafa] transition-colors">LinkedIn</a>
-          <a href="/dark" class="hover:text-[#fafafa] transition-colors">Versión dark →</a>
         </div>
         <p class="font-space-mono text-[12px] text-[#737373]">© {year} — ESTUDIO CREATIVO</p>
       </div>
@@ -286,9 +312,75 @@ const year = new Date().getFullYear();
         top: 20px;
       }
     }
+
+    /* ---- ENTRANCE ANIMATIONS ---- */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    header { animation: fadeInDown 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+    /* ---- SCROLL REVEAL ---- */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(20px);
+      transition:
+        opacity  0.6s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    [data-reveal="fade"] {
+      transform: none;
+    }
+    [data-reveal].is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    [data-delay="1"] { transition-delay: 0.1s;  }
+    [data-delay="2"] { transition-delay: 0.22s; }
+    [data-delay="3"] { transition-delay: 0.34s; }
+    [data-delay="4"] { transition-delay: 0.52s; }
+
+
+    /* ---- WORK PLACEHOLDER ---- */
+    .work-placeholder {
+      background-color: #f0f0f0;
+      background-image: repeating-linear-gradient(135deg, #e8e8e8 0 2px, transparent 2px 11px);
+    }
+    .dark .work-placeholder {
+      background-color: #1a1a1a;
+      background-image: repeating-linear-gradient(135deg, #2a2a2a 0 2px, transparent 2px 11px);
+    }
   </style>
 
   <script>
+    // ---- THEME TOGGLE ----
+    function applyTheme(dark: boolean) {
+      if (dark) {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('minimal-theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('minimal-theme', 'light');
+      }
+    }
+
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      applyTheme(!document.documentElement.classList.contains('dark'));
+    });
+    document.getElementById('theme-toggle-mobile')?.addEventListener('click', () => {
+      applyTheme(!document.documentElement.classList.contains('dark'));
+    });
+
+    // ---- MOBILE MENU ----
     const btn = document.getElementById('mobile-menu-btn');
     const menu = document.getElementById('mobile-menu');
     const hb1 = document.getElementById('hb-1');
@@ -317,6 +409,40 @@ const year = new Date().getFullYear();
 
     btn?.addEventListener('click', toggle);
     document.querySelectorAll('.mob-link').forEach(el => el.addEventListener('click', () => { if (open) toggle(); }));
+
+    // ---- SCROLL REVEAL ----
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          } else {
+            entry.target.classList.remove('is-visible');
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('[data-reveal]').forEach((el) => revealObserver.observe(el));
+
+    // ---- HERO FOCUS REPLAY ----
+    const heroSection = document.querySelector('#top > section');
+    const heroRevealEls = heroSection?.querySelectorAll('[data-reveal]') ?? [];
+
+    function replayHeroAnimations() {
+      heroRevealEls.forEach((el) => {
+        el.classList.remove('is-visible');
+        void (el as HTMLElement).offsetWidth;
+        el.classList.add('is-visible');
+      });
+    }
+
+    heroSection?.addEventListener('focusin', (e) => {
+      const from = (e as FocusEvent).relatedTarget as Node | null;
+      if (!from || !heroSection.contains(from)) {
+        replayHeroAnimations();
+      }
+    });
   </script>
 
 </body>
