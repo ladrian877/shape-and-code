@@ -37,7 +37,7 @@ const year = new Date().getFullYear();
   <link rel="icon" href="/assets/mark-black.png">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <!-- Apply theme before paint to avoid flash -->
   <script is:inline>
     (function () {
@@ -49,14 +49,13 @@ const year = new Date().getFullYear();
     })();
   </script>
 </head>
-<body class="bg-[#fafafa] dark:bg-[#111111] text-[#0a0a0a] dark:text-[#f5f5f5] font-archivo antialiased transition-colors duration-200">
+<body class="bg-[#fafafa] dark:bg-[#111111] text-[#0a0a0a] dark:text-[#f5f5f5] font-poppins antialiased transition-colors duration-200">
 
   <!-- NAV -->
   <header class="fixed left-0 right-0 z-50 px-4 pt-4 sm:px-5 sm:pt-4 lg:px-8 lg:pt-5">
     <div class="max-w-[900px] mx-auto px-4 sm:px-5 py-[11px] flex items-center justify-between gap-4 rounded-full bg-[rgba(250,250,250,0.90)] dark:bg-[rgba(17,17,17,0.90)] backdrop-blur-[16px] border border-[#e5e5e5] dark:border-[#2a2a2a] shadow-[0_2px_24px_rgba(0,0,0,0.07)]">
       <a href="#top" class="flex items-center gap-2 sm:gap-3 shrink-0">
         <img src="/assets/mark-black.png" alt="Shape and Code" class="h-[30px] sm:h-[36px] w-auto block dark:invert" />
-        <span class="font-extrabold text-[13px] sm:text-[15px] tracking-[0.04em]">SHAPE AND CODE</span>
       </a>
       <nav class="hidden lg:flex items-center gap-[34px] text-sm font-medium">
         <a href="#servicios" class="opacity-75 hover:opacity-100 transition-opacity">Servicios</a>
@@ -115,11 +114,7 @@ const year = new Date().getFullYear();
       />
       <!-- Hero content -->
       <div class="relative" style="z-index: 1;">
-        <div data-reveal="up" data-delay="1" class="hero-eyebrow flex items-center gap-[12px] font-space-mono text-[11px] sm:text-[12.5px] tracking-[0.06em] text-[#737373] dark:text-[#8a8a8a] mb-7 sm:mb-10">
-          <span class="w-[7px] h-[7px] bg-[#0a0a0a] dark:bg-[#f5f5f5] rounded-full inline-block shrink-0"></span>
-          ESTUDIO CREATIVO — MARKETING DIGITAL
-        </div>
-        <h1 data-reveal="up" data-delay="2" class="hero-title font-extrabold leading-[0.94] tracking-[-0.035em] max-w-[14ch]" style="font-size: clamp(36px, 8.2vw, 128px)">
+        <h1 data-reveal="up" data-delay="2" class="hero-title font-bold leading-[0.94] tracking-[-0.035em] max-w-[12ch]" style="font-size: clamp(36px, 8.2vw, 128px)">
           Marcas que venden. Campañas que se recuerdan.
         </h1>
         <div data-reveal="up" data-delay="3" class="hero-bottom mt-8 sm:mt-12 flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-12 items-start sm:items-end justify-between">
@@ -129,9 +124,6 @@ const year = new Date().getFullYear();
           <div class="flex gap-[10px] sm:gap-[14px] flex-wrap shrink-0">
             <a href="#contacto" class="inline-flex items-center gap-[10px] bg-[#0a0a0a] dark:bg-[#f5f5f5] text-[#fafafa] dark:text-[#111111] text-[14px] sm:text-[15px] font-semibold px-5 sm:px-[26px] py-[13px] sm:py-[15px] rounded-full hover:bg-[#2a2a2a] dark:hover:bg-[#d4d4d4] transition-colors">
               Empezar un proyecto <span class="font-space-mono">→</span>
-            </a>
-            <a href="#servicios" class="inline-flex items-center gap-[10px] text-[14px] sm:text-[15px] font-semibold px-5 sm:px-[26px] py-[13px] sm:py-[15px] rounded-full border border-[#d4d4d4] dark:border-[#3a3a3a] hover:border-[#0a0a0a] dark:hover:border-[#f5f5f5] transition-colors">
-              Ver servicios
             </a>
           </div>
         </div>

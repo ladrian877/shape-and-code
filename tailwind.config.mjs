@@ -9,6 +9,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        poppins: ['Poppins', 'sans-serif'],
         archivo: ['Archivo', 'sans-serif'],
         'space-mono': ['"Space Mono"', 'monospace'],
         'space-grotesk': ['"Space Grotesk"', 'sans-serif'],
