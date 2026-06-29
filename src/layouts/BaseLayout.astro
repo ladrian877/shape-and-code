@@ -1,0 +1,186 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Shape and Code — Estudio Creativo',
+  description = 'Diseño y estrategia digital para marcas que quieren crecer.',
+} = Astro.props;
+
+const year = new Date().getFullYear();
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="icon" href="/assets/mark-black.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <ViewTransitions />
+  <script is:inline>
+    (function () {
+      var saved = localStorage.getItem('minimal-theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+</head>
+<body class="bg-[#fafafa] dark:bg-[#111111] text-[#0a0a0a] dark:text-[#f5f5f5] font-poppins antialiased transition-colors duration-200">
+
+  <!-- NAV -->
+  <header class="fixed left-0 right-0 z-50 px-4 pt-4 sm:px-5 sm:pt-4 lg:px-8 lg:pt-5">
+    <div class="max-w-[900px] mx-auto px-4 sm:px-5 py-[11px] flex items-center justify-between gap-4 rounded-full bg-[rgba(250,250,250,0.90)] dark:bg-[rgba(17,17,17,0.90)] backdrop-blur-[16px] border border-[#e5e5e5] dark:border-[#2a2a2a] shadow-[0_2px_24px_rgba(0,0,0,0.07)]">
+      <a href="/" class="flex items-center gap-2 sm:gap-3 shrink-0">
+        <img src="/assets/mark-black.png" alt="Shape and Code" class="h-[30px] sm:h-[36px] w-auto block dark:invert" />
+      </a>
+      <nav class="hidden lg:flex items-center gap-[34px] text-sm font-medium">
+        <a href="/servicios" class="opacity-75 hover:opacity-100 transition-opacity">Servicios</a>
+        <a href="/proyectos" class="opacity-75 hover:opacity-100 transition-opacity">Proyectos</a>
+        <a href="/sobre-nosotros" class="opacity-75 hover:opacity-100 transition-opacity">Sobre Nosotros</a>
+        <a href="/contacto" class="opacity-75 hover:opacity-100 transition-opacity">Contacto</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <button id="theme-toggle" aria-label="Cambiar tema"
+          class="hidden lg:flex w-9 h-9 items-center justify-center rounded-full border border-[#d4d4d4] dark:border-[#3a3a3a] hover:border-[#0a0a0a] dark:hover:border-[#f5f5f5] transition-colors text-[15px]">
+          <span class="dark:hidden" title="Modo oscuro">☽</span>
+          <span class="hidden dark:inline" title="Modo claro">☀</span>
+        </button>
+        <a href="mailto:hola@shapeandcode.agency" class="hidden lg:inline-flex items-center gap-[10px] bg-[#0a0a0a] dark:bg-[#f5f5f5] text-[#fafafa] dark:text-[#111111] text-[13.5px] font-semibold px-5 py-[11px] rounded-full hover:bg-[#2a2a2a] dark:hover:bg-[#d4d4d4] transition-colors">
+          Hablemos <span class="font-space-mono">↗</span>
+        </a>
+        <button id="mobile-menu-btn" class="lg:hidden flex flex-col justify-center items-center gap-[5px] w-10 h-10 shrink-0" aria-label="Abrir menú">
+          <span class="w-[22px] h-[2px] bg-[#0a0a0a] dark:bg-[#f5f5f5] block transition-all duration-300 origin-center" id="hb-1"></span>
+          <span class="w-[22px] h-[2px] bg-[#0a0a0a] dark:bg-[#f5f5f5] block transition-all duration-300" id="hb-2"></span>
+          <span class="w-[16px] h-[2px] bg-[#0a0a0a] dark:bg-[#f5f5f5] block transition-all duration-300 origin-center self-start ml-[3px]" id="hb-3"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile menu overlay -->
+  <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-[#fafafa] dark:bg-[#111111] flex-col items-center justify-center gap-8">
+    <nav class="flex flex-col items-center gap-7 text-[24px] font-bold tracking-[-0.02em]">
+      <a href="/servicios" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Servicios</a>
+      <a href="/proyectos" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Proyectos</a>
+      <a href="/sobre-nosotros" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Sobre Nosotros</a>
+      <a href="/contacto" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Contacto</a>
+      <button id="theme-toggle-mobile" class="mob-theme-btn opacity-80 hover:opacity-100 transition-opacity text-[24px]">
+        <span class="dark:hidden">☽</span>
+        <span class="hidden dark:inline">☀</span>
+      </button>
+    </nav>
+    <a href="mailto:hola@shapeandcode.agency" class="mob-link mt-4 inline-flex items-center gap-[10px] bg-[#0a0a0a] dark:bg-[#f5f5f5] text-[#fafafa] dark:text-[#111111] text-[16px] font-semibold px-7 py-[14px] rounded-full hover:bg-[#2a2a2a] dark:hover:bg-[#d4d4d4] transition-colors">
+      Hablemos <span class="font-space-mono">↗</span>
+    </a>
+  </div>
+
+  <main class="overflow-x-clip">
+    <slot />
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#0a0a0a] text-[#fafafa] border-t border-[#1f1f1f]">
+    <div data-reveal="up" class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-11 flex flex-col sm:flex-row flex-wrap gap-5 sm:gap-6 justify-between items-start sm:items-center">
+      <div class="flex items-center gap-3">
+        <img src="/assets/mark-black.png" alt="" class="h-6 w-auto" style="filter: invert(1)" />
+        <span class="font-extrabold text-[14px] tracking-[0.04em]">SHAPE AND CODE</span>
+      </div>
+      <div class="flex gap-4 sm:gap-[26px] text-[13px] sm:text-[13.5px] text-[#a3a3a3] flex-wrap">
+        <a href="#" class="hover:text-[#fafafa] transition-colors">Instagram</a>
+        <a href="#" class="hover:text-[#fafafa] transition-colors">Behance</a>
+        <a href="#" class="hover:text-[#fafafa] transition-colors">LinkedIn</a>
+      </div>
+      <p class="font-space-mono text-[12px] text-[#737373]">© {year} — ESTUDIO CREATIVO</p>
+    </div>
+  </footer>
+
+  <style is:global>
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    header { animation: fadeInDown 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    [data-reveal="fade"] { transform: none; }
+    [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+    [data-delay="1"] { transition-delay: 0.1s; }
+    [data-delay="2"] { transition-delay: 0.22s; }
+    [data-delay="3"] { transition-delay: 0.34s; }
+    [data-delay="4"] { transition-delay: 0.46s; }
+  </style>
+
+  <script>
+    function applyTheme(dark: boolean) {
+      if (dark) {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('minimal-theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('minimal-theme', 'light');
+      }
+    }
+
+    function initPage() {
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        applyTheme(!document.documentElement.classList.contains('dark'));
+      });
+      document.getElementById('theme-toggle-mobile')?.addEventListener('click', () => {
+        applyTheme(!document.documentElement.classList.contains('dark'));
+      });
+
+      const btn = document.getElementById('mobile-menu-btn');
+      const menu = document.getElementById('mobile-menu') as HTMLElement;
+      const hb1 = document.getElementById('hb-1') as HTMLElement;
+      const hb2 = document.getElementById('hb-2') as HTMLElement;
+      const hb3 = document.getElementById('hb-3') as HTMLElement;
+      let open = false;
+
+      function toggle() {
+        open = !open;
+        if (open) {
+          menu.classList.remove('hidden'); menu.classList.add('flex');
+          document.body.style.overflow = 'hidden';
+          hb1.style.cssText = 'transform:translateY(7px) rotate(45deg)';
+          hb2.style.opacity = '0';
+          hb3.style.cssText = 'transform:translateY(-7px) rotate(-45deg);width:22px;margin-left:0';
+        } else {
+          menu.classList.add('hidden'); menu.classList.remove('flex');
+          document.body.style.overflow = '';
+          hb1.style.cssText = ''; hb2.style.cssText = ''; hb3.style.cssText = '';
+        }
+      }
+
+      btn?.addEventListener('click', toggle);
+      document.querySelectorAll('.mob-link').forEach(el =>
+        el.addEventListener('click', () => { if (open) toggle(); })
+      );
+
+      const revealObserver = new IntersectionObserver(
+        (entries) => entries.forEach(e => e.target.classList.toggle('is-visible', e.isIntersecting)),
+        { threshold: 0.12 }
+      );
+      document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
+    }
+
+    document.addEventListener('astro:before-swap', () => { document.body.style.overflow = ''; });
+    document.addEventListener('astro:page-load', initPage);
+  </script>
+
+</body>
+</html>
