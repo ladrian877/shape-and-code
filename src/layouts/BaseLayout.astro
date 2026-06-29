@@ -57,7 +57,7 @@ const year = new Date().getFullYear();
           <span class="hidden dark:inline" title="Modo claro">☀</span>
         </button>
         <a href="mailto:hola@shapeandcode.agency" class="hidden lg:inline-flex items-center gap-[10px] bg-[#0a0a0a] dark:bg-[#f5f5f5] text-[#fafafa] dark:text-[#111111] text-[13.5px] font-semibold px-5 py-[11px] rounded-full hover:bg-[#2a2a2a] dark:hover:bg-[#d4d4d4] transition-colors">
-          Hablemos <span class="font-space-mono">↗</span>
+          Hablemos <span class="svc-arrow">↗</span>
         </a>
         <button id="mobile-menu-btn" class="lg:hidden flex flex-col justify-center items-center gap-[5px] w-10 h-10 shrink-0" aria-label="Abrir menú">
           <span class="w-[22px] h-[2px] bg-[#0a0a0a] dark:bg-[#f5f5f5] block transition-all duration-300 origin-center" id="hb-1"></span>
@@ -81,7 +81,7 @@ const year = new Date().getFullYear();
       </button>
     </nav>
     <a href="mailto:hola@shapeandcode.agency" class="mob-link mt-4 inline-flex items-center gap-[10px] bg-[#0a0a0a] dark:bg-[#f5f5f5] text-[#fafafa] dark:text-[#111111] text-[16px] font-semibold px-7 py-[14px] rounded-full hover:bg-[#2a2a2a] dark:hover:bg-[#d4d4d4] transition-colors">
-      Hablemos <span class="font-space-mono">↗</span>
+      Hablemos <span class="svc-arrow">↗</span>
     </a>
   </div>
 
@@ -177,6 +177,14 @@ const year = new Date().getFullYear();
       );
       document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
     }
+
+    // Re-apply the saved theme after a view-transition swap so it persists
+    // across navigation (the inline <head> script only runs on full loads).
+    document.addEventListener('astro:after-swap', () => {
+      const saved = localStorage.getItem('minimal-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.classList.toggle('dark', saved === 'dark' || (!saved && prefersDark));
+    });
 
     document.addEventListener('astro:before-swap', () => { document.body.style.overflow = ''; });
     document.addEventListener('astro:page-load', initPage);

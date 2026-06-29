@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const channels = [
+  { label: 'Email', value: 'hola@shapeandcode.agency', href: 'mailto:hola@shapeandcode.agency' },
+  { label: 'Instagram', value: '@shapeandcode', href: '#' },
+  { label: 'Behance', value: 'shapeandcode', href: '#' },
+  { label: 'LinkedIn', value: 'Shape and Code', href: '#' },
+];
+
+const budgets = ['< 2k', '2k – 5k', '5k – 10k', '10k +'];
+---
+<BaseLayout
+  title="Contacto — Shape and Code"
+  description="Cuéntanos tu proyecto. Te respondemos en menos de 24 horas con una propuesta clara."
+>
+
+  <!-- HERO -->
+  <section class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-[120px] sm:pt-[150px] lg:pt-[180px] pb-10 sm:pb-14">
+    <p data-reveal="up" class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.06em] mb-5 sm:mb-7">[ HABLEMOS ]</p>
+    <h1 data-reveal="up" data-delay="1" class="font-bold leading-[0.94] tracking-[-0.035em] max-w-[14ch]" style="font-size: clamp(40px, 8.5vw, 132px)">
+      Cuéntanos tu próximo proyecto.
+    </h1>
+    <p data-reveal="up" data-delay="2" class="mt-8 sm:mt-12 text-[#404040] dark:text-[#a3a3a3] leading-[1.5] max-w-[48ch]" style="font-size: clamp(16px, 1.5vw, 21px)">
+      Rellena el formulario o escríbenos directamente. Respondemos en menos de 24 horas con una propuesta clara y sin compromiso.
+    </p>
+  </section>
+
+  <!-- FORMULARIO + CANALES -->
+  <section class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pb-16 sm:pb-24">
+
+      <!-- FORM -->
+      <form id="contact-form" data-reveal="up" class="flex flex-col gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-8 gap-x-6">
+          <label class="flex flex-col gap-2">
+            <span class="font-space-mono text-[11px] tracking-[0.04em] text-[#737373] dark:text-[#8a8a8a]">[ NOMBRE ]</span>
+            <input name="nombre" type="text" required placeholder="Tu nombre" class="field" />
+          </label>
+          <label class="flex flex-col gap-2">
+            <span class="font-space-mono text-[11px] tracking-[0.04em] text-[#737373] dark:text-[#8a8a8a]">[ EMAIL ]</span>
+            <input name="email" type="email" required placeholder="tu@email.com" class="field" />
+          </label>
+        </div>
+
+        <label class="flex flex-col gap-2">
+          <span class="font-space-mono text-[11px] tracking-[0.04em] text-[#737373] dark:text-[#8a8a8a]">[ EMPRESA / MARCA ]</span>
+          <input name="empresa" type="text" placeholder="Opcional" class="field" />
+        </label>
+
+        <fieldset class="flex flex-col gap-4">
+          <legend class="font-space-mono text-[12px] sm:text-[13px] tracking-[0.04em] text-[#737373] dark:text-[#8a8a8a] mb-6">[ PRESUPUESTO ESTIMADO ]</legend>
+          <div class="flex flex-wrap gap-3">
+            {budgets.map((b, i) => (
+              <label class="budget-chip">
+                <input type="radio" name="presupuesto" value={b} class="sr-only peer" checked={i === 1} />
+                <span class="font-space-mono text-[13px] sm:text-[15px] tracking-[0.02em] flex items-center min-h-[52px] px-7 rounded-full border border-[#d4d4d4] dark:border-[#3a3a3a] cursor-pointer transition-colors peer-checked:bg-[#0a0a0a] peer-checked:text-[#fafafa] peer-checked:border-[#0a0a0a] dark:peer-checked:bg-[#f5f5f5] dark:peer-checked:text-[#111111] dark:peer-checked:border-[#f5f5f5]">{b}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <label class="flex flex-col gap-2">
+          <span class="font-space-mono text-[11px] tracking-[0.04em] text-[#737373] dark:text-[#8a8a8a]">[ CUÉNTANOS ]</span>
+          <textarea name="mensaje" required rows="5" placeholder="¿Qué necesitas? Tipo de proyecto, objetivos, plazos…" class="field resize-none"></textarea>
+        </label>
+
+        <div class="flex items-center gap-x-6 gap-y-4 flex-wrap mt-2 mb-8">
+          <button type="submit" class="inline-flex items-center gap-3 bg-[#0a0a0a] dark:bg-[#f5f5f5] text-[#fafafa] dark:text-[#111111] text-[14px] sm:text-[16px] font-bold px-8 sm:px-9 py-4 sm:py-[18px] rounded-full hover:bg-[#2a2a2a] dark:hover:bg-[#d4d4d4] transition-colors">
+            Enviar mensaje <span class="svc-arrow">↗</span>
+          </button>
+          <p id="form-hint" class="font-space-mono text-[11.5px] text-[#737373] dark:text-[#8a8a8a]">Se abrirá tu cliente de correo.</p>
+        </div>
+      </form>
+
+      <!-- CANALES -->
+      <aside data-reveal="up" data-delay="1" class="lg:border-l lg:border-[#e5e5e5] lg:dark:border-[#2a2a2a] lg:pl-10">
+        <h2 class="font-space-mono text-[11px] tracking-[0.04em] text-[#737373] dark:text-[#8a8a8a] mb-6">[ O ESCRÍBENOS DIRECTO ]</h2>
+        <ul class="flex flex-col">
+          {channels.map((c) => (
+            <li>
+              <a href={c.href} class="flex items-baseline justify-between gap-4 py-4 border-b border-[#e5e5e5] dark:border-[#2a2a2a] group">
+                <span class="text-[14px] text-[#737373] dark:text-[#8a8a8a]">{c.label}</span>
+                <span class="font-semibold tracking-[-0.01em] text-[15px] sm:text-[17px] group-hover:opacity-60 transition-opacity break-all text-right">{c.value}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="mt-10 p-6 rounded-[14px] border border-[#e5e5e5] dark:border-[#2a2a2a] bg-[#f4f4f4] dark:bg-[#1a1a1a]">
+          <p class="font-space-mono text-[11px] tracking-[0.04em] text-[#737373] dark:text-[#8a8a8a] mb-3">[ TIEMPO DE RESPUESTA ]</p>
+          <p class="text-[28px] sm:text-[34px] font-extrabold tracking-[-0.03em] leading-none">&lt; 24h</p>
+          <p class="text-[13.5px] text-[#525252] dark:text-[#a3a3a3] mt-3 leading-[1.5]">Te respondemos en menos de un día hábil con los siguientes pasos.</p>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+  <style>
+    .field {
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid #d4d4d4;
+      padding: 12px 2px;
+      min-height: 44px;
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
+      color: inherit;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    :global(.dark) .field { border-bottom-color: #3a3a3a; }
+    .field::placeholder { color: #a3a3a3; }
+    :global(.dark) .field::placeholder { color: #6a6a6a; }
+    .field:focus { outline: none; border-bottom-color: #0a0a0a; }
+    :global(.dark) .field:focus { border-bottom-color: #f5f5f5; }
+  </style>
+
+  <script>
+    function initContactForm() {
+      const form = document.getElementById('contact-form') as HTMLFormElement | null;
+      if (!form || form.dataset.bound === 'true') return;
+      form.dataset.bound = 'true';
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const data = new FormData(form);
+        const nombre = String(data.get('nombre') || '');
+        const email = String(data.get('email') || '');
+        const empresa = String(data.get('empresa') || '');
+        const presupuesto = String(data.get('presupuesto') || '');
+        const mensaje = String(data.get('mensaje') || '');
+
+        const subject = `Nuevo proyecto — ${nombre}${empresa ? ' (' + empresa + ')' : ''}`;
+        const body =
+          `Nombre: ${nombre}\n` +
+          `Email: ${email}\n` +
+          `Empresa / marca: ${empresa || '—'}\n` +
+          `Presupuesto estimado: ${presupuesto || '—'}\n\n` +
+          `Mensaje:\n${mensaje}\n`;
+
+        window.location.href =
+          `mailto:hola@shapeandcode.agency?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      });
+    }
+
+    document.addEventListener('astro:page-load', initContactForm);
+  </script>
+
+</BaseLayout>

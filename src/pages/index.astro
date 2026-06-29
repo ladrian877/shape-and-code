@@ -88,7 +88,7 @@ const year = new Date().getFullYear();
   <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-[#fafafa] dark:bg-[#111111] flex-col items-center justify-center gap-8">
     <nav class="flex flex-col items-center gap-7 text-[24px] font-bold tracking-[-0.02em]">
       <a href="/servicios" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Servicios</a>
-      <a href="/proyectos" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Proeyctos</a>
+      <a href="/proyectos" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Proyectos</a>
       <a href="/sobre-nosotros" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Sobre Nosotros</a>
       <a href="/contacto" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Contacto</a>
       <button id="theme-toggle-mobile" class="mob-theme-btn opacity-80 hover:opacity-100 transition-opacity text-[24px]">
@@ -147,13 +147,13 @@ const year = new Date().getFullYear();
         {services.map((s, i) => (
           <a
             data-reveal="up" data-delay={i}
-            href="#contacto"
+            href="/servicios"
             class="svc-row py-5 sm:py-[34px] border-b border-[#e5e5e5] dark:border-[#2a2a2a] hover:bg-[#0a0a0a] dark:hover:bg-[#f5f5f5] hover:text-[#fafafa] dark:hover:text-[#111111] transition-colors duration-200 px-1 sm:px-2"
           >
             <span class="svc-num font-space-mono text-[11px] sm:text-[13px] opacity-[0.55]">{s.num}</span>
             <h3 class="svc-title font-bold tracking-[-0.02em] leading-[1.05]" style="font-size: clamp(17px, 2.4vw, 32px)">{s.title}</h3>
             <p class="svc-desc text-[13.5px] sm:text-[15.5px] leading-[1.5] opacity-70">{s.desc}</p>
-            <span class="svc-arrow font-space-mono text-[18px] sm:text-[22px]">↗</span>
+            <span class="svc-arrow">↗</span>
           </a>
         ))}
       </div>
@@ -377,6 +377,14 @@ const year = new Date().getFullYear();
     });
     document.getElementById('theme-toggle-mobile')?.addEventListener('click', () => {
       applyTheme(!document.documentElement.classList.contains('dark'));
+    });
+
+    // Re-apply the saved theme after a view-transition swap so it persists
+    // across navigation (the inline <head> script only runs on full loads).
+    document.addEventListener('astro:after-swap', () => {
+      const saved = localStorage.getItem('minimal-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.classList.toggle('dark', saved === 'dark' || (!saved && prefersDark));
     });
 
     // ---- MOBILE MENU ----

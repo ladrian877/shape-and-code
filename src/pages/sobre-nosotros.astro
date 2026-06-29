@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const stats = [
+  { num: '+40', label: 'proyectos entregados' },
+  { num: '8 años', label: 'de experiencia combinada' },
+  { num: '100%', label: 'enfoque a resultados' },
+];
+
+const values = [
+  { num: '01', title: 'Estrategia primero', desc: 'Antes de diseñar, entendemos el negocio. Cada decisión responde a un objetivo concreto.' },
+  { num: '02', title: 'Estética con propósito', desc: 'La forma sigue a la función. Lo bonito importa, pero lo que funciona importa más.' },
+  { num: '03', title: 'Transparencia', desc: 'Plazos claros, comunicación constante y métricas honestas. Sin letra pequeña.' },
+  { num: '04', title: 'Detalle obsesivo', desc: 'Somos un equipo pequeño que cuida cada pixel y cada palabra como si fuera propio.' },
+];
+
+const team = [
+  { name: 'Dirección creativa', role: 'Branding & arte' },
+  { name: 'Diseño & desarrollo', role: 'Web, UX/UI' },
+  { name: 'Estrategia digital', role: 'Marketing & datos' },
+];
+---
+<BaseLayout
+  title="Sobre Nosotros — Shape and Code"
+  description="Somos un estudio de diseño y marketing digital obsesionado con unir estética y estrategia."
+>
+
+  <!-- HERO -->
+  <section class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-[120px] sm:pt-[150px] lg:pt-[180px] pb-10 sm:pb-14">
+    <p data-reveal="up" class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.06em] mb-5 sm:mb-7">[ EL ESTUDIO ]</p>
+    <h1 data-reveal="up" data-delay="1" class="font-bold leading-[0.94] tracking-[-0.035em] max-w-[16ch]" style="font-size: clamp(40px, 8.5vw, 132px)">
+      Diseño con propósito, gente con criterio.
+    </h1>
+    <div data-reveal="up" data-delay="2" class="mt-8 sm:mt-12 flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-12 items-start sm:items-end justify-between">
+      <p class="text-[#404040] dark:text-[#a3a3a3] leading-[1.5] max-w-[48ch]" style="font-size: clamp(16px, 1.5vw, 21px)">
+        Somos un estudio de diseño y marketing digital. Unimos branding, web y campañas en un mismo equipo para que tu marca no solo se vea bien — funcione y crezca.
+      </p>
+      <a href="/contacto" class="inline-flex items-center gap-[10px] bg-[#0a0a0a] dark:bg-[#f5f5f5] text-[#fafafa] dark:text-[#111111] text-[14px] sm:text-[15px] font-semibold px-5 sm:px-[26px] py-[13px] sm:py-[15px] rounded-full hover:bg-[#2a2a2a] dark:hover:bg-[#d4d4d4] transition-colors shrink-0">
+        Trabajemos juntos <span class="svc-arrow">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- MANIFIESTO -->
+  <section class="border-t border-[#ececec] dark:border-[#2a2a2a] bg-[#fafafa] dark:bg-[#111111]">
+    <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-14 sm:py-24 grid grid-cols-1 md:grid-cols-[0.8fr_1.4fr] gap-8 md:gap-12">
+      <p data-reveal="up" class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.04em]">[ NUESTRA FORMA DE VER ]</p>
+      <div>
+        <p data-reveal="up" data-delay="1" class="leading-[1.28] tracking-[-0.02em] font-medium mb-10 sm:mb-14" style="font-size: clamp(20px, 3vw, 40px)">
+          Creemos en el diseño con propósito. Cada proyecto une <strong class="font-extrabold">estética</strong> y <strong class="font-extrabold">estrategia</strong> para que tu marca no solo se vea bien — funcione y crezca.
+        </p>
+        <div data-reveal="up" data-delay="2" class="flex gap-8 sm:gap-14 flex-wrap border-t border-[#e5e5e5] dark:border-[#2a2a2a] pt-8">
+          {stats.map((stat) => (
+            <div>
+              <div class="text-[36px] sm:text-[44px] font-extrabold tracking-[-0.03em]">{stat.num}</div>
+              <div class="text-[13px] sm:text-[14px] text-[#737373] dark:text-[#8a8a8a] mt-1">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALORES -->
+  <section class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-14 sm:pt-[104px] pb-10">
+    <div data-reveal="up" class="flex justify-between items-end flex-wrap gap-4 mb-8 sm:mb-12">
+      <h2 class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, 4vw, 56px)">Cómo pensamos</h2>
+      <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.04em]">[ NUESTROS VALORES ]</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#e5e5e5] dark:bg-[#2a2a2a] border border-[#e5e5e5] dark:border-[#2a2a2a]">
+      {values.map((v, i) => (
+        <div data-reveal="up" data-delay={i} class="bg-[#fafafa] dark:bg-[#1a1a1a] hover:bg-[#f0f0f0] dark:hover:bg-[#252525] transition-colors pt-7 sm:pt-8 px-5 sm:px-[26px] pb-8 sm:pb-10 min-h-[200px] sm:min-h-[240px] flex flex-col justify-between">
+          <span class="font-space-mono text-[13px] text-[#737373] dark:text-[#8a8a8a]">{v.num}</span>
+          <div>
+            <h3 class="text-[18px] sm:text-[20px] font-bold tracking-[-0.01em] mb-[10px]">{v.title}</h3>
+            <p class="text-[13.5px] sm:text-[14.5px] leading-[1.5] text-[#525252] dark:text-[#a3a3a3]">{v.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- EQUIPO -->
+  <section class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-14 sm:py-[84px]">
+    <div data-reveal="up" class="flex justify-between items-end flex-wrap gap-4 mb-[14px]">
+      <h2 class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, 4vw, 56px)">El equipo</h2>
+      <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.04em]">[ QUIÉNES SOMOS ]</p>
+    </div>
+    <div class="border-t border-[#0a0a0a] dark:border-[#f5f5f5]">
+      {team.map((member, i) => (
+        <div
+          data-reveal="up" data-delay={i}
+          class="team-row py-5 sm:py-[30px] border-b border-[#e5e5e5] dark:border-[#2a2a2a] flex items-center justify-between gap-4"
+        >
+          <h3 class="font-bold tracking-[-0.02em] leading-[1.05]" style="font-size: clamp(18px, 2.4vw, 32px)">{member.name}</h3>
+          <span class="font-space-mono text-[12px] sm:text-[14px] text-[#737373] dark:text-[#8a8a8a]">{member.role}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="contacto" class="bg-[#0a0a0a] text-[#fafafa]">
+    <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-16 sm:py-[112px]">
+      <p data-reveal="up" class="font-space-mono text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.06em] mb-5 sm:mb-7">[ EMPECEMOS ]</p>
+      <h2 data-reveal="up" data-delay="1" class="font-extrabold leading-[0.95] tracking-[-0.035em] max-w-[13ch]" style="font-size: clamp(34px, 8vw, 116px)">¿Hacemos crecer tu marca?</h2>
+      <div data-reveal="up" data-delay="2" class="flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-10 justify-between items-start sm:items-end mt-10 sm:mt-14">
+        <a href="mailto:hola@shapeandcode.agency" class="font-semibold tracking-[-0.02em] border-b-2 border-[#8a8a8a] pb-[6px] hover:border-[#fafafa] transition-colors break-all" style="font-size: clamp(15px, 3vw, 38px)">
+          hola@shapeandcode.agency
+        </a>
+        <a href="/contacto" class="inline-flex items-center gap-3 bg-[#fafafa] text-[#0a0a0a] text-[14px] sm:text-[16px] font-bold px-6 sm:px-8 py-4 sm:py-[18px] rounded-full hover:bg-[#d4d4d4] transition-colors shrink-0">
+          Hablemos <span class="svc-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    @media (max-width: 479px) {
+      .team-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+    }
+  </style>
+
+</BaseLayout>
