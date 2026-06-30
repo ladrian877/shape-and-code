@@ -3,13 +3,14 @@ import '../styles/global.css';
 import Marquee from '../components/Marquee';
 import { ViewTransitions } from 'astro:transitions';
 
-const marqueeItems = ['BRANDING','MARKETING DIGITAL','DISEÑO WEB','SEO / SEM','UX / UI','CAMPAÑAS','IDENTIDAD','ESTRATEGIA'];
+const marqueeItems = ['BRANDING','MARKETING DIGITAL','DISEÑO WEB','SEO / SEM','UX / UI','CAMPAÑAS','IDENTIDAD','ESTRATEGIA','AUTOMATIZACIONES'];
 
 const services = [
   { num: '01', title: 'Marketing digital y campañas', desc: 'Estrategia, paid media y embudos que convierten. Medimos cada peso invertido.' },
   { num: '02', title: 'Diseño web / UX-UI', desc: 'Sitios y productos rápidos, claros y pensados para convertir visitas en clientes.' },
   { num: '03', title: 'Branding e identidad', desc: 'Marcas con criterio: naming, logotipo, sistema visual y guías de uso.' },
   { num: '04', title: 'SEO / SEM', desc: 'Posicionamiento orgánico y de pago para que te encuentren cuando importa.' },
+  { num: '05', title: 'Automatizaciones', desc: 'Flujos, integraciones y procesos automáticos que ahorran tiempo y escalan tu operación.' },
 ];
 
 const steps = [
@@ -154,7 +155,7 @@ const navAnim = {
     <section id="servicios" class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-14 sm:pt-[104px] pb-10">
       <div data-reveal="up" class="flex justify-between items-end flex-wrap gap-4 mb-[14px]">
         <h2 class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, 4vw, 56px)">Servicios</h2>
-        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.04em]">[ 04 ÁREAS DE TRABAJO ]</p>
+        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.04em]">[ 05 ÁREAS DE TRABAJO ]</p>
       </div>
       <div class="border-t border-[#0a0a0a] dark:border-[#f5f5f5]">
         {services.map((s, i) => (
