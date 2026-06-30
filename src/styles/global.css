@@ -44,3 +44,12 @@ a { color: inherit; text-decoration: none; }
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
+
+/* ---- NAVBAR ENTER / EXIT ----
+   Entrada: baja desde arriba. Salida: sube hacia arriba (la contraria).
+   Definido global para que también lo use transition:animate en las
+   transiciones de página (ViewTransitions). */
+@keyframes navIn  { from { opacity: 0; transform: translateY(-100%); } to { opacity: 1; transform: translateY(0); } }
+@keyframes navOut { from { opacity: 1; transform: translateY(0); }     to { opacity: 0; transform: translateY(-100%); } }
+
+.site-nav { animation: navIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both; }

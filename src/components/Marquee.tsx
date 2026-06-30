@@ -17,7 +17,7 @@ export default function Marquee({ items, variant }: MarqueeProps) {
             display: 'flex',
             width: 'max-content',
             whiteSpace: 'nowrap',
-            animation: `marqueeX ${duration}s linear infinite`,
+            animation: `marqueeX ${duration}s linear 0.5s infinite`,
           }}
         >
           {doubled.map((item, i) => (
@@ -58,7 +58,7 @@ export default function Marquee({ items, variant }: MarqueeProps) {
           display: 'flex',
           width: 'max-content',
           whiteSpace: 'nowrap',
-          animation: `marqueeX ${duration}s linear infinite`,
+          animation: `marqueeX ${duration}s linear 0.5s infinite`,
         }}
       >
         {doubled.map((item, i) => (
