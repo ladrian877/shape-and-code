@@ -69,7 +69,9 @@ const navAnim = {
 
   <!-- NAV -->
   <header transition:animate={navAnim} class="site-nav fixed left-0 right-0 z-50 px-4 pt-4 sm:px-5 sm:pt-4 lg:px-8 lg:pt-5">
-    <div class="max-w-[900px] mx-auto px-4 sm:px-5 py-[11px] flex items-center justify-between gap-4 rounded-full bg-[rgba(250,250,250,0.90)] dark:bg-[rgba(17,17,17,0.90)] backdrop-blur-[16px] border border-[#e5e5e5] dark:border-[#2a2a2a] shadow-[0_2px_24px_rgba(0,0,0,0.07)]">
+    <div class="relative max-w-[900px] mx-auto px-4 sm:px-5 py-[11px] flex items-center justify-between gap-4 rounded-full bg-[rgba(250,250,250,0.90)] dark:bg-[rgba(17,17,17,0.90)] backdrop-blur-[16px] border border-[#e5e5e5] dark:border-[#2a2a2a] shadow-[0_2px_24px_rgba(0,0,0,0.07)]">
+      <!-- Wordmark centrado (solo móvil) para que el nav no se vea vacío -->
+      <span class="lg:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-[15px] tracking-[-0.01em] whitespace-nowrap pointer-events-none">Shape and Code</span>
       <a href="#top" class="flex items-center gap-2 sm:gap-3 shrink-0">
         <img src="/assets/mark-black.png" alt="Shape and Code" class="h-[30px] sm:h-[36px] w-auto block dark:invert" />
       </a>
@@ -134,7 +136,7 @@ const navAnim = {
           Marcas que venden. Campañas que se recuerdan.
         </h1>
         <div data-reveal="up" data-delay="3" class="hero-bottom mt-8 sm:mt-12 flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-12 items-start sm:items-end justify-between">
-          <p class="text-[#404040] dark:text-[#a3a3a3] leading-[1.5] max-w-[46ch]" style="font-size: clamp(16px, 1.5vw, 21px)">
+          <p class="hero-desc text-[#404040] dark:text-[#a3a3a3] leading-[1.5] max-w-[46ch]" style="font-size: clamp(16px, 1.5vw, 21px)">
             Somos un estudio de diseño y marketing digital. Construimos identidad, sitios y campañas que convierten atención en clientes.
           </p>
           <div class="flex gap-[10px] sm:gap-[14px] flex-wrap shrink-0">
@@ -284,6 +286,37 @@ const navAnim = {
   </main>
 
   <style>
+    /* ---- HERO TITLE LEGIBILITY (solo móvil) ----
+       En móvil la imagen decorativa (el conejo) se solapa con el título.
+       Añadimos un halo de texto para que resalte sobre la imagen: en modo
+       claro el texto es oscuro -> halo claro; en oscuro es claro -> halo
+       oscuro. Encima de sm (640px) hay espacio de sobra y no hace falta. */
+    @media (max-width: 639px) {
+      .hero-title {
+        text-shadow:
+          0 0 20px rgba(250, 250, 250, 0.92),
+          0 0 7px rgba(250, 250, 250, 0.85),
+          0 1px 2px rgba(250, 250, 250, 0.7);
+      }
+      .dark .hero-title {
+        text-shadow:
+          0 0 20px rgba(0, 0, 0, 0.85),
+          0 0 7px rgba(0, 0, 0, 0.8),
+          0 2px 4px rgba(0, 0, 0, 0.62);
+      }
+      /* Halo más ligero para el texto descriptivo (fuente más pequeña). */
+      .hero-desc {
+        text-shadow:
+          0 0 14px rgba(250, 250, 250, 0.95),
+          0 0 5px rgba(250, 250, 250, 0.9);
+      }
+      .dark .hero-desc {
+        text-shadow:
+          0 0 14px rgba(0, 0, 0, 0.9),
+          0 0 5px rgba(0, 0, 0, 0.85);
+      }
+    }
+
     /* ---- SERVICE ROWS ---- */
     .svc-row {
       display: grid;
@@ -291,7 +324,7 @@ const navAnim = {
       gap: 0 32px;
       align-items: center;
     }
-    .svc-arrow { justify-self: end; }
+    .svc-row .svc-arrow { justify-self: end; }
 
     /* Tablet: drop description column, keep num + title + arrow */
     @media (max-width: 1023px) {
@@ -307,7 +340,7 @@ const navAnim = {
       .svc-num   { grid-area: num;   padding-top: 3px; }
       .svc-title { grid-area: title; }
       .svc-desc  { grid-area: desc;  font-size: 13.5px; margin-top: 4px; }
-      .svc-arrow { grid-area: arrow; padding-top: 3px; justify-self: end; }
+      .svc-row .svc-arrow { grid-area: arrow; padding-top: 3px; justify-self: end; }
     }
 
     /* Mobile: full stack */
@@ -319,7 +352,7 @@ const navAnim = {
         position: relative;
         padding-right: 32px;
       }
-      .svc-arrow {
+      .svc-row .svc-arrow {
         position: absolute;
         right: 0;
         top: 20px;
@@ -406,7 +439,7 @@ const navAnim = {
         document.body.style.overflow = 'hidden';
         hb1.style.cssText = 'transform:translateY(7px) rotate(45deg)';
         hb2.style.opacity = '0';
-        hb3.style.cssText = 'transform:translateY(-7px) rotate(-45deg);width:22px;margin-left:0';
+        hb3.style.cssText = 'transform:translateY(-7px) rotate(-45deg);width:22px;margin-left:0;align-self:center';
       } else {
         menu.classList.add('hidden');
         menu.classList.remove('flex');
