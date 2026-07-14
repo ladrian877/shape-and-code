@@ -21,10 +21,10 @@ const steps = [
 ];
 
 const work = [
-  { name: 'Proyecto Norte', tag: 'Branding + Web', year: '2026' },
-  { name: 'Lumen Retail', tag: 'Campaña 360°', year: '2025' },
+  { name: 'Jadoo', tag: 'Web', year: '2026', image: '/assets/previews/JadooPreview.png', link: 'https://jadoo-astro.vercel.app/' },
+  { name: 'NovaVision', tag: 'UX/UI + SEO', year: '2025', image: '/assets/previews/NeoVisionPreview.png', link: 'https://nova-vision-three.vercel.app/' },
   { name: 'Cobalt Fintech', tag: 'UX/UI + SEO', year: '2025' },
-  { name: 'Vela Estudio', tag: 'Identidad', year: '2024' },
+  { name: 'Vela Estudio', tag: 'Identidad', year: '2025' },
 ];
 
 const year = new Date().getFullYear();
@@ -197,16 +197,26 @@ const navAnim = {
     <!-- TRABAJO -->
     <section id="trabajo" class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-6 sm:pt-10 pb-14 sm:pb-[84px]">
       <div data-reveal="up" class="flex justify-between items-end flex-wrap gap-4 mb-8 sm:mb-10">
-        <h2 class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, 4vw, 56px)">Trabajo seleccionado</h2>
-        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.04em]">[ 2024 — 2026 ]</p>
+        <h2 class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, 4vw, 56px)">Trabajo</h2>
+        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.04em]">[ 2025 — 2026 ]</p>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7">
         {work.map((project, i) => (
-          <a data-reveal="up" data-delay={i % 2} href="#contacto" class="block group">
+          <a
+            data-reveal="up" data-delay={i % 2}
+            href={project.link ?? '#contacto'}
+            target={project.link ? '_blank' : undefined}
+            rel={project.link ? 'noopener noreferrer' : undefined}
+            class="block group"
+          >
             <div class="work-placeholder relative aspect-[4/3] border border-[#e5e5e5] dark:border-[#2a2a2a] group-hover:border-[#0a0a0a] dark:group-hover:border-[#f5f5f5] transition-colors rounded-[4px] overflow-hidden">
-              <span class="absolute left-4 bottom-[14px] font-space-mono text-[11px] text-[#9a9a9a] dark:text-[#6a6a6a] bg-[#fafafa] dark:bg-[#1a1a1a] px-2 py-1 rounded">
-                imagen del proyecto
-              </span>
+              {project.image ? (
+                <img src={project.image} alt={project.name} class="absolute inset-0 w-full h-full object-cover" />
+              ) : (
+                <span class="absolute left-4 bottom-[14px] font-space-mono text-[11px] text-[#9a9a9a] dark:text-[#6a6a6a] bg-[#fafafa] dark:bg-[#1a1a1a] px-2 py-1 rounded">
+                  imagen del proyecto
+                </span>
+              )}
             </div>
             <div class="flex justify-between items-baseline mt-4 pb-[14px] border-b border-[#e5e5e5] dark:border-[#2a2a2a]">
               <div>
@@ -359,19 +369,17 @@ const navAnim = {
       }
     }
 
-    /* ---- SCROLL REVEAL (horizontal direccional) ----
-       Entrada: los elementos a la izquierda del centro entran desde la
-       izquierda y los de la derecha desde la derecha. La salida es la
-       contraria (el observer quita .is-visible al salir del viewport).
-       La dirección la asigna el JS via data-reveal-dir. */
+    /* ---- SCROLL REVEAL (horizontal uniforme) ----
+       Todos los elementos entran desde la izquierda (translateX negativo)
+       hacia su posición final. Al salir del viewport el observer quita
+       .is-visible y vuelven al estado inicial. */
     [data-reveal] {
       opacity: 0;
+      transform: translateX(-44px);
       transition:
         opacity  0.6s cubic-bezier(0.22, 1, 0.36, 1),
         transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    [data-reveal][data-reveal-dir="left"]  { transform: translateX(-44px); }
-    [data-reveal][data-reveal-dir="right"] { transform: translateX(44px); }
     [data-reveal="fade"] {
       transform: none;
     }
@@ -432,6 +440,7 @@ const navAnim = {
     let open = false;
 
     function toggle() {
+      if (!menu || !hb1 || !hb2 || !hb3) return;
       open = !open;
       if (open) {
         menu.classList.remove('hidden');
@@ -454,20 +463,8 @@ const navAnim = {
     document.querySelectorAll('.mob-link').forEach(el => el.addEventListener('click', () => { if (open) toggle(); }));
 
     // ---- SCROLL REVEAL ----
-    // Asigna a cada elemento la dirección de entrada/salida según su
-    // posición horizontal respecto al centro de la ventana.
-    function assignRevealDirections() {
-      const mid = window.innerWidth / 2;
-      document.querySelectorAll('[data-reveal]').forEach((el) => {
-        if (el.getAttribute('data-reveal') === 'fade') return;
-        const rect = (el as HTMLElement).getBoundingClientRect();
-        const center = rect.left + rect.width / 2;
-        el.setAttribute('data-reveal-dir', center < mid ? 'left' : 'right');
-      });
-    }
-    assignRevealDirections();
-    window.addEventListener('resize', assignRevealDirections);
-
+    // Todos los elementos entran desde la izquierda (definido en el CSS).
+    // El observer solo alterna .is-visible al entrar/salir del viewport.
     const revealObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

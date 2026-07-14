@@ -121,17 +121,15 @@ const navAnim = {
   </footer>
 
   <style is:global>
-    /* ---- SCROLL REVEAL (horizontal direccional) ----
-       Entrada: los elementos a la izquierda del centro entran desde la
-       izquierda y los de la derecha desde la derecha. La salida es la
-       contraria (el observer quita .is-visible al salir del viewport).
-       La dirección la asigna el JS via data-reveal-dir. */
+    /* ---- SCROLL REVEAL (horizontal uniforme) ----
+       Todos los elementos entran desde la izquierda (translateX negativo)
+       hacia su posición final. Al salir del viewport el observer quita
+       .is-visible y vuelven al estado inicial. */
     [data-reveal] {
       opacity: 0;
+      transform: translateX(-44px);
       transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    [data-reveal][data-reveal-dir="left"]  { transform: translateX(-44px); }
-    [data-reveal][data-reveal-dir="right"] { transform: translateX(44px); }
     [data-reveal="fade"] { transform: none; }
     [data-reveal].is-visible { opacity: 1; transform: translateX(0); }
     [data-delay="1"] { transition-delay: 0.1s; }
@@ -186,20 +184,8 @@ const navAnim = {
         el.addEventListener('click', () => { if (open) toggle(); })
       );
 
-      // Asigna a cada elemento la dirección de entrada/salida según su
-      // posición horizontal respecto al centro de la ventana.
-      function assignRevealDirections() {
-        const mid = window.innerWidth / 2;
-        document.querySelectorAll('[data-reveal]').forEach((el) => {
-          if (el.getAttribute('data-reveal') === 'fade') return;
-          const rect = (el as HTMLElement).getBoundingClientRect();
-          const center = rect.left + rect.width / 2;
-          el.setAttribute('data-reveal-dir', center < mid ? 'left' : 'right');
-        });
-      }
-      assignRevealDirections();
-      window.addEventListener('resize', assignRevealDirections);
-
+      // Todos los elementos entran desde la izquierda (definido en el CSS).
+      // El observer solo alterna .is-visible al entrar/salir del viewport.
       const revealObserver = new IntersectionObserver(
         (entries) => entries.forEach(e => e.target.classList.toggle('is-visible', e.isIntersecting)),
         { threshold: 0.12 }
