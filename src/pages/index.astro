@@ -1,13 +1,19 @@
 ---
 import '../styles/global.css';
 import Marquee from '../components/Marquee';
+import Navbar from '../components/Navbar.astro';
+import { navLinks, navCta, siteBrand, siteLogo } from '../config/nav';
 import { ViewTransitions } from 'astro:transitions';
 
 const marqueeItems = ['BRANDING','MARKETING DIGITAL','DISEÑO WEB','SEO / SEM','UX / UI','CAMPAÑAS','IDENTIDAD','ESTRATEGIA','AUTOMATIZACIONES'];
 
-const services = [
-  { num: '01', title: 'Marketing digital y campañas', desc: 'Estrategia, paid media y embudos que convierten. Medimos cada peso invertido.' },
-  { num: '02', title: 'Diseño web / UX-UI', desc: 'Sitios y productos rápidos, claros y pensados para convertir visitas en clientes.' },
+// `image` es opcional: la carta que la trae la usa de fondo (ver `.svc-media`).
+// Las imagenes van en `public/assets/` y se sirven TAL CUAL, sin pasar por
+// `astro:assets`: la recompresion a WebP restaba calidad. A cambio pesan lo que
+// pese el original, asi que conviene exportarlas ya optimizadas.
+const services: { num: string; title: string; desc: string; image?: string }[] = [
+  { num: '01', title: 'Marketing digital y campañas', desc: 'Estrategia, paid media y embudos que convierten. Medimos cada peso invertido.', image: '/assets/ServiciosMarketing.png' },
+  { num: '02', title: 'Diseño web / UX-UI', desc: 'Sitios y productos rápidos, claros y pensados para convertir visitas en clientes.', image: '/assets/ServiciosWeb.png' },
   { num: '03', title: 'Branding e identidad', desc: 'Marcas con criterio: naming, logotipo, sistema visual y guías de uso.' },
   { num: '04', title: 'SEO / SEM', desc: 'Posicionamiento orgánico y de pago para que te encuentren cuando importa.' },
   { num: '05', title: 'Automatizaciones', desc: 'Flujos, integraciones y procesos automáticos que ahorran tiempo y escalan tu operación.' },
@@ -29,18 +35,6 @@ const work = [
 
 const year = new Date().getFullYear();
 
-// Animación del navbar entre páginas (ViewTransitions): entra desde
-// arriba (navIn) y la saliente sube hacia arriba (navOut).
-const navAnim = {
-  forwards: {
-    old: { name: 'navOut', duration: '0.45s', delay: '0.5s', easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fillMode: 'both' },
-    new: { name: 'navIn', duration: '0.5s', delay: '0.5s', easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fillMode: 'both' },
-  },
-  backwards: {
-    old: { name: 'navOut', duration: '0.45s', delay: '0.5s', easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fillMode: 'both' },
-    new: { name: 'navIn', duration: '0.5s', delay: '0.5s', easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fillMode: 'both' },
-  },
-};
 ---
 <!DOCTYPE html>
 <html lang="es">
@@ -49,212 +43,202 @@ const navAnim = {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shape and Code — Estudio Creativo</title>
   <meta name="description" content="Diseño y estrategia digital para marcas que quieren crecer." />
-  <link rel="icon" href="/assets/mark-black.png">
+  <link rel="icon" href="/assets/mark-white.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <ViewTransitions />
-  <!-- Apply theme before paint to avoid flash -->
-  <script is:inline>
-    (function () {
-      var saved = localStorage.getItem('minimal-theme');
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (saved === 'dark' || (!saved && prefersDark)) {
-        document.documentElement.classList.add('dark');
-      }
-    })();
-  </script>
+  <!-- Sin JS no hay reveal ni timeline: todo debe verse igual. -->
+  <noscript><style>
+    [data-reveal-words],
+    [data-hero-media], [data-hero-desc], [data-hero-cta], [data-hero-marquee],
+    .has-hero-intro [data-navbar] { visibility: visible; }
+  </style></noscript>
 </head>
-<body class="bg-[#fafafa] dark:bg-[#111111] text-[#0a0a0a] dark:text-[#f5f5f5] font-poppins antialiased transition-colors duration-200">
+<body class="has-hero-intro bg-[#111111] text-[#f5f5f5] font-poppins antialiased">
 
-  <!-- NAV -->
-  <header transition:animate={navAnim} class="site-nav fixed left-0 right-0 z-50 px-4 pt-4 sm:px-5 sm:pt-4 lg:px-8 lg:pt-5">
-    <div class="relative max-w-[900px] mx-auto px-4 sm:px-5 py-[11px] flex items-center justify-between gap-4 rounded-full bg-[rgba(250,250,250,0.90)] dark:bg-[rgba(17,17,17,0.90)] backdrop-blur-[16px] border border-[#e5e5e5] dark:border-[#2a2a2a] shadow-[0_2px_24px_rgba(0,0,0,0.07)]">
-      <!-- Wordmark centrado (solo móvil) para que el nav no se vea vacío -->
-      <span class="lg:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-[15px] tracking-[-0.01em] whitespace-nowrap pointer-events-none">Shape and Code</span>
-      <a href="#top" class="flex items-center gap-2 sm:gap-3 shrink-0">
-        <img src="/assets/mark-black.png" alt="Shape and Code" class="h-[30px] sm:h-[36px] w-auto block dark:invert" />
-      </a>
-      <nav class="hidden lg:flex items-center gap-[34px] text-sm font-medium">
-        <a href="/servicios" class="opacity-75 hover:opacity-100 transition-opacity">Servicios</a>
-        <a href="/proyectos" class="opacity-75 hover:opacity-100 transition-opacity">Proyectos</a>
-        <a href="/sobre-nosotros" class="opacity-75 hover:opacity-100 transition-opacity">Sobre Nosotros</a>
-        <a href="/contacto" class="opacity-75 hover:opacity-100 transition-opacity">Contacto</a>
-      </nav>
-      <div class="flex items-center gap-3">
-        <!-- Theme toggle desktop -->
-        <button id="theme-toggle" aria-label="Cambiar tema"
-          class="hidden lg:flex w-9 h-9 items-center justify-center rounded-full border border-[#d4d4d4] dark:border-[#3a3a3a] hover:border-[#0a0a0a] dark:hover:border-[#f5f5f5] transition-colors text-[15px]">
-          <span class="dark:hidden" title="Modo oscuro">☽</span>
-          <span class="hidden dark:inline" title="Modo claro">☀</span>
-        </button>
-        <a href="mailto:hola@shapeandcode.agency" class="hidden lg:inline-flex items-center gap-[10px] bg-[#0a0a0a] dark:bg-[#f5f5f5] text-[#fafafa] dark:text-[#111111] text-[13.5px] font-semibold px-5 py-[11px] rounded-full hover:bg-[#2a2a2a] dark:hover:bg-[#d4d4d4] transition-colors">
-          Hablemos <span class="svc-arrow">↗</span>
-        </a>
-        <button id="mobile-menu-btn" class="lg:hidden flex flex-col justify-center items-center gap-[5px] w-10 h-10 shrink-0" aria-label="Abrir menú">
-          <span class="w-[22px] h-[2px] bg-[#0a0a0a] dark:bg-[#f5f5f5] block transition-all duration-300 origin-center" id="hb-1"></span>
-          <span class="w-[22px] h-[2px] bg-[#0a0a0a] dark:bg-[#f5f5f5] block transition-all duration-300" id="hb-2"></span>
-          <span class="w-[16px] h-[2px] bg-[#0a0a0a] dark:bg-[#f5f5f5] block transition-all duration-300 origin-center self-start ml-[3px]" id="hb-3"></span>
-        </button>
-      </div>
-    </div>
-  </header>
+  <Navbar
+    logo={siteLogo}
+    logoAlt={siteBrand}
+    brand={siteBrand}
+    links={navLinks}
+    cta={navCta}
+    homeHref="#top"
+    morph
+  />
 
-  <!-- Mobile menu overlay -->
-  <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-[#fafafa] dark:bg-[#111111] flex-col items-center justify-center gap-8">
-    <nav class="flex flex-col items-center gap-7 text-[24px] font-bold tracking-[-0.02em]">
-      <a href="/servicios" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Servicios</a>
-      <a href="/proyectos" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Proyectos</a>
-      <a href="/sobre-nosotros" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Sobre Nosotros</a>
-      <a href="/contacto" class="mob-link opacity-80 hover:opacity-100 transition-opacity">Contacto</a>
-      <button id="theme-toggle-mobile" class="mob-theme-btn opacity-80 hover:opacity-100 transition-opacity text-[24px]">
-        <span class="dark:hidden">☽</span>
-        <span class="hidden dark:inline">☀</span>
-      </button>
-    </nav>
-    <a href="mailto:hola@shapeandcode.agency" class="mob-link mt-4 inline-flex items-center gap-[10px] bg-[#0a0a0a] dark:bg-[#f5f5f5] text-[#fafafa] dark:text-[#111111] text-[16px] font-semibold px-7 py-[14px] rounded-full hover:bg-[#2a2a2a] dark:hover:bg-[#d4d4d4] transition-colors">
-      Hablemos <span class="svc-arrow">↗</span>
-    </a>
-  </div>
-
+  <!-- Envoltorio de ScrollSmoother (`scripts/scrollSmooth.ts`). El contenido va
+       dentro porque el smoother lo desplaza con un `transform`; el `<Navbar>`
+       queda fuera a propósito: dentro de un ancestro transformado, su
+       `position: fixed` dejaría de referirse al viewport. -->
+  <div id="smooth-wrapper">
+  <div id="smooth-content">
   <main id="top" class="overflow-x-clip">
 
-    <!-- HERO -->
-    <section class="relative max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-[100px] sm:pt-[120px] lg:pt-[170px] pb-12 sm:pb-16">
-      <!-- Model image — decorative, behind all content -->
-      <img
-        src="/assets/bunnymodel.png"
-        alt=""
-        aria-hidden="true"
-        data-reveal="fade" data-delay="4"
-        class="hero-model absolute bottom-[-15px] h-[100%] w-auto object-contain object-bottom pointer-events-none select-none"
-        style="z-index: 0; right: -15%;"
-      />
-      <!-- Hero content -->
-      <div class="relative" style="z-index: 1;">
-        <h1 data-reveal="up" data-delay="2" class="hero-title font-bold leading-[0.94] tracking-[-0.035em] max-w-[12ch]" style="font-size: clamp(36px, 8.2vw, 128px)">
-          Marcas que venden. Campañas que se recuerdan.
-        </h1>
-        <div data-reveal="up" data-delay="3" class="hero-bottom mt-8 sm:mt-12 flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-12 items-start sm:items-end justify-between">
-          <p class="hero-desc text-[#404040] dark:text-[#a3a3a3] leading-[1.5] max-w-[46ch]" style="font-size: clamp(16px, 1.5vw, 21px)">
-            Somos un estudio de diseño y marketing digital. Construimos identidad, sitios y campañas que convierten atención en clientes.
-          </p>
-          <div class="flex gap-[10px] sm:gap-[14px] flex-wrap shrink-0">
-            <a href="#contacto" class="inline-flex items-center gap-[10px] bg-[#0a0a0a] dark:bg-[#f5f5f5] text-[#fafafa] dark:text-[#111111] text-[14px] sm:text-[15px] font-semibold px-5 sm:px-[26px] py-[13px] sm:py-[15px] rounded-full hover:bg-[#2a2a2a] dark:hover:bg-[#d4d4d4] transition-colors">
-              Empezar un proyecto <span class="svc-arrow">↗</span>
-            </a>
+    <!-- HERO — ocupa el viewport completo y cierra con la banda del marquee -->
+    <section id="hero" class="section-full relative" data-hero>
+      <!-- Contenedor mas ancho que el resto de secciones (1320px) para que el
+           titulo arranque mas a la izquierda en pantallas grandes. `flex-1`
+           hace que este bloque se quede con el alto sobrante y centre su
+           contenido, dejando el marquee pegado al fondo del hero. -->
+      <div class="relative flex-1 w-full flex flex-col justify-center max-w-[1560px] mx-auto px-4 sm:px-6 md:px-8 pt-[100px] sm:pt-[clamp(96px,11.5vh,170px)] pb-12 sm:pb-[clamp(36px,6vh,64px)]">
+        <!-- Model image — decorative, behind all content.
+             El wrapper existe solo para separar dueños del `transform`: el
+             parallax del scroll escribe sobre `[data-hero-parallax]` y la
+             timeline de entrada sobre `[data-hero-media]`. Si compartieran
+             elemento, uno pisaría al otro. -->
+        <div data-hero-parallax class="absolute inset-0 pointer-events-none" style="z-index: 0;">
+          <img
+            src="/assets/backgroundasset.png"
+            alt=""
+            aria-hidden="true"
+            data-hero-media
+            class="hero-model absolute bottom-[-15px] h-[78%] w-auto object-contain object-bottom pointer-events-none select-none"
+            style="right: -24%;"
+          />
+        </div>
+        <!-- Hero content -->
+        <div class="relative flex flex-col items-start text-left" style="z-index: 1;">
+          <h1 data-reveal-words data-hero-title class="hero-title font-bold leading-[0.94] tracking-[-0.035em] max-w-[12ch]" style="font-size: clamp(34px, min(7.6vw, 10.8vh), 116px)">
+            Marcas que venden. Campañas que se recuerdan.
+          </h1>
+          <div class="hero-bottom mt-8 sm:mt-[clamp(20px,4vh,48px)] flex flex-col items-start gap-6 sm:gap-[clamp(16px,2.6vh,32px)]">
+            <p data-hero-desc class="hero-desc text-[#a3a3a3] leading-[1.5] max-w-[46ch]" style="font-size: clamp(16px, min(1.5vw, 2.4vh), 21px)">
+              Construimos identidad, sitios y campañas que convierten atención en clientes.
+            </p>
+            <div data-hero-cta class="flex gap-[10px] sm:gap-[14px] flex-wrap shrink-0">
+              <a href="#contacto" class="inline-flex items-center gap-[10px] bg-[#f5f5f5] text-[#111111] text-[14px] sm:text-[15px] font-semibold px-5 sm:px-[26px] py-[13px] sm:py-[15px] rounded-full hover:bg-[#d4d4d4] transition-colors">
+                Empezar un proyecto <span class="svc-arrow">↗</span>
+              </a>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <!-- MARQUEE BAND — a todo el ancho, cerrando el hero -->
+      <div data-hero-marquee class="relative border-t border-[#2a2a2a] border-b overflow-hidden bg-[#111111]" style="z-index: 1;">
+        <Marquee variant="minimal" client:load items={marqueeItems} />
+      </div>
+    </section>
+
+    <!-- SERVICIOS — banda negra a todo el ancho, carrusel horizontal.
+         El titulo va en su contenedor de 1320px; el track sale a ancho
+         completo para poder recorrer toda la pantalla y se realinea con el
+         titulo mediante su propio `padding-inline` (ver `.svc-track`).
+         Cada carta admite una imagen de fondo opcional: basta anadir `image`
+         a su entrada del array `services` (ver `.svc-media`). -->
+    <section id="servicios" class="section-full bg-[#0a0a0a] text-[#fafafa]" data-services>
+      <div class="w-full max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-14 sm:pt-[clamp(56px,9vh,104px)]">
+        <div class="flex justify-between items-end flex-wrap gap-4 mb-6 sm:mb-8">
+          <h2 data-services-title data-reveal-words class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, min(4vw, 7vh), 56px)">Servicios</h2>
+          <!-- Referencia de avance: con una tarjeta por pantalla y sin
+               scrollbar visible, si no es facil perder la cuenta. -->
+          <div class="svc-progress-rail" aria-hidden="true">
+            <span data-svc-progress class="svc-progress-bar"></span>
+          </div>
+        </div>
+      </div>
+
+      <div data-svc-viewport class="svc-viewport">
+        <div data-svc-track class="svc-track">
+          {services.map((s) => (
+            <a href="/servicios" data-svc-card class="svc-card">
+              {s.image && (
+                <span class="svc-media" aria-hidden="true">
+                  <img src={s.image} alt="" loading="lazy" decoding="async" />
+                </span>
+              )}
+              {/* `relative z-[1]`: `.svc-media` es `absolute` y sin esto taparia
+                  al contenido en flujo. */}
+              <span class="svc-num relative z-[1] font-space-mono text-[12px] sm:text-[14px] opacity-[0.55]">{s.num}</span>
+              <div class="mt-auto relative z-[1]">
+                <h3 class="svc-title font-bold tracking-[-0.025em] leading-[1.02]" style="font-size: clamp(28px, min(5.5vw, 8vh), 68px)">{s.title}</h3>
+                <p class="svc-desc mt-4 max-w-[52ch] leading-[1.5] opacity-70" style="font-size: clamp(14px, min(1.7vw, 2.6vh), 19px)">{s.desc}</p>
+              </div>
+              <span class="svc-arrow absolute z-[1] top-[clamp(20px,3vw,44px)] right-[clamp(20px,3vw,44px)]">↗</span>
+            </a>
+          ))}
         </div>
       </div>
     </section>
 
-    <!-- MARQUEE BAND -->
-    <section data-reveal="fade" class="border-t border-[#ececec] dark:border-[#2a2a2a] border-b overflow-hidden bg-[#fafafa] dark:bg-[#111111]">
-      <Marquee variant="minimal" client:load items={marqueeItems} />
-    </section>
-
-    <!-- SERVICIOS -->
-    <section id="servicios" class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-14 sm:pt-[104px] pb-10">
-      <div data-reveal="up" class="flex justify-between items-end flex-wrap gap-4 mb-[14px]">
-        <h2 class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, 4vw, 56px)">Servicios</h2>
-        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.04em]">[ 05 ÁREAS DE TRABAJO ]</p>
-      </div>
-      <div class="border-t border-[#0a0a0a] dark:border-[#f5f5f5]">
-        {services.map((s, i) => (
-          <a
-            data-reveal="up" data-delay={i}
-            href="/servicios"
-            class="svc-row py-5 sm:py-[34px] border-b border-[#e5e5e5] dark:border-[#2a2a2a] hover:bg-[#0a0a0a] dark:hover:bg-[#f5f5f5] hover:text-[#fafafa] dark:hover:text-[#111111] transition-colors duration-200 px-1 sm:px-2"
-          >
-            <span class="svc-num font-space-mono text-[11px] sm:text-[13px] opacity-[0.55]">{s.num}</span>
-            <h3 class="svc-title font-bold tracking-[-0.02em] leading-[1.05]" style="font-size: clamp(17px, 2.4vw, 32px)">{s.title}</h3>
-            <p class="svc-desc text-[13.5px] sm:text-[15.5px] leading-[1.5] opacity-70">{s.desc}</p>
-            <span class="svc-arrow">↗</span>
-          </a>
-        ))}
-      </div>
-    </section>
-
     <!-- PROCESO -->
-    <section id="proceso" class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-14 sm:py-[84px]">
-      <div data-reveal="up" class="flex justify-between items-end flex-wrap gap-4 mb-8 sm:mb-12">
-        <h2 class="font-extrabold tracking-[-0.03em] leading-none max-w-[16ch]" style="font-size: clamp(26px, 4vw, 56px)">Un método claro, sin sorpresas</h2>
-        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.04em]">[ CÓMO TRABAJAMOS ]</p>
+    <!-- <section id="proceso" class="section-full max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-14 sm:py-[clamp(48px,7.5vh,84px)]">
+      <div class="flex justify-between items-end flex-wrap gap-4 mb-8 sm:mb-12">
+        <h2 data-reveal-words class="font-extrabold tracking-[-0.03em] leading-none max-w-[16ch]" style="font-size: clamp(26px, min(4vw, 7vh), 56px)">Un método claro, sin sorpresas</h2>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#e5e5e5] dark:bg-[#2a2a2a] border border-[#e5e5e5] dark:border-[#2a2a2a]">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#2a2a2a] border border-[#2a2a2a]">
         {steps.map((step, i) => (
-          <div data-reveal="up" data-delay={i} class="bg-[#fafafa] dark:bg-[#1a1a1a] hover:bg-[#f0f0f0] dark:hover:bg-[#252525] transition-colors pt-7 sm:pt-8 px-5 sm:px-[26px] pb-8 sm:pb-10 min-h-[180px] sm:min-h-[220px] flex flex-col justify-between">
-            <span class="font-space-mono text-[13px] text-[#737373] dark:text-[#8a8a8a]">{step.num}</span>
+          <div class="bg-[#1a1a1a] hover:bg-[#252525] transition-colors pt-7 sm:pt-8 px-5 sm:px-[26px] pb-8 sm:pb-10 min-h-[180px] sm:min-h-[clamp(170px,26vh,220px)] flex flex-col justify-between">
+            <span class="font-space-mono text-[13px] text-[#8a8a8a]">{step.num}</span>
             <div>
               <h3 class="text-[18px] sm:text-[20px] font-bold tracking-[-0.01em] mb-[10px]">{step.title}</h3>
-              <p class="text-[13.5px] sm:text-[14.5px] leading-[1.5] text-[#525252] dark:text-[#a3a3a3]">{step.desc}</p>
+              <p class="text-[13.5px] sm:text-[14.5px] leading-[1.5] text-[#a3a3a3]">{step.desc}</p>
             </div>
           </div>
         ))}
       </div>
-    </section>
+    </section> -->
 
     <!-- TRABAJO -->
-    <section id="trabajo" class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-6 sm:pt-10 pb-14 sm:pb-[84px]">
-      <div data-reveal="up" class="flex justify-between items-end flex-wrap gap-4 mb-8 sm:mb-10">
-        <h2 class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, 4vw, 56px)">Trabajo</h2>
-        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.04em]">[ 2025 — 2026 ]</p>
+    <section id="trabajo" class="section-full max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-6 sm:pt-10 pb-14 sm:pb-[clamp(48px,7.5vh,84px)]">
+      <div class="flex justify-between items-end flex-wrap gap-4 mb-8 sm:mb-10">
+        <h2 data-reveal-words class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, min(4vw, 7vh), 56px)">Trabajo</h2>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7">
         {work.map((project, i) => (
           <a
-            data-reveal="up" data-delay={i % 2}
             href={project.link ?? '#contacto'}
             target={project.link ? '_blank' : undefined}
             rel={project.link ? 'noopener noreferrer' : undefined}
             class="block group"
           >
-            <div class="work-placeholder relative aspect-[4/3] border border-[#e5e5e5] dark:border-[#2a2a2a] group-hover:border-[#0a0a0a] dark:group-hover:border-[#f5f5f5] transition-colors rounded-[4px] overflow-hidden">
+            <div class="work-placeholder relative aspect-[4/3] sm:max-h-[clamp(150px,28vh,420px)] border border-[#2a2a2a] group-hover:border-[#f5f5f5] transition-colors rounded-[4px] overflow-hidden">
               {project.image ? (
                 <img src={project.image} alt={project.name} class="absolute inset-0 w-full h-full object-cover" />
               ) : (
-                <span class="absolute left-4 bottom-[14px] font-space-mono text-[11px] text-[#9a9a9a] dark:text-[#6a6a6a] bg-[#fafafa] dark:bg-[#1a1a1a] px-2 py-1 rounded">
+                <span class="absolute left-4 bottom-[14px] font-space-mono text-[11px] text-[#6a6a6a] bg-[#1a1a1a] px-2 py-1 rounded">
                   imagen del proyecto
                 </span>
               )}
             </div>
-            <div class="flex justify-between items-baseline mt-4 pb-[14px] border-b border-[#e5e5e5] dark:border-[#2a2a2a]">
+            <div class="flex justify-between items-baseline mt-4 pb-[14px] border-b border-[#2a2a2a]">
               <div>
                 <h3 class="text-[18px] sm:text-[21px] font-bold tracking-[-0.01em]">{project.name}</h3>
-                <p class="text-[13px] sm:text-[14px] text-[#737373] dark:text-[#8a8a8a] mt-[3px]">{project.tag}</p>
+                <p class="text-[13px] sm:text-[14px] text-[#8a8a8a] mt-[3px]">{project.tag}</p>
               </div>
-              <span class="font-space-mono text-[12px] sm:text-[13px] text-[#737373] dark:text-[#8a8a8a]">{project.year}</span>
+              <span class="font-space-mono text-[12px] sm:text-[13px] text-[#8a8a8a]">{project.year}</span>
             </div>
           </a>
         ))}
       </div>
-      <div data-reveal="up" class="flex justify-center mt-10 sm:mt-14">
-        <a href="#trabajo" class="inline-flex items-center gap-[10px] border border-[#0a0a0a] dark:border-[#f5f5f5] text-[14px] sm:text-[15px] font-semibold px-6 sm:px-[30px] py-[13px] sm:py-[15px] rounded-full hover:bg-[#0a0a0a] dark:hover:bg-[#f5f5f5] hover:text-[#fafafa] dark:hover:text-[#111111] transition-colors duration-200">
+      <div class="flex justify-center mt-10 sm:mt-[clamp(32px,5vh,56px)]">
+        <a href="#trabajo" class="inline-flex items-center gap-[10px] border border-[#f5f5f5] text-[14px] sm:text-[15px] font-semibold px-6 sm:px-[30px] py-[13px] sm:py-[15px] rounded-full hover:bg-[#f5f5f5] hover:text-[#111111] transition-colors duration-200">
           Ver todos los proyectos <span class="svc-arrow">↗</span>
         </a>
       </div>
     </section>
 
     <!-- ESTUDIO -->
-    <section id="estudio" class="border-t border-[#ececec] dark:border-[#2a2a2a] bg-[#fafafa] dark:bg-[#111111]">
-      <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-14 sm:py-24 grid grid-cols-1 md:grid-cols-[0.8fr_1.4fr] gap-8 md:gap-12">
-        <p data-reveal="up" class="font-space-mono text-[11px] sm:text-[12.5px] text-[#737373] dark:text-[#8a8a8a] tracking-[0.04em]">[ EL ESTUDIO ]</p>
+    <section id="estudio" class="section-full border-t border-[#2a2a2a] bg-[#111111]">
+      <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-14 sm:py-[clamp(48px,8vh,96px)] grid grid-cols-1 md:grid-cols-[0.8fr_1.4fr] gap-8 md:gap-12">
+        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.04em]">[ EL ESTUDIO ]</p>
         <div>
-          <p data-reveal="up" data-delay="1" class="leading-[1.28] tracking-[-0.02em] font-medium mb-10 sm:mb-14" style="font-size: clamp(20px, 3vw, 40px)">
+          <p class="leading-[1.28] tracking-[-0.02em] font-medium mb-10 sm:mb-14" style="font-size: clamp(20px, min(3vw, 5vh), 40px)">
             Creemos en el diseño con propósito. Cada proyecto une <strong class="font-extrabold">estética</strong> y <strong class="font-extrabold">estrategia</strong> para que tu marca no solo se vea bien — funcione y crezca.
           </p>
-          <div data-reveal="up" data-delay="2" class="flex gap-8 sm:gap-14 flex-wrap border-t border-[#e5e5e5] dark:border-[#2a2a2a] pt-8">
+          <div class="flex gap-8 sm:gap-14 flex-wrap border-t border-[#2a2a2a] pt-8">
             <div>
               <div class="text-[36px] sm:text-[44px] font-extrabold tracking-[-0.03em]">+40</div>
-              <div class="text-[13px] sm:text-[14px] text-[#737373] dark:text-[#8a8a8a] mt-1">proyectos entregados</div>
+              <div class="text-[13px] sm:text-[14px] text-[#8a8a8a] mt-1">proyectos entregados</div>
             </div>
             <div>
               <div class="text-[36px] sm:text-[44px] font-extrabold tracking-[-0.03em]">8 años</div>
-              <div class="text-[13px] sm:text-[14px] text-[#737373] dark:text-[#8a8a8a] mt-1">de experiencia combinada</div>
+              <div class="text-[13px] sm:text-[14px] text-[#8a8a8a] mt-1">de experiencia combinada</div>
             </div>
             <div>
               <div class="text-[36px] sm:text-[44px] font-extrabold tracking-[-0.03em]">100%</div>
-              <div class="text-[13px] sm:text-[14px] text-[#737373] dark:text-[#8a8a8a] mt-1">enfoque a resultados</div>
+              <div class="text-[13px] sm:text-[14px] text-[#8a8a8a] mt-1">enfoque a resultados</div>
             </div>
           </div>
         </div>
@@ -262,12 +246,11 @@ const navAnim = {
     </section>
 
     <!-- CTA -->
-    <section id="contacto" class="bg-[#0a0a0a] text-[#fafafa]">
-      <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-16 sm:py-[112px]">
-        <p data-reveal="up" class="font-space-mono text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.06em] mb-5 sm:mb-7">[ EMPECEMOS ]</p>
-        <h2 data-reveal="up" data-delay="1" class="font-extrabold leading-[0.95] tracking-[-0.035em] max-w-[13ch]" style="font-size: clamp(34px, 8vw, 116px)">¿Hacemos crecer tu marca?</h2>
-        <div data-reveal="up" data-delay="2" class="flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-10 justify-between items-start sm:items-end mt-10 sm:mt-14">
-          <a href="mailto:hola@shapeandcode.agency" class="font-semibold tracking-[-0.02em] border-b-2 border-[#8a8a8a] pb-[6px] hover:border-[#fafafa] transition-colors break-all" style="font-size: clamp(15px, 3vw, 38px)">
+    <section id="contacto" class="section-full bg-[#0a0a0a] text-[#fafafa]">
+      <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-16 sm:py-[clamp(56px,10vh,112px)]">
+        <h2 data-reveal-words class="font-extrabold leading-[0.95] tracking-[-0.035em] max-w-[13ch]" style="font-size: clamp(34px, min(8vw, 13vh), 116px)">¿Hacemos crecer tu marca?</h2>
+        <div class="flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-10 justify-between items-start sm:items-end mt-10 sm:mt-[clamp(32px,5vh,56px)]">
+          <a href="mailto:hola@shapeandcode.agency" class="font-semibold tracking-[-0.02em] border-b-2 border-[#8a8a8a] pb-[6px] hover:border-[#fafafa] transition-colors break-all" style="font-size: clamp(15px, min(3vw, 5vh), 38px)">
             hola@shapeandcode.agency
           </a>
           <a href="mailto:hola@shapeandcode.agency" class="inline-flex items-center gap-3 bg-[#fafafa] text-[#0a0a0a] text-[14px] sm:text-[16px] font-bold px-6 sm:px-8 py-4 sm:py-[18px] rounded-full hover:bg-[#d4d4d4] transition-colors shrink-0">
@@ -279,7 +262,7 @@ const navAnim = {
 
     <!-- FOOTER -->
     <footer class="bg-[#0a0a0a] text-[#fafafa] border-t border-[#1f1f1f]">
-      <div data-reveal="up" class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-11 flex flex-col sm:flex-row flex-wrap gap-5 sm:gap-6 justify-between items-start sm:items-center">
+      <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-11 flex flex-col sm:flex-row flex-wrap gap-5 sm:gap-6 justify-between items-start sm:items-center">
         <div class="flex items-center gap-3">
           <img src="/assets/mark-black.png" alt="" class="h-6 w-auto" style="filter: invert(1)" />
           <span class="font-extrabold text-[14px] tracking-[0.04em]">SHAPE AND CODE</span>
@@ -294,6 +277,43 @@ const navAnim = {
     </footer>
 
   </main>
+  </div>
+  </div>
+
+  <script>
+    import { initScrollSmooth, destroyScrollSmooth } from '../scripts/scrollSmooth';
+    import { initParallax, destroyParallax } from '../scripts/parallax';
+    import { initServicesCarousel, destroyServicesCarousel } from '../scripts/servicesCarousel';
+    import { initNavMorph, destroyNavMorph } from '../scripts/navMorph';
+    import { initTextReveal, destroyTextReveal } from '../scripts/textReveal';
+    import { initHeroIntro, destroyHeroIntro } from '../scripts/animations/heroIntro';
+
+    // `astro:page-load` cubre la carga inicial y cada navegacion con
+    // ViewTransitions; `astro:before-swap` limpia listeners y ScrollTriggers
+    // antes de que el DOM se reemplace.
+    //
+    // El orden importa: `initScrollSmooth` va primero porque `initParallax`
+    // registra sus efectos contra esa instancia, y los modulos dirigidos por
+    // scroll van al final para que sus ScrollTriggers midan el DOM ya montado.
+    document.addEventListener('astro:page-load', () => {
+      initScrollSmooth();
+      initNavMorph();
+      // La intro del hero se queda con el H1 (`data-hero-title`); textReveal
+      // cubre el resto de titulos con `data-reveal-words`.
+      initHeroIntro();
+      initTextReveal();
+      initParallax();
+      initServicesCarousel();
+    });
+    document.addEventListener('astro:before-swap', () => {
+      destroyServicesCarousel();
+      destroyParallax();
+      destroyTextReveal();
+      destroyHeroIntro();
+      destroyNavMorph();
+      destroyScrollSmooth();
+    });
+  </script>
 
   <style>
     /* ---- HERO TITLE LEGIBILITY (solo móvil) ----
@@ -304,12 +324,6 @@ const navAnim = {
     @media (max-width: 639px) {
       .hero-title {
         text-shadow:
-          0 0 20px rgba(250, 250, 250, 0.92),
-          0 0 7px rgba(250, 250, 250, 0.85),
-          0 1px 2px rgba(250, 250, 250, 0.7);
-      }
-      .dark .hero-title {
-        text-shadow:
           0 0 20px rgba(0, 0, 0, 0.85),
           0 0 7px rgba(0, 0, 0, 0.8),
           0 2px 4px rgba(0, 0, 0, 0.62);
@@ -317,187 +331,110 @@ const navAnim = {
       /* Halo más ligero para el texto descriptivo (fuente más pequeña). */
       .hero-desc {
         text-shadow:
-          0 0 14px rgba(250, 250, 250, 0.95),
-          0 0 5px rgba(250, 250, 250, 0.9);
-      }
-      .dark .hero-desc {
-        text-shadow:
           0 0 14px rgba(0, 0, 0, 0.9),
           0 0 5px rgba(0, 0, 0, 0.85);
       }
     }
 
-    /* ---- SERVICE ROWS ---- */
-    .svc-row {
-      display: grid;
-      grid-template-columns: 88px 1.1fr 1.4fr auto;
-      gap: 0 32px;
-      align-items: center;
-    }
-    .svc-row .svc-arrow { justify-self: end; }
+    /* ---- CARRUSEL DE SERVICIOS ----
 
-    /* Tablet: drop description column, keep num + title + arrow */
-    @media (max-width: 1023px) {
-      .svc-row {
-        grid-template-columns: 48px 1fr auto;
-        grid-template-rows: auto auto;
-        gap: 2px 14px;
-        align-items: start;
-        grid-template-areas:
-          "num title arrow"
-          ".   desc  .    ";
-      }
-      .svc-num   { grid-area: num;   padding-top: 3px; }
-      .svc-title { grid-area: title; }
-      .svc-desc  { grid-area: desc;  font-size: 13.5px; margin-top: 4px; }
-      .svc-row .svc-arrow { grid-area: arrow; padding-top: 3px; justify-self: end; }
+       Por defecto el viewport es un scroller horizontal nativo con snap: ese
+       es el estado sin JS y con `prefers-reduced-motion`, y se arrastra a mano
+       perfectamente. `scripts/servicesCarousel.ts` añade `.is-pinned` cuando
+       toma el control y apaga ese scroll para que no compita con el tween. */
+    .svc-viewport {
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      /* La barra de progreso ya indica el avance; la scrollbar nativa sobra. */
+      scrollbar-width: none;
+      padding-bottom: clamp(40px, 6vh, 64px);
+    }
+    .svc-viewport::-webkit-scrollbar { display: none; }
+    .svc-viewport.is-pinned { overflow-x: hidden; scroll-snap-type: none; }
+
+    .svc-track {
+      display: flex;
+      gap: clamp(14px, 1.6vw, 28px);
+      /* Alinea la primera tarjeta con el título (que vive en un contenedor de
+         1320px) aunque el track vaya a ancho completo. */
+      padding-inline: max(1rem, calc((100vw - 1320px) / 2 + 1rem));
+    }
+    @media (min-width: 640px) { .svc-track { padding-inline: max(1.5rem, calc((100vw - 1320px) / 2 + 1.5rem)); } }
+    @media (min-width: 768px) { .svc-track { padding-inline: max(2rem, calc((100vw - 1320px) / 2 + 2rem)); } }
+
+    .svc-card {
+      position: relative;
+      flex: 0 0 auto;
+      width: min(86vw, 1040px);
+      min-height: clamp(300px, 52vh, 560px);
+      scroll-snap-align: center;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(20px, 3vw, 44px);
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      isolation: isolate;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+    /* Sin imagen el zoom no aplica: un fondo discreto da la respuesta al hover.
+       Con imagen esta capa queda tapada por `.svc-media`, asi que no estorba. */
+    .svc-card:hover { background: #1a1a1a; }
+
+    /* ---- IMAGEN DE FONDO DE LA CARTA ----
+       Capa propia (y no `background-image` de la carta) porque el hover escala
+       la imagen y el degradado de legibilidad NO debe escalar con ella. */
+    .svc-media {
+      position: absolute;
+      /* `inset: 0` se posiciona al padding box: el borde de la carta queda visible. */
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      border-radius: inherit;
+    }
+    .svc-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transform: scale(1);
+      transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    .svc-card:hover .svc-media img { transform: scale(1.05); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .svc-media img { transition: none; }
+      .svc-card:hover .svc-media img { transform: none; }
     }
 
-    /* Mobile: full stack */
-    @media (max-width: 479px) {
-      .svc-row {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        position: relative;
-        padding-right: 32px;
-      }
-      .svc-row .svc-arrow {
-        position: absolute;
-        right: 0;
-        top: 20px;
-      }
+    /* Degradado de legibilidad: el texto va en #fafafa abajo a la izquierda.
+       Uno vertical para titulo/descripcion y otro horizontal para el resto de
+       la columna de texto. */
+    .svc-media::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.55) 45%, rgba(10,10,10,0.15) 100%),
+        linear-gradient(to right, rgba(10,10,10,0.75) 0%, rgba(10,10,10,0) 60%);
     }
 
-    /* ---- SCROLL REVEAL (horizontal uniforme) ----
-       Todos los elementos entran desde la izquierda (translateX negativo)
-       hacia su posición final. Al salir del viewport el observer quita
-       .is-visible y vuelven al estado inicial. */
-    [data-reveal] {
-      opacity: 0;
-      transform: translateX(-44px);
-      transition:
-        opacity  0.6s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    .svc-progress-rail { width: clamp(80px, 18vw, 220px); height: 2px; background: #2a2a2a; }
+    .svc-progress-bar {
+      display: block;
+      height: 100%;
+      background: #fafafa;
+      transform: scaleX(0);
+      transform-origin: left center;
     }
-    [data-reveal="fade"] {
-      transform: none;
-    }
-    [data-reveal].is-visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    [data-delay="1"] { transition-delay: 0.1s;  }
-    [data-delay="2"] { transition-delay: 0.22s; }
-    [data-delay="3"] { transition-delay: 0.34s; }
-    [data-delay="4"] { transition-delay: 0.52s; }
-
 
     /* ---- WORK PLACEHOLDER ---- */
     .work-placeholder {
-      background-color: #f0f0f0;
-      background-image: repeating-linear-gradient(135deg, #e8e8e8 0 2px, transparent 2px 11px);
-    }
-    .dark .work-placeholder {
       background-color: #1a1a1a;
       background-image: repeating-linear-gradient(135deg, #2a2a2a 0 2px, transparent 2px 11px);
     }
   </style>
-
-  <script>
-    // ---- THEME TOGGLE ----
-    function applyTheme(dark: boolean) {
-      if (dark) {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('minimal-theme', 'dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('minimal-theme', 'light');
-      }
-    }
-
-    document.getElementById('theme-toggle')?.addEventListener('click', () => {
-      applyTheme(!document.documentElement.classList.contains('dark'));
-    });
-    document.getElementById('theme-toggle-mobile')?.addEventListener('click', () => {
-      applyTheme(!document.documentElement.classList.contains('dark'));
-    });
-
-    // Re-apply the saved theme after a view-transition swap so it persists
-    // across navigation (the inline <head> script only runs on full loads).
-    document.addEventListener('astro:after-swap', () => {
-      const saved = localStorage.getItem('minimal-theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.classList.toggle('dark', saved === 'dark' || (!saved && prefersDark));
-    });
-
-    // ---- MOBILE MENU ----
-    const btn = document.getElementById('mobile-menu-btn');
-    const menu = document.getElementById('mobile-menu');
-    const hb1 = document.getElementById('hb-1');
-    const hb2 = document.getElementById('hb-2');
-    const hb3 = document.getElementById('hb-3');
-    let open = false;
-
-    function toggle() {
-      if (!menu || !hb1 || !hb2 || !hb3) return;
-      open = !open;
-      if (open) {
-        menu.classList.remove('hidden');
-        menu.classList.add('flex');
-        document.body.style.overflow = 'hidden';
-        hb1.style.cssText = 'transform:translateY(7px) rotate(45deg)';
-        hb2.style.opacity = '0';
-        hb3.style.cssText = 'transform:translateY(-7px) rotate(-45deg);width:22px;margin-left:0;align-self:center';
-      } else {
-        menu.classList.add('hidden');
-        menu.classList.remove('flex');
-        document.body.style.overflow = '';
-        hb1.style.cssText = '';
-        hb2.style.cssText = '';
-        hb3.style.cssText = '';
-      }
-    }
-
-    btn?.addEventListener('click', toggle);
-    document.querySelectorAll('.mob-link').forEach(el => el.addEventListener('click', () => { if (open) toggle(); }));
-
-    // ---- SCROLL REVEAL ----
-    // Todos los elementos entran desde la izquierda (definido en el CSS).
-    // El observer solo alterna .is-visible al entrar/salir del viewport.
-    const revealObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-          } else {
-            entry.target.classList.remove('is-visible');
-          }
-        });
-      },
-      { threshold: 0.12 }
-    );
-    document.querySelectorAll('[data-reveal]').forEach((el) => revealObserver.observe(el));
-
-    // ---- HERO FOCUS REPLAY ----
-    const heroSection = document.querySelector('#top > section');
-    const heroRevealEls = heroSection?.querySelectorAll('[data-reveal]') ?? [];
-
-    function replayHeroAnimations() {
-      heroRevealEls.forEach((el) => {
-        el.classList.remove('is-visible');
-        void (el as HTMLElement).offsetWidth;
-        el.classList.add('is-visible');
-      });
-    }
-
-    heroSection?.addEventListener('focusin', (e) => {
-      const from = (e as FocusEvent).relatedTarget as Node | null;
-      if (!from || !heroSection.contains(from)) {
-        replayHeroAnimations();
-      }
-    });
-  </script>
 
 </body>
 </html>
