@@ -1,0 +1,83 @@
+---
+/**
+ * Img — imagen optimizada del sitio.
+ *
+ * Envuelve `<Image>` de `astro:assets` con los valores por defecto de este
+ * proyecto: WebP, calidad alta y un `srcset` acorde al hueco donde se pinta.
+ * El markup que emite es un `<img>` plano (sin `<picture>` alrededor), así que
+ * se puede usar como reemplazo directo de un `<img>` sin tocar CSS ni los
+ * selectores de las animaciones.
+ *
+ * Uso:
+ *   <Img src="servicios/ServiciosWeb.png" alt="" preset="card" />
+ *
+ * `src` es la ruta relativa desde `src/assets/images/` (ver el README de esa
+ * carpeta). También acepta una `ImageMetadata` ya importada, por si alguna vez
+ * hace falta un import explícito.
+ *
+ * Cualquier atributo extra (`class`, `style`, `data-*`, `aria-*`) se pasa tal
+ * cual al `<img>`.
+ */
+import { Image } from 'astro:assets';
+
+import { IMAGE_PRESETS, type ImagePreset } from '../config/imagePresets';
+import { resolveImage, type ImageSource } from '../lib/images';
+
+interface Props {
+  /** Clave del registro de imágenes, o `ImageMetadata` importada. */
+  src: ImageSource;
+  /** Obligatorio. Cadena vacía para imágenes decorativas. */
+  alt: string;
+  /** Perfil de tamaños y carga. Ver `config/imagePresets.ts`. */
+  preset?: ImagePreset;
+  /** Overrides puntuales sobre el preset. */
+  widths?: number[];
+  sizes?: string;
+  quality?: number;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  [key: string]: unknown;
+}
+
+const {
+  src,
+  alt,
+  preset = 'card',
+  widths,
+  sizes,
+  quality,
+  loading,
+  fetchpriority,
+  ...rest
+} = Astro.props;
+
+const profile = IMAGE_PRESETS[preset];
+const image = resolveImage(src);
+
+/* Un `width` mayor que el original solo añade peso: no hay detalle que
+   recuperar. Se recorta el preset al ancho real del archivo y se garantiza al
+   menos un candidato en el `srcset`. */
+const candidates = (widths ?? profile.widths).filter((w) => w <= image.width);
+const finalWidths = candidates.length > 0 ? candidates : [image.width];
+
+/* `width` explícito para que el `src` de reserva sea el mayor ancho del preset.
+   Sin esto Astro genera una variante extra al tamaño original solo para ese
+   atributo: un archivo que ningún navegador con `srcset` llega a pedir. */
+const width = Math.max(...finalWidths);
+const height = Math.round((width * image.height) / image.width);
+---
+
+<Image
+  src={image}
+  alt={alt}
+  format="webp"
+  width={width}
+  height={height}
+  widths={finalWidths}
+  sizes={sizes ?? profile.sizes}
+  quality={quality ?? profile.quality}
+  loading={loading ?? profile.loading}
+  decoding="async"
+  fetchpriority={fetchpriority ?? profile.fetchpriority}
+  {...rest}
+/>
