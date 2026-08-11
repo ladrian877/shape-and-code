@@ -100,3 +100,70 @@ export const SERVICES_CARD = {
    */
   shiftVw: 12,
 } as const;
+
+/* --- Tarjetas en parallax de Trabajo (`animations/workParallax.ts`) --- */
+
+export const WORK_PARALLAX = {
+  /**
+   * Amortiguación del seguimiento del scroll, en segundos que tarda la
+   * animación en alcanzar la posición real. Es la inercia de la sección: a `0`
+   * las tarjetas irían 1:1 con la rueda y el movimiento se sentiría seco.
+   */
+  scrub: 1.2,
+
+  /**
+   * Recorrido de scroll que consume la sección mientras está fijada, en % de
+   * la altura del viewport. `300` = tres pantallas extra, cuatro en total
+   * contando la propia sección. Súbelo para que las tarjetas pasen más
+   * despacio y el titular aguante más tiempo en pantalla.
+   */
+  pinLength: 300,
+
+  /**
+   * Punto de partida del recorrido vertical, en múltiplos de la altura del
+   * viewport. Es un umbral, no una variable de diseño: por encima de `1` la
+   * tarjeta queda fuera de cuadro por abajo, que es lo único que tiene que
+   * garantizar.
+   *
+   * NO lo escales por el `speed` de la tarjeta. Al hacerlo, las lentas
+   * arrancaban por debajo de `1` —o sea, ya dentro de la pantalla— y se veían
+   * asomando y quietas hasta que el scroll alcanzaba su tramo.
+   */
+  travelIn: 1.2,
+
+  /**
+   * Punto final del recorrido, en múltiplos de la altura del viewport. Negativo
+   * porque las tarjetas salen por arriba. Este sí lo escala cada tarjeta por su
+   * `speed`: recorrer más distancia en el mismo tramo de scroll es lo que hace
+   * que se perciba más rápida. Al ir hacia arriba, subirlo solo aleja más la
+   * tarjeta del encuadre.
+   */
+  travelOut: -1.4,
+
+  /** Desplazamiento vertical del fade-up de la versión móvil, en px. */
+  mobileShift: 40,
+} as const;
+
+/* --- Panel de detalles al vuelo de Trabajo (`animations/workHint.ts`) --- */
+
+export const WORK_HINT = {
+  /** Separación entre el cursor y el borde más cercano del panel, en px. */
+  gap: 18,
+
+  /**
+   * Segundos que tarda el panel en alcanzar la posición del cursor. Es el
+   * arrastre: a `0` iría clavado al ratón y se sentiría rígido. No lo subas
+   * mucho o el panel parecerá que va a remolque en vez de acompañar.
+   */
+  follow: 0.4,
+
+  /** Duración de la aparición y de la salida del panel, en segundos. */
+  popIn: 0.32,
+  popOut: 0.2,
+
+  /** Escala de partida del pop: entra creciendo hasta su tamaño real. */
+  popScale: 0.9,
+
+  /** Distancia mínima del panel a cada borde del viewport, en px. */
+  edge: 12,
+} as const;

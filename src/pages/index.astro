@@ -2,18 +2,21 @@
 import '../styles/global.css';
 import Marquee from '../components/Marquee';
 import Navbar from '../components/Navbar.astro';
+import Img from '../components/Img.astro';
 import { navLinks, navCta, siteBrand, siteLogo } from '../config/nav';
+import { workItems } from '../config/work';
 import { ViewTransitions } from 'astro:transitions';
 
 const marqueeItems = ['BRANDING','MARKETING DIGITAL','DISEÑO WEB','SEO / SEM','UX / UI','CAMPAÑAS','IDENTIDAD','ESTRATEGIA','AUTOMATIZACIONES'];
 
 // `image` es opcional: la carta que la trae la usa de fondo (ver `.svc-media`).
-// Las imagenes van en `public/assets/` y se sirven TAL CUAL, sin pasar por
-// `astro:assets`: la recompresion a WebP restaba calidad. A cambio pesan lo que
-// pese el original, asi que conviene exportarlas ya optimizadas.
+// El valor es una clave del registro de imagenes: la ruta relativa a
+// `src/assets/images/`. El componente <Img> la resuelve y sirve un WebP
+// redimensionado (ver `src/assets/images/README.md`). Una clave inexistente
+// rompe el build, no produce un 404.
 const services: { num: string; title: string; desc: string; image?: string }[] = [
-  { num: '01', title: 'Marketing digital y campañas', desc: 'Estrategia, paid media y embudos que convierten. Medimos cada peso invertido.', image: '/assets/ServiciosMarketing.png' },
-  { num: '02', title: 'Diseño web / UX-UI', desc: 'Sitios y productos rápidos, claros y pensados para convertir visitas en clientes.', image: '/assets/ServiciosWeb.png' },
+  { num: '01', title: 'Marketing digital y campañas', desc: 'Estrategia, paid media y embudos que convierten. Medimos cada peso invertido.', image: 'servicios/ServiciosMarketing.png' },
+  { num: '02', title: 'Diseño web / UX-UI', desc: 'Sitios y productos rápidos, claros y pensados para convertir visitas en clientes.', image: 'servicios/ServiciosWeb.png' },
   { num: '03', title: 'Branding e identidad', desc: 'Marcas con criterio: naming, logotipo, sistema visual y guías de uso.' },
   { num: '04', title: 'SEO / SEM', desc: 'Posicionamiento orgánico y de pago para que te encuentren cuando importa.' },
   { num: '05', title: 'Automatizaciones', desc: 'Flujos, integraciones y procesos automáticos que ahorran tiempo y escalan tu operación.' },
@@ -26,12 +29,6 @@ const steps = [
   { num: 'P.04', title: 'Lanzar y optimizar', desc: 'Medimos, iteramos y escalamos lo que funciona.' },
 ];
 
-const work = [
-  { name: 'Jadoo', tag: 'Web', year: '2026', image: '/assets/previews/JadooPreview.png', link: 'https://jadoo-astro.vercel.app/' },
-  { name: 'NovaVision', tag: 'UX/UI + SEO', year: '2025', image: '/assets/previews/NeoVisionPreview.png', link: 'https://nova-vision-three.vercel.app/' },
-  { name: 'Cobalt Fintech', tag: 'UX/UI + SEO', year: '2025' },
-  { name: 'Vela Estudio', tag: 'Identidad', year: '2025' },
-];
 
 const year = new Date().getFullYear();
 
@@ -46,7 +43,7 @@ const year = new Date().getFullYear();
   <link rel="icon" href="/assets/mark-white.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <ViewTransitions />
   <!-- Sin JS no hay reveal ni timeline: todo debe verse igual. -->
   <noscript><style>
@@ -60,12 +57,24 @@ const year = new Date().getFullYear();
   <Navbar
     logo={siteLogo}
     logoAlt={siteBrand}
+    invertLogo={false}
     brand={siteBrand}
     links={navLinks}
     cta={navCta}
     homeHref="#top"
     morph
   />
+
+  <!-- Panel de detalles al vuelo de las tarjetas de Trabajo. Lo rellena
+       `scripts/animations/workHint.ts` copiando el `.work-card-overlay` de la
+       tarjeta activa, por eso nace vacio.
+       Fuera del wrapper por el mismo motivo que el `<Navbar>`: se posiciona en
+       coordenadas de viewport y dentro de un ancestro transformado su
+       `position: fixed` dejaria de referirse al viewport. Ademas asi se libra
+       del `overflow: hidden` de `.work-stage`.
+       `aria-hidden` porque su contenido es una copia: el original sigue en el
+       DOM de la tarjeta y es el que leen los lectores de pantalla. -->
+  <div data-work-hint class="work-hint" aria-hidden="true"></div>
 
   <!-- Envoltorio de ScrollSmoother (`scripts/scrollSmooth.ts`). El contenido va
        dentro porque el smoother lo desplaza con un `transform`; el `<Navbar>`
@@ -88,8 +97,9 @@ const year = new Date().getFullYear();
              timeline de entrada sobre `[data-hero-media]`. Si compartieran
              elemento, uno pisaría al otro. -->
         <div data-hero-parallax class="absolute inset-0 pointer-events-none" style="z-index: 0;">
-          <img
-            src="/assets/backgroundasset.png"
+          <Img
+            src="hero/backgroundasset.png"
+            preset="hero"
             alt=""
             aria-hidden="true"
             data-hero-media
@@ -117,7 +127,7 @@ const year = new Date().getFullYear();
 
       <!-- MARQUEE BAND — a todo el ancho, cerrando el hero -->
       <div data-hero-marquee class="relative border-t border-[#2a2a2a] border-b overflow-hidden bg-[#111111]" style="z-index: 1;">
-        <Marquee variant="minimal" client:load items={marqueeItems} />
+        <Marquee client:load items={marqueeItems} />
       </div>
     </section>
 
@@ -130,7 +140,7 @@ const year = new Date().getFullYear();
     <section id="servicios" class="section-full bg-[#0a0a0a] text-[#fafafa]" data-services>
       <div class="w-full max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-14 sm:pt-[clamp(56px,9vh,104px)]">
         <div class="flex justify-between items-end flex-wrap gap-4 mb-6 sm:mb-8">
-          <h2 data-services-title data-reveal-words class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, min(4vw, 7vh), 56px)">Servicios</h2>
+          <h2 data-services-title data-reveal-words class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, min(4vw, 7vh), 56px)">SERVICIOS</h2>
           <!-- Referencia de avance: con una tarjeta por pantalla y sin
                scrollbar visible, si no es facil perder la cuenta. -->
           <div class="svc-progress-rail" aria-hidden="true">
@@ -145,12 +155,12 @@ const year = new Date().getFullYear();
             <a href="/servicios" data-svc-card class="svc-card">
               {s.image && (
                 <span class="svc-media" aria-hidden="true">
-                  <img src={s.image} alt="" loading="lazy" decoding="async" />
+                  <Img src={s.image} preset="card" alt="" />
                 </span>
               )}
               {/* `relative z-[1]`: `.svc-media` es `absolute` y sin esto taparia
                   al contenido en flujo. */}
-              <span class="svc-num relative z-[1] font-space-mono text-[12px] sm:text-[14px] opacity-[0.55]">{s.num}</span>
+              <span class="svc-num relative z-[1] text-[12px] sm:text-[14px] opacity-[0.55]">{s.num}</span>
               <div class="mt-auto relative z-[1]">
                 <h3 class="svc-title font-bold tracking-[-0.025em] leading-[1.02]" style="font-size: clamp(28px, min(5.5vw, 8vh), 68px)">{s.title}</h3>
                 <p class="svc-desc mt-4 max-w-[52ch] leading-[1.5] opacity-70" style="font-size: clamp(14px, min(1.7vw, 2.6vh), 19px)">{s.desc}</p>
@@ -170,7 +180,7 @@ const year = new Date().getFullYear();
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#2a2a2a] border border-[#2a2a2a]">
         {steps.map((step, i) => (
           <div class="bg-[#1a1a1a] hover:bg-[#252525] transition-colors pt-7 sm:pt-8 px-5 sm:px-[26px] pb-8 sm:pb-10 min-h-[180px] sm:min-h-[clamp(170px,26vh,220px)] flex flex-col justify-between">
-            <span class="font-space-mono text-[13px] text-[#8a8a8a]">{step.num}</span>
+            <span class="text-[13px] text-[#8a8a8a]">{step.num}</span>
             <div>
               <h3 class="text-[18px] sm:text-[20px] font-bold tracking-[-0.01em] mb-[10px]">{step.title}</h3>
               <p class="text-[13.5px] sm:text-[14.5px] leading-[1.5] text-[#a3a3a3]">{step.desc}</p>
@@ -181,48 +191,67 @@ const year = new Date().getFullYear();
     </section> -->
 
     <!-- TRABAJO -->
-    <section id="trabajo" class="section-full max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-6 sm:pt-10 pb-14 sm:pb-[clamp(48px,7.5vh,84px)]">
-      <div class="flex justify-between items-end flex-wrap gap-4 mb-8 sm:mb-10">
-        <h2 data-reveal-words class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, min(4vw, 7vh), 56px)">Trabajo</h2>
+    <!--
+      El titular va en `z-10` y las tarjetas en `z-20`: pasan por DELANTE y lo
+      tapan a ratos. Ese solape es el efecto, así que el `<h2>` no se atenúa ni
+      se enmascara. Tampoco lleva `data-reveal-words`: ese atributo arranca en
+      `visibility: hidden` (ver `global.css`) y pelearía con el fijado.
+      El movimiento lo monta `scripts/animations/workParallax.ts`.
+    -->
+    <section id="trabajo" data-work class="bg-[#0a0a0a]">
+      <div data-work-stage class="work-stage">
+        <div class="work-heading">
+          <h2 class="work-title">ESTO ES LO QUE HACEMOS</h2>
+          <p class="work-eyebrow">(Desliza para explorar)</p>
+        </div>
+
+        <ul class="work-cards">
+          {workItems.map((item) => (
+            <li
+              class="work-card"
+              data-work-card
+              data-speed={item.speed}
+              data-start={item.start}
+              data-end={item.end}
+              data-hint-side={item.hintSide}
+              style={`--work-w: ${item.width}px; --work-x: ${item.xOffset}; --work-rot: ${item.rotation}deg; --work-aspect: ${item.aspect};`}
+            >
+              <a
+                href={item.link ?? '/proyectos'}
+                target={item.link ? '_blank' : undefined}
+                rel={item.link ? 'noopener noreferrer' : undefined}
+                class="work-card-link"
+              >
+                <div class="work-card-media">
+                  {item.image ? (
+                    <Img src={item.image} preset="preview" alt={item.alt} class="work-card-img" />
+                  ) : (
+                    <span class="work-card-hole" aria-hidden="true"></span>
+                  )}
+                </div>
+                <div class="work-card-overlay">
+                  <h3 class="work-card-name">{item.name}</h3>
+                  <p class="work-card-desc">{item.description}</p>
+                  <p class="work-card-meta">{item.tag} — {item.year}</p>
+                  <span class="work-card-pill">Ver proyecto</span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7">
-        {work.map((project, i) => (
-          <a
-            href={project.link ?? '#contacto'}
-            target={project.link ? '_blank' : undefined}
-            rel={project.link ? 'noopener noreferrer' : undefined}
-            class="block group"
-          >
-            <div class="work-placeholder relative aspect-[4/3] sm:max-h-[clamp(150px,28vh,420px)] border border-[#2a2a2a] group-hover:border-[#f5f5f5] transition-colors rounded-[4px] overflow-hidden">
-              {project.image ? (
-                <img src={project.image} alt={project.name} class="absolute inset-0 w-full h-full object-cover" />
-              ) : (
-                <span class="absolute left-4 bottom-[14px] font-space-mono text-[11px] text-[#6a6a6a] bg-[#1a1a1a] px-2 py-1 rounded">
-                  imagen del proyecto
-                </span>
-              )}
-            </div>
-            <div class="flex justify-between items-baseline mt-4 pb-[14px] border-b border-[#2a2a2a]">
-              <div>
-                <h3 class="text-[18px] sm:text-[21px] font-bold tracking-[-0.01em]">{project.name}</h3>
-                <p class="text-[13px] sm:text-[14px] text-[#8a8a8a] mt-[3px]">{project.tag}</p>
-              </div>
-              <span class="font-space-mono text-[12px] sm:text-[13px] text-[#8a8a8a]">{project.year}</span>
-            </div>
-          </a>
-        ))}
-      </div>
-      <div class="flex justify-center mt-10 sm:mt-[clamp(32px,5vh,56px)]">
-        <a href="#trabajo" class="inline-flex items-center gap-[10px] border border-[#f5f5f5] text-[14px] sm:text-[15px] font-semibold px-6 sm:px-[30px] py-[13px] sm:py-[15px] rounded-full hover:bg-[#f5f5f5] hover:text-[#111111] transition-colors duration-200">
+
+      <!-- <div class="work-cta">
+        <a href="/proyectos" class="inline-flex items-center gap-[10px] border border-[#f5f5f5] text-[14px] sm:text-[15px] font-semibold px-6 sm:px-[30px] py-[13px] sm:py-[15px] rounded-full hover:bg-[#f5f5f5] hover:text-[#111111] transition-colors duration-200">
           Ver todos los proyectos <span class="svc-arrow">↗</span>
         </a>
-      </div>
+      </div> -->
     </section>
 
     <!-- ESTUDIO -->
     <section id="estudio" class="section-full border-t border-[#2a2a2a] bg-[#111111]">
       <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-14 sm:py-[clamp(48px,8vh,96px)] grid grid-cols-1 md:grid-cols-[0.8fr_1.4fr] gap-8 md:gap-12">
-        <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.04em]">[ EL ESTUDIO ]</p>
+        <p class="text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.04em]">[ EL ESTUDIO ]</p>
         <div>
           <p class="leading-[1.28] tracking-[-0.02em] font-medium mb-10 sm:mb-14" style="font-size: clamp(20px, min(3vw, 5vh), 40px)">
             Creemos en el diseño con propósito. Cada proyecto une <strong class="font-extrabold">estética</strong> y <strong class="font-extrabold">estrategia</strong> para que tu marca no solo se vea bien — funcione y crezca.
@@ -264,7 +293,7 @@ const year = new Date().getFullYear();
     <footer class="bg-[#0a0a0a] text-[#fafafa] border-t border-[#1f1f1f]">
       <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-11 flex flex-col sm:flex-row flex-wrap gap-5 sm:gap-6 justify-between items-start sm:items-center">
         <div class="flex items-center gap-3">
-          <img src="/assets/mark-black.png" alt="" class="h-6 w-auto" style="filter: invert(1)" />
+          <img src="/assets/mark-white.svg" alt="" class="h-6 w-auto" />
           <span class="font-extrabold text-[14px] tracking-[0.04em]">SHAPE AND CODE</span>
         </div>
         <div class="flex gap-4 sm:gap-[26px] text-[13px] sm:text-[13.5px] text-[#a3a3a3] flex-wrap">
@@ -272,7 +301,7 @@ const year = new Date().getFullYear();
           <a href="#" class="hover:text-[#fafafa] transition-colors">Behance</a>
           <a href="#" class="hover:text-[#fafafa] transition-colors">LinkedIn</a>
         </div>
-        <p class="font-space-mono text-[12px] text-[#737373]">© {year} — ESTUDIO CREATIVO</p>
+        <p class="text-[12px] text-[#737373]">© {year} — ESTUDIO CREATIVO</p>
       </div>
     </footer>
 
@@ -287,6 +316,8 @@ const year = new Date().getFullYear();
     import { initNavMorph, destroyNavMorph } from '../scripts/navMorph';
     import { initTextReveal, destroyTextReveal } from '../scripts/textReveal';
     import { initHeroIntro, destroyHeroIntro } from '../scripts/animations/heroIntro';
+    import { initWorkParallax, destroyWorkParallax } from '../scripts/animations/workParallax';
+    import { initWorkHint, destroyWorkHint } from '../scripts/animations/workHint';
 
     // `astro:page-load` cubre la carga inicial y cada navegacion con
     // ViewTransitions; `astro:before-swap` limpia listeners y ScrollTriggers
@@ -304,8 +335,12 @@ const year = new Date().getFullYear();
       initTextReveal();
       initParallax();
       initServicesCarousel();
+      initWorkParallax();
+      initWorkHint();
     });
     document.addEventListener('astro:before-swap', () => {
+      destroyWorkHint();
+      destroyWorkParallax();
       destroyServicesCarousel();
       destroyParallax();
       destroyTextReveal();
@@ -429,10 +464,216 @@ const year = new Date().getFullYear();
       transform-origin: left center;
     }
 
-    /* ---- WORK PLACEHOLDER ---- */
-    .work-placeholder {
-      background-color: #1a1a1a;
-      background-image: repeating-linear-gradient(135deg, #2a2a2a 0 2px, transparent 2px 11px);
+    /* ---- TRABAJO: titular fijo y tarjetas en parallax ----
+
+       El estado base (el de aqui abajo, sin media query) es el de movil y el de
+       `prefers-reduced-motion`: columna estatica, tarjetas visibles, sin nada
+       que dependa de JS. El parallax se monta solo dentro de la media query del
+       final, que es gemela de la rama desktop de `workParallax.ts`: la
+       disposicion absoluta y la animacion que la mueve tienen que aparecer y
+       desaparecer juntas, o las tarjetas quedarian apiladas sin nada que las
+       separase. */
+
+    .work-stage {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: clamp(56px, 9vh, 104px) 16px 0;
+    }
+    .work-heading { text-align: center; }
+    .work-title {
+      font-size: clamp(1.9rem, 8vw, 3rem);
+      font-weight: 600;
+      /* Poppins es geometrica: a tamaños grandes se dispersa sin este negativo. */
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      color: #f5f5f5;
+      /* El titular es de longitud variable: se limita por medida (ch) y no por
+         píxeles, así el salto de línea cae donde toca aunque cambie el texto.
+         `balance` reparte las líneas en vez de dejar una suelta. */
+      max-width: 15ch;
+      margin-inline: auto;
+      text-wrap: balance;
+    }
+    .work-eyebrow {
+      margin-top: 24px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #8a8a8a;
+    }
+
+    .work-cards {
+      margin-top: clamp(36px, 6vh, 56px);
+      display: grid;
+      gap: 28px;
+      justify-items: center;
+      list-style: none;
+      padding: 0;
+    }
+    .work-card { width: min(100%, 420px); }
+
+    .work-card-link {
+      display: block;
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #1a1a1a;
+      /* Sobre #111111 el borde es lo que define el canto de la tarjeta. Sin
+         sombras: sobre fondo oscuro no se ven y solo pesan al pintar. */
+      border: 1px solid #2a2a2a;
+    }
+    .work-card-link:focus-visible { outline: 2px solid #f5f5f5; outline-offset: 3px; }
+
+    /* Hueco con la relacion de aspecto ya reservada: la imagen entra despues
+       sin mover el layout (nada de CLS). */
+    .work-card-media {
+      position: relative;
+      aspect-ratio: var(--work-aspect, 4 / 3);
+      background: #1f1f1f;
+    }
+    .work-card-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* Placeholder discreto: marco fino, sin icono ni texto. */
+    .work-card-hole {
+      position: absolute;
+      inset: 24px;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+    }
+
+    .work-card-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 24px;
+      background: rgba(10, 10, 10, 0.85);
+      transition: opacity 300ms ease;
+    }
+    .work-card-name { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; color: #fafafa; }
+    .work-card-desc { font-size: 14px; line-height: 1.45; color: #a3a3a3; }
+    .work-card-meta { font-size: 12px; color: #8a8a8a; }
+    /* El punto mas luminoso de toda la seccion. */
+    .work-card-pill {
+      margin-top: 6px;
+      display: inline-flex;
+      align-items: center;
+      background: #f5f5f5;
+      color: #111111;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 9px 16px;
+      border-radius: 999px;
+    }
+
+    .work-cta {
+      display: flex;
+      justify-content: center;
+      padding: clamp(36px, 6vh, 64px) 16px clamp(48px, 7.5vh, 84px);
+    }
+
+    /* ---- Panel de detalles al vuelo (`scripts/animations/workHint.ts`) ----
+
+       Nace vacio e invisible; el modulo lo rellena y lo coloca. Se posiciona
+       por `transform` desde la esquina superior izquierda del viewport, que es
+       lo que GSAP anima con `quickTo`. */
+    .work-hint {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 60;
+      /* Nunca debe robarle el hover a la tarjeta que tiene debajo: si lo
+         hiciera, el propio panel dispararia el `pointerleave` de la tarjeta y
+         se cerraria solo. */
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      width: max-content;
+      max-width: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 18px 20px;
+      border-radius: 14px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      transform-origin: center;
+      will-change: transform;
+    }
+    /* El contenido es una copia del overlay, asi que reutiliza sus clases y
+       solo se ajusta lo que cambia de escala en este contexto. */
+    .work-hint .work-card-name { font-size: 16px; }
+    .work-hint .work-card-desc { font-size: 13px; }
+
+    @media (min-width: 768px) {
+      /* Sin `nowrap`: el titular ocupa varias palabras y forzarlo a una linea
+         lo desbordaria o lo dejaria minusculo. Envuelve por medida y crece con
+         el viewport hasta un techo comodo. */
+      .work-title { font-size: clamp(3rem, 7vw, 6.5rem); }
+      /* En escritorio el copy sale en el panel flotante (`.work-hint`), asi que
+         el overlay se queda apagado y la imagen no se oscurece nunca. No se
+         oculta con `display: none` a proposito: su texto sigue en el arbol de
+         accesibilidad, que es de donde lo leen los lectores de pantalla y de
+         donde lo copia `workHint.ts`.
+         En movil no hay cursor ni panel, y por eso ahi sigue visible. */
+      .work-card-overlay { opacity: 0; }
+    }
+
+    /* `.is-parallax` la pone `workParallax.ts` al tomar el control. Sin JS no se
+       añade nunca y manda la columna estatica de arriba, que se lee igual de
+       bien: las tarjetas no quedan amontonadas en absoluto sin nada que las
+       mueva. */
+    @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+      .work-stage.is-parallax {
+        position: relative;
+        height: 100vh;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      /* Titular detras (z-10), tarjetas delante (z-20): el solape es el efecto,
+         asi que el titulo no se atenua ni se enmascara. */
+      .is-parallax .work-heading { position: relative; z-index: 10; }
+      .is-parallax .work-cards {
+        position: absolute;
+        inset: 0;
+        z-index: 20;
+        display: block;
+        margin: 0;
+        gap: 0;
+        /* La capa no debe robar el cursor al resto de la seccion; cada tarjeta
+           lo recupera por su cuenta. */
+        pointer-events: none;
+      }
+      .is-parallax .work-card {
+        position: absolute;
+        top: 0;
+        /* `--work-x` es el desplazamiento respecto al centro, en vw. */
+        left: calc(50% + var(--work-x, 0) * 1vw);
+        width: var(--work-w, 320px);
+        margin-left: calc(var(--work-w, 320px) / -2);
+        pointer-events: auto;
+        will-change: transform;
+      }
+      /* La rotacion va en el hijo: GSAP escribe `transform` en `.work-card` y
+         se la comeria. */
+      .is-parallax .work-card-link { transform: rotate(var(--work-rot, 0deg)); }
     }
   </style>
 
