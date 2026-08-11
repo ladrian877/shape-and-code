@@ -27,7 +27,7 @@ const team = [
 
   <!-- HERO -->
   <section class="section-full max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-[120px] sm:pt-[clamp(120px,17vh,180px)] pb-10 sm:pb-[clamp(40px,6vh,56px)]">
-    <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.06em] mb-5 sm:mb-7">[ EL ESTUDIO ]</p>
+    <p class="text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.06em] mb-5 sm:mb-7">[ EL ESTUDIO ]</p>
     <h1 data-reveal-words class="font-bold leading-[0.94] tracking-[-0.035em] max-w-[16ch]" style="font-size: clamp(40px, min(8.5vw, 15vh), 132px)">
       Diseño con propósito, gente con criterio.
     </h1>
@@ -44,7 +44,7 @@ const team = [
   <!-- MANIFIESTO -->
   <section class="section-full border-t border-[#2a2a2a] bg-[#111111]">
     <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-14 sm:py-[clamp(48px,8vh,96px)] grid grid-cols-1 md:grid-cols-[0.8fr_1.4fr] gap-8 md:gap-12">
-      <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.04em]">[ NUESTRA FORMA DE VER ]</p>
+      <p class="text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.04em]">[ NUESTRA FORMA DE VER ]</p>
       <div>
         <p class="leading-[1.28] tracking-[-0.02em] font-medium mb-10 sm:mb-14" style="font-size: clamp(20px, min(3vw, 5vh), 40px)">
           Creemos en el diseño con propósito. Cada proyecto une <strong class="font-extrabold">estética</strong> y <strong class="font-extrabold">estrategia</strong> para que tu marca no solo se vea bien — funcione y crezca.
@@ -65,12 +65,12 @@ const team = [
   <section class="section-full max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pt-14 sm:pt-[clamp(56px,9vh,104px)] pb-10">
     <div class="flex justify-between items-end flex-wrap gap-4 mb-8 sm:mb-12">
       <h2 class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, min(4vw, 7vh), 56px)">Cómo pensamos</h2>
-      <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.04em]">[ NUESTROS VALORES ]</p>
+      <p class="text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.04em]">[ NUESTROS VALORES ]</p>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#2a2a2a] border border-[#2a2a2a]">
       {values.map((v, i) => (
         <div class="bg-[#1a1a1a] hover:bg-[#252525] transition-colors pt-7 sm:pt-8 px-5 sm:px-[26px] pb-8 sm:pb-10 min-h-[200px] sm:min-h-[clamp(190px,28vh,240px)] flex flex-col justify-between">
-          <span class="font-space-mono text-[13px] text-[#8a8a8a]">{v.num}</span>
+          <span class="text-[13px] text-[#8a8a8a]">{v.num}</span>
           <div>
             <h3 class="text-[18px] sm:text-[20px] font-bold tracking-[-0.01em] mb-[10px]">{v.title}</h3>
             <p class="text-[13.5px] sm:text-[14.5px] leading-[1.5] text-[#a3a3a3]">{v.desc}</p>
@@ -84,7 +84,7 @@ const team = [
   <section class="section-full max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-14 sm:py-[clamp(48px,7.5vh,84px)]">
     <div class="flex justify-between items-end flex-wrap gap-4 mb-[14px]">
       <h2 class="font-extrabold tracking-[-0.03em] leading-none" style="font-size: clamp(26px, min(4vw, 7vh), 56px)">El equipo</h2>
-      <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.04em]">[ QUIÉNES SOMOS ]</p>
+      <p class="text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.04em]">[ QUIÉNES SOMOS ]</p>
     </div>
     <div class="border-t border-[#f5f5f5]">
       {team.map((member, i) => (
@@ -92,7 +92,7 @@ const team = [
           class="team-row py-5 sm:py-[clamp(16px,3vh,30px)] border-b border-[#2a2a2a] flex items-center justify-between gap-4"
         >
           <h3 class="font-bold tracking-[-0.02em] leading-[1.05]" style="font-size: clamp(18px, min(2.4vw, 4.4vh), 32px)">{member.name}</h3>
-          <span class="font-space-mono text-[12px] sm:text-[14px] text-[#8a8a8a]">{member.role}</span>
+          <span class="text-[12px] sm:text-[14px] text-[#8a8a8a]">{member.role}</span>
         </div>
       ))}
     </div>
@@ -101,7 +101,7 @@ const team = [
   <!-- CTA -->
   <section id="contacto" class="section-full bg-[#0a0a0a] text-[#fafafa]">
     <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-16 sm:py-[clamp(56px,10vh,112px)]">
-      <p class="font-space-mono text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.06em] mb-5 sm:mb-7">[ EMPECEMOS ]</p>
+      <p class="text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.06em] mb-5 sm:mb-7">[ EMPECEMOS ]</p>
       <h2 class="font-extrabold leading-[0.95] tracking-[-0.035em] max-w-[13ch]" style="font-size: clamp(34px, min(8vw, 13vh), 116px)">¿Hacemos crecer tu marca?</h2>
       <div class="flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-10 justify-between items-start sm:items-end mt-10 sm:mt-[clamp(32px,5vh,56px)]">
         <a href="mailto:hola@shapeandcode.agency" class="font-semibold tracking-[-0.02em] border-b-2 border-[#8a8a8a] pb-[6px] hover:border-[#fafafa] transition-colors break-all" style="font-size: clamp(15px, min(3vw, 5vh), 38px)">

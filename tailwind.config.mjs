@@ -9,10 +9,6 @@ export default {
     extend: {
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
-        archivo: ['Archivo', 'sans-serif'],
-        'space-mono': ['"Space Mono"', 'monospace'],
-        'space-grotesk': ['"Space Grotesk"', 'sans-serif'],
-        jetbrains: ['"JetBrains Mono"', 'monospace'],
       },
     },
   },

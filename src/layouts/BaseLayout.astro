@@ -23,10 +23,10 @@ const year = new Date().getFullYear();
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
-  <link rel="icon" href="/assets/mark-black.png">
+  <link rel="icon" href="/assets/mark-white.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <ViewTransitions />
   <!-- Sin JS no hay reveal: los titulos deben verse igual. -->
   <noscript><style>[data-reveal-words] { visibility: visible; }</style></noscript>
@@ -36,6 +36,7 @@ const year = new Date().getFullYear();
   <Navbar
     logo={siteLogo}
     logoAlt={siteBrand}
+    invertLogo={false}
     brand={siteBrand}
     links={navLinks}
     cta={navCta}
@@ -57,7 +58,7 @@ const year = new Date().getFullYear();
   <footer class="bg-[#0a0a0a] text-[#fafafa] border-t border-[#1f1f1f]">
     <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-11 flex flex-col sm:flex-row flex-wrap gap-5 sm:gap-6 justify-between items-start sm:items-center">
       <div class="flex items-center gap-3">
-        <img src="/assets/mark-black.png" alt="" class="h-6 w-auto" style="filter: invert(1)" />
+        <img src="/assets/mark-white.svg" alt="" class="h-6 w-auto" />
         <span class="font-extrabold text-[14px] tracking-[0.04em]">SHAPE AND CODE</span>
       </div>
       <div class="flex gap-4 sm:gap-[26px] text-[13px] sm:text-[13.5px] text-[#a3a3a3] flex-wrap">
@@ -65,7 +66,7 @@ const year = new Date().getFullYear();
         <a href="#" class="hover:text-[#fafafa] transition-colors">Behance</a>
         <a href="#" class="hover:text-[#fafafa] transition-colors">LinkedIn</a>
       </div>
-      <p class="font-space-mono text-[12px] text-[#737373]">© {year} — ESTUDIO CREATIVO</p>
+      <p class="text-[12px] text-[#737373]">© {year} — ESTUDIO CREATIVO</p>
     </div>
   </footer>
 
