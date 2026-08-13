@@ -31,6 +31,7 @@ export const DURATION = {
   cta: 0.7,
   marquee: 0.9,
   card: 0.9,
+  scramble: 1.2, // duración del efecto scramble por elemento (título, email de CTA)
 } as const;
 
 /** Desfase entre fragmentos consecutivos de un texto partido. */
@@ -142,6 +143,59 @@ export const WORK_PARALLAX = {
 
   /** Desplazamiento vertical del fade-up de la versión móvil, en px. */
   mobileShift: 40,
+} as const;
+
+/* --- Entrada de Estudio (`animations/studioIntro.ts`) --- */
+
+export const STUDIO_INTRO = {
+  /** Punto del viewport en el que dispara el trigger de entrada. */
+  start: 'top 75%',
+} as const;
+
+/* --- Scramble de texto de CTA (`animations/ctaIntro.ts`) --- */
+
+export const SCRAMBLE = {
+  /**
+   * Charset del glitch: mayúsculas + espacio. Sin el espacio en el pool, el
+   * plugin sustituye también los espacios del texto mientras barajea —
+   * durante la animación el título se convierte en una sola palabra sin
+   * puntos de corte y desborda el contenedor. Con el espacio incluido, el
+   * propio plugin lo trata como carácter válido (usa `&nbsp;` internamente
+   * para no colapsar espacios dobles).
+   */
+  chars: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ ',
+  /** Veces por segundo que cambian los caracteres aún sin revelar. */
+  speed: 0.4,
+  /** Fracción de la duración antes de empezar a revelar el carácter final. */
+  revealDelay: 0.3,
+} as const;
+
+/* --- Entrada de CTA (`animations/ctaIntro.ts`) --- */
+
+export const CTA_INTRO = {
+  /** Punto del viewport en el que dispara el trigger de entrada. */
+  start: 'top 75%',
+} as const;
+
+/* --- Cursor trail de CTA (`animations/ctaTrail.ts`) --- */
+
+export const CTA_TRAIL = {
+  /** Distancia mínima del cursor entre dos imágenes consecutivas, en px. */
+  spawnDistance: 70,
+  /** Tamaño de cada imagen en pantalla, en px (cuadrado). */
+  size: 180,
+  /** Duración de la aparición y de la salida, en segundos. */
+  popIn: 0.28,
+  popOut: 0.5,
+  /** Segundos que la imagen aguanta a tamaño completo antes de empezar a salir. */
+  hold: 0.3,
+  /** Escala de partida (entra creciendo) y de salida (se aleja creciendo un poco más). */
+  popScale: 0.85,
+  outScale: 1.05,
+  /** Rotación aleatoria máxima por imagen, en grados — rompe la sensación de rejilla. */
+  maxRotate: 6,
+  /** Distancia mínima al borde del viewport, en px. Mismo criterio que `WORK_HINT.edge`. */
+  edge: 12,
 } as const;
 
 /* --- Panel de detalles al vuelo de Trabajo (`animations/workHint.ts`) --- */

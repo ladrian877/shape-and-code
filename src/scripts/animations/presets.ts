@@ -1,9 +1,10 @@
 import gsap from 'gsap';
+import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
 import { SplitText } from 'gsap/SplitText';
 
-import { DEPTH_SCALE, DURATION, EASE, SHIFT, STAGGER } from './config';
+import { DEPTH_SCALE, DURATION, EASE, SCRAMBLE, SHIFT, STAGGER } from './config';
 
-gsap.registerPlugin(SplitText);
+gsap.registerPlugin(SplitText, ScrambleTextPlugin);
 
 /**
  * Presets de entrada reutilizables.
@@ -162,4 +163,65 @@ export function charsReveal(el: Element, over?: Partial<Enter>): Split {
       split.revert();
     },
   };
+}
+
+/**
+ * Cuenta desde 0 hasta el valor de `target` sobre el propio texto del
+ * elemento, conservando cualquier prefijo/sufijo no numérico (`+`, `%`,
+ * " años"...). Por defecto usa la misma duración/ease que `fadeInDepth` para
+ * que el conteo termine justo cuando el bloque llega a su estado final.
+ *
+ * No devuelve un `Enter`: no es un `fromTo` de `TweenVars`, lleva su propio
+ * `onUpdate` con estado, así que añade el tween directamente a la timeline.
+ */
+export function countUp(
+  tl: gsap.core.Timeline,
+  el: HTMLElement,
+  target: number,
+  position?: gsap.Position,
+  over?: Partial<{ duration: number; ease: string }>,
+): gsap.core.Timeline {
+  const text = el.textContent ?? '';
+  const digits = String(target);
+  const idx = text.indexOf(digits);
+  const prefix = idx >= 0 ? text.slice(0, idx) : '';
+  const suffix = idx >= 0 ? text.slice(idx + digits.length) : '';
+
+  const proxy = { value: 0 };
+  return tl.to(proxy, {
+    value: target,
+    duration: over?.duration ?? DURATION.media,
+    ease: over?.ease ?? EASE.depth,
+    snap: { value: 1 },
+    onUpdate: () => { el.textContent = `${prefix}${Math.round(proxy.value)}${suffix}`; },
+  }, position);
+}
+
+/**
+ * Revela el texto del elemento con el efecto scramble de GSAP: baraja
+ * caracteres hasta asentarse en el texto real (`el.textContent`, leído antes
+ * de animar). El elemento arranca oculto por CSS como el resto de presets, así
+ * que se hace visible en el mismo instante en que arranca el tween.
+ *
+ * No devuelve un `Enter`: igual que `countUp`, `scrambleText` necesita su
+ * propio objeto de configuración, no un `fromTo` de `TweenVars`.
+ */
+export function scrambleReveal(
+  tl: gsap.core.Timeline,
+  el: HTMLElement,
+  position?: gsap.Position,
+  over?: Partial<{ duration: number; ease: string }>,
+): gsap.core.Timeline {
+  const text = el.textContent ?? '';
+  tl.set(el, { visibility: 'visible' }, position);
+  return tl.to(el, {
+    duration: over?.duration ?? DURATION.scramble,
+    ease: over?.ease ?? EASE.soft,
+    scrambleText: {
+      text,
+      chars: SCRAMBLE.chars,
+      speed: SCRAMBLE.speed,
+      revealDelay: SCRAMBLE.revealDelay,
+    },
+  }, position);
 }

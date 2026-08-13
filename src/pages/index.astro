@@ -49,6 +49,8 @@ const year = new Date().getFullYear();
   <noscript><style>
     [data-reveal-words],
     [data-hero-media], [data-hero-desc], [data-hero-cta], [data-hero-marquee],
+    [data-estudio-model], [data-estudio-text], [data-estudio-stat],
+    [data-cta-scramble], [data-cta-button],
     .has-hero-intro [data-navbar] { visibility: visible; }
   </style></noscript>
 </head>
@@ -75,6 +77,19 @@ const year = new Date().getFullYear();
        `aria-hidden` porque su contenido es una copia: el original sigue en el
        DOM de la tarjeta y es el que leen los lectores de pantalla. -->
   <div data-work-hint class="work-hint" aria-hidden="true"></div>
+
+  <!-- Cursor trail de la seccion CTA (`scripts/animations/ctaTrail.ts`).
+       Mismo motivo que `.work-hint` arriba: fuera del wrapper de
+       ScrollSmoother para que `position: fixed` siga refiriendose al
+       viewport. Puramente decorativo, de ahi `aria-hidden`. -->
+  <div data-cta-trail aria-hidden="true">
+    <Img src="cta-trail/01-app.png" alt="" preset="ctaTrail" class="cta-trail-img" data-cta-trail-img />
+    <Img src="cta-trail/02-branding.png" alt="" preset="ctaTrail" class="cta-trail-img" data-cta-trail-img />
+    <Img src="cta-trail/03-web.png" alt="" preset="ctaTrail" class="cta-trail-img" data-cta-trail-img />
+    <Img src="cta-trail/04-packaging.png" alt="" preset="ctaTrail" class="cta-trail-img" data-cta-trail-img />
+    <Img src="cta-trail/05-social.png" alt="" preset="ctaTrail" class="cta-trail-img" data-cta-trail-img />
+    <Img src="cta-trail/06-poster.png" alt="" preset="ctaTrail" class="cta-trail-img" data-cta-trail-img />
+  </div>
 
   <!-- Envoltorio de ScrollSmoother (`scripts/scrollSmooth.ts`). El contenido va
        dentro porque el smoother lo desplaza con un `transform`; el `<Navbar>`
@@ -249,24 +264,30 @@ const year = new Date().getFullYear();
     </section>
 
     <!-- ESTUDIO -->
-    <section id="estudio" class="section-full border-t border-[#2a2a2a] bg-[#111111]">
+    <section id="estudio" class="section-full border-t border-[#2a2a2a] bg-[#111111]" data-estudio>
       <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-14 sm:py-[clamp(48px,8vh,96px)] grid grid-cols-1 md:grid-cols-[0.8fr_1.4fr] gap-8 md:gap-12">
-        <p class="text-[11px] sm:text-[12.5px] text-[#8a8a8a] tracking-[0.04em]">[ EL ESTUDIO ]</p>
+        <Img
+          src="estudio/bunnymodel4.png"
+          alt=""
+          preset="studioModel"
+          data-estudio-model
+          class="w-[240px] sm:w-[300px] md:w-[380px] h-auto object-contain"
+        />
         <div>
-          <p class="leading-[1.28] tracking-[-0.02em] font-medium mb-10 sm:mb-14" style="font-size: clamp(20px, min(3vw, 5vh), 40px)">
+          <p class="leading-[1.28] tracking-[-0.02em] font-medium mb-10 sm:mb-14" style="font-size: clamp(20px, min(3vw, 5vh), 40px)" data-estudio-text>
             Creemos en el diseño con propósito. Cada proyecto une <strong class="font-extrabold">estética</strong> y <strong class="font-extrabold">estrategia</strong> para que tu marca no solo se vea bien — funcione y crezca.
           </p>
           <div class="flex gap-8 sm:gap-14 flex-wrap border-t border-[#2a2a2a] pt-8">
-            <div>
-              <div class="text-[36px] sm:text-[44px] font-extrabold tracking-[-0.03em]">+40</div>
+            <div data-estudio-stat>
+              <div class="text-[36px] sm:text-[44px] font-extrabold tracking-[-0.03em]" data-count-to="40">+40</div>
               <div class="text-[13px] sm:text-[14px] text-[#8a8a8a] mt-1">proyectos entregados</div>
             </div>
-            <div>
-              <div class="text-[36px] sm:text-[44px] font-extrabold tracking-[-0.03em]">8 años</div>
+            <div data-estudio-stat>
+              <div class="text-[36px] sm:text-[44px] font-extrabold tracking-[-0.03em]" data-count-to="8">8 años</div>
               <div class="text-[13px] sm:text-[14px] text-[#8a8a8a] mt-1">de experiencia combinada</div>
             </div>
-            <div>
-              <div class="text-[36px] sm:text-[44px] font-extrabold tracking-[-0.03em]">100%</div>
+            <div data-estudio-stat>
+              <div class="text-[36px] sm:text-[44px] font-extrabold tracking-[-0.03em]" data-count-to="100">100%</div>
               <div class="text-[13px] sm:text-[14px] text-[#8a8a8a] mt-1">enfoque a resultados</div>
             </div>
           </div>
@@ -275,14 +296,14 @@ const year = new Date().getFullYear();
     </section>
 
     <!-- CTA -->
-    <section id="contacto" class="section-full bg-[#0a0a0a] text-[#fafafa]">
+    <section id="contacto" class="section-full bg-[#0a0a0a] text-[#fafafa]" data-cta>
       <div class="max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 py-16 sm:py-[clamp(56px,10vh,112px)]">
-        <h2 data-reveal-words class="font-extrabold leading-[0.95] tracking-[-0.035em] max-w-[13ch]" style="font-size: clamp(34px, min(8vw, 13vh), 116px)">¿Hacemos crecer tu marca?</h2>
+        <h2 data-cta-scramble class="font-extrabold leading-[0.95] tracking-[-0.035em] max-w-[13ch] break-words" style="font-size: clamp(34px, min(8vw, 13vh), 116px)">¿Hacemos crecer tu marca?</h2>
         <div class="flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-10 justify-between items-start sm:items-end mt-10 sm:mt-[clamp(32px,5vh,56px)]">
-          <a href="mailto:hola@shapeandcode.agency" class="font-semibold tracking-[-0.02em] border-b-2 border-[#8a8a8a] pb-[6px] hover:border-[#fafafa] transition-colors break-all" style="font-size: clamp(15px, min(3vw, 5vh), 38px)">
+          <a href="mailto:hola@shapeandcode.agency" data-cta-scramble class="font-semibold tracking-[-0.02em] border-b-2 border-[#8a8a8a] pb-[6px] hover:border-[#fafafa] transition-colors break-all" style="font-size: clamp(15px, min(3vw, 5vh), 38px)">
             hola@shapeandcode.agency
           </a>
-          <a href="mailto:hola@shapeandcode.agency" class="inline-flex items-center gap-3 bg-[#fafafa] text-[#0a0a0a] text-[14px] sm:text-[16px] font-bold px-6 sm:px-8 py-4 sm:py-[18px] rounded-full hover:bg-[#d4d4d4] transition-colors shrink-0">
+          <a href="mailto:hola@shapeandcode.agency" data-cta-button class="inline-flex items-center gap-3 bg-[#fafafa] text-[#0a0a0a] text-[14px] sm:text-[16px] font-bold px-6 sm:px-8 py-4 sm:py-[18px] rounded-full hover:bg-[#d4d4d4] transition-colors shrink-0">
             Escribir un mensaje <span class="svc-arrow">↗</span>
           </a>
         </div>
@@ -316,8 +337,11 @@ const year = new Date().getFullYear();
     import { initNavMorph, destroyNavMorph } from '../scripts/navMorph';
     import { initTextReveal, destroyTextReveal } from '../scripts/textReveal';
     import { initHeroIntro, destroyHeroIntro } from '../scripts/animations/heroIntro';
+    import { initStudioIntro, destroyStudioIntro } from '../scripts/animations/studioIntro';
+    import { initCtaIntro, destroyCtaIntro } from '../scripts/animations/ctaIntro';
     import { initWorkParallax, destroyWorkParallax } from '../scripts/animations/workParallax';
     import { initWorkHint, destroyWorkHint } from '../scripts/animations/workHint';
+    import { initCtaTrail, destroyCtaTrail } from '../scripts/animations/ctaTrail';
 
     // `astro:page-load` cubre la carga inicial y cada navegacion con
     // ViewTransitions; `astro:before-swap` limpia listeners y ScrollTriggers
@@ -335,12 +359,18 @@ const year = new Date().getFullYear();
       initTextReveal();
       initParallax();
       initServicesCarousel();
+      initStudioIntro();
+      initCtaIntro();
       initWorkParallax();
       initWorkHint();
+      initCtaTrail();
     });
     document.addEventListener('astro:before-swap', () => {
+      destroyCtaTrail();
       destroyWorkHint();
       destroyWorkParallax();
+      destroyCtaIntro();
+      destroyStudioIntro();
       destroyServicesCarousel();
       destroyParallax();
       destroyTextReveal();
@@ -616,6 +646,27 @@ const year = new Date().getFullYear();
        solo se ajusta lo que cambia de escala en este contexto. */
     .work-hint .work-card-name { font-size: 16px; }
     .work-hint .work-card-desc { font-size: 13px; }
+
+    /* ---- Cursor trail de CTA (`scripts/animations/ctaTrail.ts`) ----
+
+       Las 6 se pintan de una vez y el modulo las recicla en vez de crear/
+       destruir nodos: `opacity: 0` en reposo, el script las mueve y las hace
+       visibles al vuelo con `autoAlpha`. Mismo `z-index` que `.work-hint`
+       porque nunca coexisten en pantalla. */
+    .cta-trail-img {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 180px;
+      height: 180px;
+      border-radius: 12px;
+      border: 1px solid #2a2a2a;
+      object-fit: cover;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 60;
+      will-change: transform, opacity;
+    }
 
     @media (min-width: 768px) {
       /* Sin `nowrap`: el titular ocupa varias palabras y forzarlo a una linea

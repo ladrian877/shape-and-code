@@ -52,6 +52,24 @@ export const IMAGE_PRESETS = {
     loading: 'lazy',
     fetchpriority: 'auto',
   },
+
+  /** Modelo decorativo de Estudio: columna izquierda de la sección, bajo el fold. */
+  studioModel: {
+    widths: [240, 380, 520, 640],
+    sizes: '(max-width: 640px) 240px, (max-width: 1024px) 300px, 380px',
+    quality: QUALITY,
+    loading: 'lazy',
+    fetchpriority: 'auto',
+  },
+
+  /** Imágenes del cursor trail de CTA: cuadros pequeños, siempre el mismo tamaño en pantalla. */
+  ctaTrail: {
+    widths: [180, 270, 360],
+    sizes: '180px',
+    quality: QUALITY,
+    loading: 'lazy',
+    fetchpriority: 'auto',
+  },
 } as const;
 
 export type ImagePreset = keyof typeof IMAGE_PRESETS;

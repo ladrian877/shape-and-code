@@ -55,6 +55,17 @@ a { color: inherit; text-decoration: none; }
 
 .has-hero-intro [data-navbar] { visibility: hidden; }
 
+/* --- Timeline de entrada de Estudio (src/scripts/animations/studioIntro.ts) --- */
+
+[data-estudio-model],
+[data-estudio-text],
+[data-estudio-stat] { visibility: hidden; }
+
+/* --- Timeline de entrada de CTA (src/scripts/animations/ctaIntro.ts) --- */
+
+[data-cta-scramble],
+[data-cta-button] { visibility: hidden; }
+
 /* --- Movimiento reducido ---
    Los módulos de GSAP ya consultan la preferencia y se desactivan solos, pero
    el marquee (`components/Marquee.tsx`) es una animación CSS pura y no puede.
