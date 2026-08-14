@@ -34,6 +34,15 @@ export const IMAGE_PRESETS = {
     fetchpriority: 'high',
   },
 
+  /** Fondo del hero en móvil: cubre toda la sección, centrado (cover). */
+  heroMobile: {
+    widths: [480, 640, 768, 916],
+    sizes: '100vw',
+    quality: QUALITY,
+    loading: 'eager',
+    fetchpriority: 'high',
+  },
+
   /** Fondo de las tarjetas del carrusel de servicios.
    *  Tope real: `.svc-card { width: min(86vw, 1040px) }`. */
   card: {

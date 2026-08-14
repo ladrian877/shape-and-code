@@ -118,9 +118,20 @@ const year = new Date().getFullYear();
             alt=""
             aria-hidden="true"
             data-hero-media
-            class="hero-model absolute bottom-[-15px] h-[78%] w-auto object-contain object-bottom pointer-events-none select-none"
-            style="right: -24%;"
+            class="hero-model hidden md:block absolute bottom-[-15px] h-[78%] w-auto object-contain object-bottom pointer-events-none select-none md:right-[-24%]"
           />
+          <!-- Móvil: fondo a pantalla completa, centrado, cover. No lleva
+               `data-hero-media`: `heroIntro.ts` usa querySelector singular
+               sobre ese atributo, así que un segundo elemento con el mismo
+               quedaría con `visibility:hidden` para siempre. -->
+          <Img
+            src="hero/backgroundasset-mobile.png"
+            preset="heroMobile"
+            alt=""
+            aria-hidden="true"
+            class="hero-model-mobile block md:hidden absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+          />
+          <div class="hero-scrim block md:hidden absolute inset-0 pointer-events-none" aria-hidden="true"></div>
         </div>
         <!-- Hero content -->
         <div class="relative flex flex-col items-start text-left" style="z-index: 1;">
@@ -250,6 +261,12 @@ const year = new Date().getFullYear();
                   <p class="work-card-meta">{item.tag} — {item.year}</p>
                   <span class="work-card-pill">Ver proyecto</span>
                 </div>
+                <!-- Móvil: nombre fuera de la imagen (ver `.work-card-overlay`
+                     arriba, oculto en móvil). `aria-hidden` porque duplica el
+                     nombre ya presente en el overlay y en el `alt` de la imagen. -->
+                <div class="work-card-caption" aria-hidden="true">
+                  <h3 class="work-card-caption-name">{item.name}</h3>
+                </div>
               </a>
             </li>
           ))}
@@ -271,7 +288,7 @@ const year = new Date().getFullYear();
           alt=""
           preset="studioModel"
           data-estudio-model
-          class="w-[240px] sm:w-[300px] md:w-[380px] h-auto object-contain"
+          class="w-[240px] sm:w-[300px] md:w-[380px] h-auto object-contain mx-auto md:mx-0"
         />
         <div>
           <p class="leading-[1.28] tracking-[-0.02em] font-medium mb-10 sm:mb-14" style="font-size: clamp(20px, min(3vw, 5vh), 40px)" data-estudio-text>
@@ -381,23 +398,41 @@ const year = new Date().getFullYear();
   </script>
 
   <style>
+    /* ---- HERO MOBILE BACKGROUND + SCRIM ----
+       En móvil el fondo `.hero-model-mobile` cubre toda la sección; el scrim
+       aporta el contraste base contra el texto. */
+    @media (max-width: 767px) {
+      .hero-model-mobile {
+        filter: none;
+        -webkit-mask-image: none;
+        mask-image: none;
+      }
+      .hero-scrim {
+        background: linear-gradient(
+          180deg,
+          rgba(10, 10, 10, 0.35) 0%,
+          rgba(10, 10, 10, 0.6) 55%,
+          rgba(10, 10, 10, 0.72) 100%
+        );
+      }
+    }
+
     /* ---- HERO TITLE LEGIBILITY (solo móvil) ----
-       En móvil la imagen decorativa (el conejo) se solapa con el título.
-       Añadimos un halo de texto para que resalte sobre la imagen: en modo
-       claro el texto es oscuro -> halo claro; en oscuro es claro -> halo
-       oscuro. Encima de sm (640px) hay espacio de sobra y no hace falta. */
+       Refuerzo suave sobre el scrim de `.hero-scrim` (arriba): intensidad
+       reducida a la mitad respecto al halo original, que hacía todo el
+       trabajo de contraste antes de que existiera el scrim. */
     @media (max-width: 639px) {
       .hero-title {
         text-shadow:
-          0 0 20px rgba(0, 0, 0, 0.85),
-          0 0 7px rgba(0, 0, 0, 0.8),
-          0 2px 4px rgba(0, 0, 0, 0.62);
+          0 0 10px rgba(0, 0, 0, 0.42),
+          0 0 4px rgba(0, 0, 0, 0.4),
+          0 1px 2px rgba(0, 0, 0, 0.3);
       }
       /* Halo más ligero para el texto descriptivo (fuente más pequeña). */
       .hero-desc {
         text-shadow:
-          0 0 14px rgba(0, 0, 0, 0.9),
-          0 0 5px rgba(0, 0, 0, 0.85);
+          0 0 7px rgba(0, 0, 0, 0.45),
+          0 0 3px rgba(0, 0, 0, 0.42);
       }
     }
 
@@ -611,6 +646,29 @@ const year = new Date().getFullYear();
       display: flex;
       justify-content: center;
       padding: clamp(36px, 6vh, 64px) 16px clamp(48px, 7.5vh, 84px);
+    }
+
+    /* ---- Trabajo: móvil ----
+       Sin cursor ni panel flotante, el overlay (etiqueta+CTA sobre la
+       imagen) se oculta y el nombre pasa a un caption fuera de la imagen,
+       para priorizar la visibilidad de la imagen. Todas las tarjetas
+       comparten el mismo aspect-ratio: el ancho ya era uniforme
+       (`.work-card`), así queda también el alto. Oculto por defecto: solo
+       existe para móvil, el `<h3>` duplicado no debe pintarse en desktop. */
+    .work-card-caption { display: none; }
+
+    @media (max-width: 767px) {
+      .work-card-overlay { display: none; }
+
+      .work-card-caption { display: block; padding: 12px 4px 0; }
+      .work-card-caption-name {
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        color: #fafafa;
+      }
+
+      .work-card-media { aspect-ratio: 4 / 3; }
     }
 
     /* ---- Panel de detalles al vuelo (`scripts/animations/workHint.ts`) ----
