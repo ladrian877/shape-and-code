@@ -141,8 +141,31 @@ export const WORK_PARALLAX = {
    */
   travelOut: -1.4,
 
-  /** Desplazamiento vertical del fade-up de la versión móvil, en px. */
-  mobileShift: 40,
+  /**
+   * Versión móvil: una sola tarjeta en pantalla a la vez, así que no necesita
+   * el margen extra de `travelIn`/`travelOut` de arriba (pensado para dejar
+   * sitio a la superposición del escritorio). El reposo de cada tarjeta
+   * (`.work-card { top: 0 }`, sin centrado por flex porque `.work-cards` es
+   * `position: absolute; inset: 0`) queda pegado al borde SUPERIOR del stage,
+   * no al centro — por eso `travelIn`/`travelOut` no son simétricos:
+   *
+   * - `travelIn` tiene que superar `1` para que la tarjeta en espera quede
+   *   por debajo del borde inferior del viewport (su `top` ya arranca en el
+   *   borde superior, así que hace falta una altura de viewport entera).
+   * - `travelOut` solo tiene que superar la altura de la propia tarjeta
+   *   (~0.35 del viewport en un móvil típico) para que salga por completo
+   *   por arriba — no hace falta otra altura de viewport completa como abajo.
+   *
+   * Con esto el tramo "vacío" (tarjeta totalmente fuera de cuadro) queda casi
+   * en cero: una termina de salir justo cuando entra la siguiente.
+   * `pinLength` también baja frente a desktop: cada tarjeta ya no necesita
+   * tanto recorrido de scroll para completar un cruce tan corto.
+   */
+  mobile: {
+    pinLength: 200,
+    travelIn: 1.05,
+    travelOut: -0.4,
+  },
 } as const;
 
 /* --- Entrada de Estudio (`animations/studioIntro.ts`) --- */
