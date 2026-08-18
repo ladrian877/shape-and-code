@@ -9,8 +9,6 @@ const work = [
   { name: 'Mistral Foods', tag: 'Branding + Packaging', year: '2024', desc: 'Marca y empaque para una línea de productos gourmet.' },
   { name: 'Aurora Health', tag: 'Web + Campaña', year: '2023', desc: 'Sitio institucional y campaña de captación de pacientes.' },
 ];
-
-const filters = ['Todos', 'Branding', 'Diseño web', 'Campañas', 'SEO / SEM'];
 ---
 <BaseLayout
   title="Proyectos — Shape and Code"
@@ -30,24 +28,6 @@ const filters = ['Todos', 'Branding', 'Diseño web', 'Campañas', 'SEO / SEM'];
       <a href="/contacto" class="inline-flex items-center gap-[10px] bg-[#f5f5f5] text-[#111111] text-[14px] sm:text-[15px] font-semibold px-5 sm:px-[26px] py-[13px] sm:py-[15px] rounded-full hover:bg-[#d4d4d4] transition-colors shrink-0">
         Empezar un proyecto <span class="svc-arrow">↗</span>
       </a>
-    </div>
-  </section>
-
-  <!-- FILTROS -->
-  <section class="section-full max-w-[1320px] mx-auto px-4 sm:px-6 md:px-8 pb-8 sm:pb-10">
-    <div class="flex flex-wrap gap-[8px] sm:gap-[10px] border-t border-[#2a2a2a] pt-6 sm:pt-8">
-      {filters.map((f, i) => (
-        <button
-          class:list={[
-            'filter-chip text-[11px] sm:text-[12px] tracking-[0.02em] px-4 py-[9px] rounded-full border transition-colors',
-            i === 0
-              ? 'bg-[#f5f5f5] text-[#111111] border-[#f5f5f5]'
-              : 'border-[#3a3a3a] hover:border-[#f5f5f5]',
-          ]}
-        >
-          {f}
-        </button>
-      ))}
     </div>
   </section>
 

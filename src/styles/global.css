@@ -89,22 +89,6 @@ a { color: inherit; text-decoration: none; }
   --mq-sep: #3a3a3a;
 }
 
-.gradient-text-hero {
-  background: linear-gradient(120deg, #a78bfa, #38bdf8);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-.gradient-text-stat {
-  background: linear-gradient(120deg, #ffffff, #b6b6c2);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
 /* Imagen decorativa del hero: desvanecido lateral en ambos bordes */
 .hero-model {
   -webkit-mask-image: linear-gradient(
