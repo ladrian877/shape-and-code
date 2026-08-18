@@ -1,0 +1,233 @@
+---
+/**
+ * Navbar — barra de navegación flotante, reutilizable entre proyectos.
+ *
+ * Autocontenido: markup + estilos + JS (menú móvil) viven aquí. Para llevarlo
+ * a otro proyecto basta copiar este archivo. Requisito: Astro + Tailwind.
+ *
+ * Uso mínimo:
+ *   <Navbar logo="/assets/mark.png" brand="Mi Marca" links={[...]} />
+ *
+ * Notas:
+ * - El sitio es solo oscuro: no hay toggle de tema ni clase `dark`.
+ * - El nav no se anima entre páginas: `transition:animate="none"` desactiva
+ *   la animación por defecto de ViewTransitions sobre el <header>.
+ */
+export interface NavLink {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  /** Ruta de la imagen del logo. Si se omite no se muestra logo. */
+  logo?: string;
+  /** Texto alternativo del logo. */
+  logoAlt?: string;
+  /** Invierte el logo (útil para logos monocromo sobre fondo oscuro). */
+  invertLogo?: boolean;
+  /** Wordmark centrado que se muestra solo en móvil. */
+  brand?: string;
+  /** Destino del logo. */
+  homeHref?: string;
+  /** Enlaces de navegación. */
+  links?: NavLink[];
+  /** Botón de acción principal. `null` para ocultarlo. */
+  cta?: { label: string; href: string } | null;
+  /**
+   * Renderiza el nav en estado "hero": ancho, transparente y no sticky. El
+   * módulo `scripts/navMorph` lo convierte en la cápsula fija al salir del
+   * hero. Sin esta prop el nav es siempre la cápsula fija.
+   */
+  morph?: boolean;
+  /** Clases extra para el <header>. */
+  class?: string;
+}
+
+const {
+  logo,
+  logoAlt = 'Inicio',
+  invertLogo = true,
+  brand,
+  homeHref = '/',
+  links = [],
+  cta = null,
+  morph = false,
+  class: className = '',
+} = Astro.props;
+
+// Marca el enlace de la página actual (ignora anclas y barras finales).
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isActive = (href: string) => {
+  if (href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto:')) return false;
+  return (href.replace(/\/+$/, '') || '/') === currentPath;
+};
+
+---
+
+<div data-navbar data-nav-morph={morph ? '' : undefined}>
+  <header
+    transition:animate="none"
+    class:list={[
+      'site-nav left-0 right-0 z-50 pt-4 sm:pt-4 lg:pt-5',
+      // Con `morph` la posición la controla la CSS de abajo (absolute -> fixed)
+      // y el padding se alinea con el contenedor del hero (max-w-[1560px]).
+      morph ? 'px-4 sm:px-6 md:px-8' : 'fixed px-4 sm:px-5 lg:px-8',
+      className,
+    ]}
+  >
+    <div
+      data-nav-shell
+      class:list={[
+        'relative mx-auto py-[11px] flex items-center justify-between gap-4 rounded-full border',
+        morph
+          ? 'max-w-[1320px] px-0 bg-transparent border-transparent'
+          : 'max-w-[900px] px-4 sm:px-5 bg-[rgba(17,17,17,0.90)] backdrop-blur-[16px] border-[#2a2a2a] shadow-[0_2px_24px_rgba(0,0,0,0.07)]',
+      ]}
+    >
+      {/* Wordmark centrado (solo móvil) para que el nav no se vea vacío */}
+      {brand && (
+        <span class="lg:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-[15px] tracking-[-0.01em] whitespace-nowrap pointer-events-none">{brand}</span>
+      )}
+      <a href={homeHref} class="flex items-center gap-2 sm:gap-3 shrink-0">
+        {logo
+          ? <img src={logo} alt={logoAlt} class:list={['h-[30px] sm:h-[36px] w-auto block', invertLogo && 'invert']} />
+          : <span class="font-extrabold text-[15px] tracking-[-0.01em]">{brand ?? logoAlt}</span>}
+      </a>
+      {links.length > 0 && (
+        <nav class="hidden lg:flex items-center gap-[34px] text-sm font-medium">
+          {links.map((link) => (
+            <a
+              href={link.href}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+              class:list={['transition-opacity hover:opacity-100', isActive(link.href) ? 'opacity-100' : 'opacity-75']}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+      )}
+      <div class="flex items-center gap-3">
+        {cta && (
+          <a href={cta.href} class="hidden lg:inline-flex items-center gap-[10px] bg-[#f5f5f5] text-[#111111] text-[13.5px] font-semibold px-5 py-[11px] rounded-full hover:bg-[#d4d4d4] transition-colors">
+            {cta.label} <span>↗</span>
+          </a>
+        )}
+        <button data-menu-btn class="lg:hidden flex flex-col justify-center items-center gap-[5px] w-10 h-10 shrink-0" aria-label="Abrir menú" aria-expanded="false">
+          <span data-bar="1" class="w-[22px] h-[2px] bg-[#f5f5f5] block transition-all duration-300 origin-center"></span>
+          <span data-bar="2" class="w-[22px] h-[2px] bg-[#f5f5f5] block transition-all duration-300"></span>
+          <span data-bar="3" class="w-[16px] h-[2px] bg-[#f5f5f5] block transition-all duration-300 origin-center self-start ml-[3px]"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Menú móvil a pantalla completa -->
+  <div data-menu class="hidden fixed inset-0 z-40 bg-[#111111] flex-col items-center justify-center gap-8">
+    <nav class="flex flex-col items-center gap-7 text-[24px] font-bold tracking-[-0.02em]">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          data-menu-link
+          aria-current={isActive(link.href) ? 'page' : undefined}
+          class:list={['transition-opacity hover:opacity-100', isActive(link.href) ? 'opacity-100' : 'opacity-80']}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+    {cta && (
+      <a href={cta.href} data-menu-link class="mt-4 inline-flex items-center gap-[10px] bg-[#f5f5f5] text-[#111111] text-[16px] font-semibold px-7 py-[14px] rounded-full hover:bg-[#d4d4d4] transition-colors">
+        {cta.label} <span>↗</span>
+      </a>
+    )}
+  </div>
+</div>
+
+<style>
+  /* ---- MODO MORPH (prop `morph`) ----
+     El header es siempre `fixed`: con ScrollSmoother el contenido vive dentro
+     de un wrapper con `transform`, y un header `absolute` fuera de él iría a
+     velocidad distinta que la página. El morph pasa a ser puramente visual (la
+     cápsula se estrecha y gana fondo/borde/blur); `scripts/navMorph.ts` marca
+     `.is-pinned` como estado y anima el resto con GSAP. */
+  [data-nav-morph] .site-nav { position: fixed; }
+
+  /* Valores de partida explícitos para que GSAP pueda interpolarlos
+     (`none` / `blur()` sin valor no son animables). */
+  [data-nav-morph] [data-nav-shell] {
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    box-shadow: 0 2px 24px rgba(0, 0, 0, 0);
+  }
+</style>
+
+<script>
+  import { getSmoother } from '../scripts/scrollSmooth';
+
+  function initNavbar(root: HTMLElement) {
+    if (root.dataset.navbarReady) return;
+    root.dataset.navbarReady = 'true';
+
+    const menu = root.querySelector<HTMLElement>('[data-menu]');
+    const menuBtn = root.querySelector<HTMLElement>('[data-menu-btn]');
+    const bars = [1, 2, 3].map((n) => root.querySelector<HTMLElement>(`[data-bar="${n}"]`));
+
+    // ---- MENÚ MÓVIL ----
+    let open = false;
+
+    function setMenu(next: boolean) {
+      const [hb1, hb2, hb3] = bars;
+      if (!menu || !hb1 || !hb2 || !hb3) return;
+      open = next;
+      menu.classList.toggle('hidden', !open);
+      menu.classList.toggle('flex', open);
+      // Dos bloqueos, uno por escenario: `overflow` cubre el scroll nativo
+      // (paginas sin smoother, reduced-motion) y `paused()` cubre el scroll
+      // de ScrollSmoother, que se salta el `overflow` del body porque el
+      // contenido vive en un wrapper `position: fixed`.
+      document.body.style.overflow = open ? 'hidden' : '';
+      getSmoother()?.paused(open);
+      menuBtn?.setAttribute('aria-expanded', String(open));
+      menuBtn?.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+      if (open) {
+        hb1.style.cssText = 'transform:translateY(7px) rotate(45deg)';
+        hb2.style.opacity = '0';
+        hb3.style.cssText = 'transform:translateY(-7px) rotate(-45deg);width:22px;margin-left:0;align-self:center';
+      } else {
+        hb1.style.cssText = '';
+        hb2.style.cssText = '';
+        hb3.style.cssText = '';
+      }
+    }
+
+    menuBtn?.addEventListener('click', () => setMenu(!open));
+    root.querySelectorAll('[data-menu-link]').forEach((el) =>
+      el.addEventListener('click', () => { if (open) setMenu(false); })
+    );
+  }
+
+  function initNavbars() {
+    document.querySelectorAll<HTMLElement>('[data-navbar]').forEach(initNavbar);
+  }
+
+  initNavbars();
+  // Con ViewTransitions el DOM se reemplaza en cada navegación: hay que
+  // volver a enlazar los listeners y soltar el bloqueo de scroll del menú.
+  document.addEventListener('astro:page-load', initNavbars);
+  // Navegar con el menu abierto no debe dejar la pagina siguiente bloqueada.
+  // El smoother de la pagina saliente se mata en su propio `before-swap`; esto
+  // cubre el caso de que siga vivo cuando corre este handler.
+  document.addEventListener('astro:before-swap', () => {
+    document.body.style.overflow = '';
+    getSmoother()?.paused(false);
+  });
+
+  // Escape cierra el menú abierto (a nivel de documento para no duplicar
+  // listeners en cada navegación).
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    document
+      .querySelectorAll<HTMLElement>('[data-navbar] [data-menu-btn][aria-expanded="true"]')
+      .forEach((btn) => btn.click());
+  });
+</script>
